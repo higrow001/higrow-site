@@ -1,15 +1,15 @@
 import "./globals.css";
-import { Public_Sans, Archivo_Black } from "next/font/google";
+import { Public_Sans, Archivo } from "next/font/google";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-public-sans",
 });
-const archivoBlack = Archivo_Black({
+const archivoBlack = Archivo({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-archivo-black",
+  display: "swap",
+  variable: "--font-archivo",
 });
 
 export const metadata = {

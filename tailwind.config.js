@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-public-sans)"],
-        archivoblack: ["var(--font-archivo-black)"],
+        archivo: ["var(--font-archivo)"],
       },
       colors: {
         "theme-blue": "#007DFB",
