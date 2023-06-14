@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./globals.scss";
 import { Public_Sans, Archivo } from "next/font/google";
 
 const publicSans = Public_Sans({
