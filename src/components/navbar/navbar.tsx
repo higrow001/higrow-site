@@ -4,7 +4,8 @@ import Link from 'next/link';
 const Navbar = () => {
   return (
     <div className='navbar-container'>
-        <div className='nav-logo'>HiGrow.</div>
+        <div className='nav-logo'>
+         <Link href="/">HiGrow.</Link> </div>
         <div className='nav-links'>
         <Link href="/contests">contests</Link>
         <Link href="/contests">workshops</Link>

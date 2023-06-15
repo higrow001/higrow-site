@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
+import './signup.scss';
 
 const SignUp = () => {
   const signUpUser = async (
@@ -26,8 +27,8 @@ const SignUp = () => {
   };
 
   return (
-    <main className="flex justify-center items-center h-full bg-[#f4f4f0] w-full">
-      <div className="p-20 max-w-xl bg-white border border-black flex flex-col items-center space-y-16 rounded-lg w-full">
+    <main className="flex justify-center items-center bg-[#f4f4f0] w-full signup-container">
+      <div className="p-20 max-w-xl bg-white border border-black flex flex-col items-center space-y-16 rounded-lg w-full signup-card">
         <h1 className="text-4xl font-archivo font-bold text-[#333333]">
           Sign Up for HiGrow
         </h1>
@@ -60,7 +61,7 @@ const SignUp = () => {
           <Form className="space-y-16 w-full">
             <div className="flex flex-col space-y-6 items-center w-full">
               <button
-                className="p-3 px-8 w-full text-[#333] text-lg font-archivo font-bold border border-[#333] rounded-xl flex space-x-6 items-center justify-center hover:bg-neutral-100 transition"
+                className="p-3 px-8 w-full text-[#333] text-lg font-archivo font-bold border-2 border-[#333] h-14 rounded-xl flex space-x-6 items-center justify-center hover:bg-neutral-100 transition"
                 onClick={async () => loginWithGoogle()}
               >
                 <span>Continue with Google</span>
@@ -72,7 +73,7 @@ const SignUp = () => {
                   name="displayName"
                   type="text"
                   placeholder="Display name"
-                  className="px-6 py-3 text-lg border border-[#333] rounded-md w-full"
+                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
                 />
                 <ErrorMessage
                   name="displayName"
@@ -85,7 +86,7 @@ const SignUp = () => {
                   name="email"
                   type="email"
                   placeholder="Email"
-                  className="px-6 py-3 text-lg border border-[#333] rounded-md w-full"
+                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
                 />
                 <ErrorMessage
                   name="email"
@@ -98,7 +99,7 @@ const SignUp = () => {
                   name="password"
                   type="password"
                   placeholder="Password"
-                  className="px-6 py-3 text-lg border border-[#333] rounded-md w-full"
+                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
                 />
                 <ErrorMessage
                   name="password"
@@ -111,7 +112,7 @@ const SignUp = () => {
                   name="confirmPassword"
                   type="password"
                   placeholder="Confirm password"
-                  className="px-6 py-3 text-lg border border-[#333] rounded-md w-full"
+                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
                 />
                 <ErrorMessage
                   name="confirmPassword"
@@ -123,7 +124,7 @@ const SignUp = () => {
             <div className="flex flex-col space-y-8 items-center w-full">
               <button
                 type="submit"
-                className="text-lg font-archivo font-semibold bg-theme-blue text-white w-full px-6 py-3 rounded-xl transition hover:bg-theme-blue-darker"
+                className="text-lg font-archivo font-semibold bg-theme-blue text-white h-14 w-full px-6 py-3 rounded-xl transition hover:bg-theme-blue-darker"
               >
                 Sign Up
               </button>
