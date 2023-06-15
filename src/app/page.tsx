@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from '../components/navbar/navbar'
 import Link from "next/link";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -13,11 +14,14 @@ export default function Home() {
     }
   });
   return (
+    <div>
+    <Navbar />
     <main>
       <p>Landing Page.</p>
       <Link className="text-theme-blue" href="/signin">
         Sign in
       </Link>
     </main>
+    </div>
   );
 }
