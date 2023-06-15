@@ -3,13 +3,13 @@ import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDbSd9XRZ2hxx2rH1M94WdRNM5qkLmAqPY",
-  authDomain: "higrow-db.firebaseapp.com",
-  projectId: "higrow-db",
-  storageBucket: "higrow-db.appspot.com",
-  messagingSenderId: "642811327936",
-  appId: "1:642811327936:web:89d2c18051248f2e8e0425",
-  measurementId: "G-9QZ79FKM3W",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
