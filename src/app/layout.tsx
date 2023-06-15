@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar/navbar";
 import "./globals.scss";
 import { Public_Sans, Archivo } from "next/font/google";
 
@@ -27,7 +28,10 @@ export default function RootLayout({
       lang="en"
       className={`${publicSans.variable} ${archivoBlack.variable}`}
     >
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
