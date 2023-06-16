@@ -1,6 +1,6 @@
 "use client";
 
-import loginWithGoogle from "@/lib/utils/googleLogin";
+import useGoogleLogin from "@/lib/utils/googleLogin";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -8,9 +8,12 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
-import './signup.scss';
+import "./signup.scss";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const loginWithGoogle = useGoogleLogin();
+  const router = useRouter();
   const signUpUser = async (
     email: string,
     password: string,
@@ -23,11 +26,12 @@ const SignUp = () => {
         display_name: displayName,
         profile_photo: user.user.photoURL,
       });
+      router.replace("/");
     }
   };
 
   return (
-    <main className="flex justify-center items-center bg-[#f4f4f0] w-full signup-container">
+    <main className="flex justify-center min-h-full items-center bg-[#f4f4f0] w-full signup-container">
       <div className="p-20 max-w-xl bg-white border border-black flex flex-col items-center space-y-16 rounded-lg w-full signup-card">
         <h1 className="text-4xl font-archivo font-bold text-[#333333]">
           Sign Up for HiGrow
@@ -61,6 +65,7 @@ const SignUp = () => {
           <Form className="space-y-16 w-full">
             <div className="flex flex-col space-y-6 items-center w-full">
               <button
+                type="button"
                 className="p-3 px-8 w-full text-[#333] text-lg font-archivo font-bold border-2 border-[#333] h-14 rounded-xl flex space-x-6 items-center justify-center hover:bg-neutral-100 transition"
                 onClick={async () => loginWithGoogle()}
               >

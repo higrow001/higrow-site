@@ -1,14 +1,13 @@
-import HomeHero from "@/components/navbar/home-hero/home-hero";
 import "./home.scss";
-import Link from "next/link";
-import HomeTodo from "@/components/navbar/home-todo/home-todo";
+import HomeHero from "@/components/home-hero/home-hero";
+import HomeTodo from "@/components/home-todo/home-todo";
 
 export default function Home() {
   return (
     <div>
       <div className="home-container">
-       <HomeHero />
-       <HomeTodo />
+        <HomeHero />
+        <HomeTodo />
       </div>
     </div>
   );
