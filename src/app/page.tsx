@@ -3,6 +3,7 @@ import "./home.scss";
 import Link from "next/link";
 import HomeTodo from "@/components/home-todo/home-todo";
 import Card from "@/components/card/card";
+import HomeExplore from "@/components/home-explore/home-explore";
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
       <div className="home-container">
        <HomeHero />
        <HomeTodo />
-       <Card />
+       <HomeExplore />
       </div>
     </div>
   );

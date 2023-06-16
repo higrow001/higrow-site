@@ -23,7 +23,7 @@ const HomeHero = () => {
             <span> HiGrow </span> - Say Hi 👋 to your growth 📈
           </h1>
           <p>
-            Participate exciting workshops, contests and grow your knowledge in
+            Participate in exciting workshops, contests and grow your knowledge in
             your field. Wanna listen something amazing? Even you can also
             organize your own workshop or contest
           </p>
