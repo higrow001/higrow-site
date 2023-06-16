@@ -4,15 +4,19 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import loginWithGoogle from "@/lib/utils/googleLogin";
+import useGoogleLogin from "@/lib/utils/googleLogin";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import './signin.scss';
+import "./signin.scss";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
+  const loginWithGoogle = useGoogleLogin();
+  const router = useRouter();
   const signInUser = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      router.replace("/");
     } catch (error: any) {
       if (error.message.includes("user-not-found")) {
         alert("No user is registered with this email!");
@@ -24,7 +28,7 @@ const SignIn = () => {
   };
 
   return (
-    <main className="flex justify-center items-center bg-[#f4f4f0] signup-container">
+    <main className="flex justify-center min-h-full items-center bg-[#f4f4f0] signup-container">
       <div className="p-20 max-w-xl bg-white border border-black flex flex-col items-center space-y-20 rounded-lg w-full signup-card">
         <h1 className="text-4xl font-archivo font-bold text-[#333333]">
           Sign in for HiGrow
@@ -45,6 +49,7 @@ const SignIn = () => {
           <Form className="space-y-20 w-full">
             <div className="flex flex-col space-y-8 items-center w-full">
               <button
+                type="button"
                 className="p-3 px-8 w-full text-[#333] text-lg font-archivo font-bold border-2 border-[#333] rounded-xl flex space-x-6 items-center justify-center hover:bg-neutral-100 transition"
                 onClick={async () => loginWithGoogle()}
               >
