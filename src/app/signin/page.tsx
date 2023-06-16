@@ -1,5 +1,6 @@
 "use client";
 
+import "./signin.scss";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -7,7 +8,6 @@ import { auth } from "@/lib/firebase";
 import useGoogleLogin from "@/lib/utils/googleLogin";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "./signin.scss";
 import { useRouter } from "next/navigation";
 
 const SignIn = () => {

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import "./home-hero.scss";
+import Link from "next/link";
 
 const HomeHero = () => {
   return (

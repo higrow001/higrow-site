@@ -1,5 +1,6 @@
 "use client";
 
+import "./signup.scss";
 import useGoogleLogin from "@/lib/utils/googleLogin";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -8,7 +9,6 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
-import "./signup.scss";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
