@@ -1,5 +1,7 @@
+import React from "react";
 import "./home-hero.scss";
 import Link from "next/link";
+import "./home-hero.scss";
 
 const HomeHero = () => {
   return (
@@ -22,8 +24,8 @@ const HomeHero = () => {
             <span> HiGrow </span> - Say Hi 👋 to your growth 📈
           </h1>
           <p>
-            Participate exciting workshops, contests and grow your knowledge in
-            your field. Wanna listen something amazing? Even you can also
+            Participate in exciting workshops, contests and grow your knowledge
+            in your field. Wanna listen something amazing? Even you can also
             organize your own workshop or contest
           </p>
           <Link href="#" className="htopc-button">

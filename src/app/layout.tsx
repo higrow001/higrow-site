@@ -34,6 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${publicSans.variable} ${archivoBlack.variable}`}
     >
+      
       <body className="font-sans">
         {!noNav.includes(pathname) && <Navbar />}
         {children}
