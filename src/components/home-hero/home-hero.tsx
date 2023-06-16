@@ -1,7 +1,6 @@
 import React from "react";
 import "./home-hero.scss";
 import Link from "next/link";
-import "./home-hero.scss";
 
 const HomeHero = () => {
   return (
