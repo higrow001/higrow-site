@@ -42,6 +42,10 @@ export default function CreateWorkshop() {
       whatsappLink: "",
       instagramLink: "",
       youtubeLink: "",
+      workshopInfo: "",
+      instructorInfo: "",
+      instructorName: ""
+
     },
     onSubmit: () => {},
   });
@@ -215,7 +219,7 @@ export default function CreateWorkshop() {
       )}
       {activeStep === 2 && (
         <>
-          <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
             <div className="space-y-4">
               <label
                 className="block w-fit text-xl font-semibold text-[#333]"
@@ -227,7 +231,7 @@ export default function CreateWorkshop() {
                 id="contactEmail"
                 name="contactEmail"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 placeholder="help@higrow.com"
                 onChange={formik.handleChange}
                 value={formik.values.contactEmail}
@@ -244,14 +248,14 @@ export default function CreateWorkshop() {
                 id="redirectUrl"
                 name="redirectUrl"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 placeholder="e.g. link of your whatsapp group invite"
                 onChange={formik.handleChange}
                 value={formik.values.redirectUrl}
               />
             </div>
           </div>
-          <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
+          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
             <div className="space-y-4">
               <label
                 className="block w-fit text-xl font-semibold text-[#333]"
@@ -263,7 +267,7 @@ export default function CreateWorkshop() {
                 id="websiteLink"
                 name="websiteLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.websiteLink}
               />
@@ -279,7 +283,7 @@ export default function CreateWorkshop() {
                 id="facebookLink"
                 name="facebookLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.facebookLink}
               />
@@ -295,7 +299,7 @@ export default function CreateWorkshop() {
                 id="discordLink"
                 name="discordLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.discordLink}
               />
@@ -311,7 +315,7 @@ export default function CreateWorkshop() {
                 id="whatsappLink"
                 name="whatsappLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.whatsappLink}
               />
@@ -327,7 +331,7 @@ export default function CreateWorkshop() {
                 id="instagramLink"
                 name="instagramLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.instagramLink}
               />
@@ -343,9 +347,65 @@ export default function CreateWorkshop() {
                 id="youtubeLink"
                 name="youtubeLink"
                 type="text"
-                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                 onChange={formik.handleChange}
                 value={formik.values.youtubeLink}
+              />
+            </div>
+          </div>
+        </>
+      )}
+      {activeStep === 3 && (
+        <>
+              <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="instructorName"
+              >
+                Name of Instructor
+              </label>
+              <input
+                id="instructorName"
+                name="instructorName"
+                type="text"
+                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                placeholder="e.g. Puneet Kathuria"
+                onChange={formik.handleChange}
+                value={formik.values.instructorName}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="instructorInfo"
+              >
+                Tell us more about Instructor
+              </label>
+              <textarea
+                id="instructorInfo"
+                name="instructorInfo"
+                className="px-4 py-2 w-5/6 h-52 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                placeholder="e.g. Tell us about your experience in this field or Tell us why you’re perfect for this "
+                onChange={formik.handleChange}
+                value={formik.values.instructorInfo}
+              />
+            </div>
+
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="workshopInfo"
+              >
+                Tell us more about this Workshop
+              </label>
+              <textarea
+                id="workshopInfo"
+                name="workshopInfo"
+                className="px-4 py-2 w-5/6 h-64 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                placeholder="Describe in detail about this workshop or Tell us why people should choose your workshop or What people will learn during this?"
+                onChange={formik.handleChange}
+                value={formik.values.workshopInfo}
               />
             </div>
           </div>
