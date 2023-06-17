@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 17px;
 
   .card-container {
     width: 100%;
@@ -116,10 +116,13 @@
             border-radius: 100%;
             color: #333333;
 
+            
             svg {
               height: 18px;
               width: 18px;
             }
+
+            
           }
         }
       }
