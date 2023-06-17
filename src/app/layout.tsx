@@ -1,7 +1,7 @@
 "use client";
 
-import Navbar from "@/components/navbar/navbar";
 import "./globals.scss";
+import Navbar from "@/components/navbar/navbar";
 import { Public_Sans, Archivo } from "next/font/google";
 import { usePathname } from "next/navigation";
 
@@ -16,11 +16,6 @@ const archivoBlack = Archivo({
   variable: "--font-archivo",
 });
 
-export const metadata = {
-  title: "HiGrow",
-  description: "App providing a platform to host xyz.",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -34,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${publicSans.variable} ${archivoBlack.variable}`}
     >
-      
+      <head>
+        <title>HiGrow</title>
+      </head>
+
       <body className="font-sans">
         {!noNav.includes(pathname) && <Navbar />}
         {children}

@@ -32,7 +32,7 @@ export default function CreateWorkshop() {
       applicationClosingDate: "2018-06-12T19:30",
       workshopStartingDate: "2018-06-12T19:30",
       workshopEndingDate: "2018-06-12T19:30",
-      organizerEmail: "",
+      contactEmail: "",
       redirectUrl: "",
       websiteLink: "",
       facebookLink: "",
@@ -45,6 +45,7 @@ export default function CreateWorkshop() {
   });
 
   const router = useRouter();
+  console.log(auth.currentUser?.emailVerified);
   if (!auth.currentUser) {
     router.replace("/signin");
   }
@@ -77,7 +78,7 @@ export default function CreateWorkshop() {
       </div>
       {/* First Tab */}
       {activeStep === 0 && (
-        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
           <div className="space-y-4">
             <label
               className="block w-fit text-xl font-semibold text-[#333]"
@@ -159,7 +160,7 @@ export default function CreateWorkshop() {
       )}
       {/* Second Tab */}
       {activeStep === 1 && (
-        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
           <div className="space-y-4">
             <label
               className="block w-fit text-xl font-semibold text-[#333]"
@@ -181,7 +182,7 @@ export default function CreateWorkshop() {
               className="block w-fit text-xl font-semibold text-[#333]"
               htmlFor="workshopStartingDate"
             >
-              Workshop starting date
+              Workshop starting
             </label>
             <input
               id="workshopStartingDate"
@@ -197,7 +198,7 @@ export default function CreateWorkshop() {
               className="block w-fit text-xl font-semibold text-[#333]"
               htmlFor="workshopEndingDate"
             >
-              Workshop ending date
+              Workshop ending
             </label>
             <input
               id="workshopEndingDate"
@@ -209,6 +210,144 @@ export default function CreateWorkshop() {
             />
           </div>
         </div>
+      )}
+      {activeStep === 2 && (
+        <>
+          <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="contactEmail"
+              >
+                Contact email
+              </label>
+              <input
+                id="contactEmail"
+                name="contactEmail"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                placeholder="help@higrow.com"
+                onChange={formik.handleChange}
+                value={formik.values.contactEmail}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="redirectUrl"
+              >
+                Where people will be redirected to after joining?
+              </label>
+              <input
+                id="redirectUrl"
+                name="redirectUrl"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                placeholder="e.g. link of your whatsapp group invite"
+                onChange={formik.handleChange}
+                value={formik.values.redirectUrl}
+              />
+            </div>
+          </div>
+          <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="websiteLink"
+              >
+                Website
+              </label>
+              <input
+                id="websiteLink"
+                name="websiteLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.websiteLink}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="facebookLink"
+              >
+                Facebook
+              </label>
+              <input
+                id="facebookLink"
+                name="facebookLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.facebookLink}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="discordLink"
+              >
+                Discord
+              </label>
+              <input
+                id="discordLink"
+                name="discordLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.discordLink}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="whatsappLink"
+              >
+                Whatsapp
+              </label>
+              <input
+                id="whatsappLink"
+                name="whatsappLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.whatsappLink}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="instagramLink"
+              >
+                Instagram
+              </label>
+              <input
+                id="instagramLink"
+                name="instagramLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.instagramLink}
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                className="block w-fit text-xl font-semibold text-[#333]"
+                htmlFor="youtubeLink"
+              >
+                Youtube
+              </label>
+              <input
+                id="youtubeLink"
+                name="youtubeLink"
+                type="text"
+                className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                onChange={formik.handleChange}
+                value={formik.values.youtubeLink}
+              />
+            </div>
+          </div>
+        </>
       )}
     </main>
   );

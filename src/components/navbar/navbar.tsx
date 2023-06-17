@@ -1,3 +1,4 @@
+"use client";
 import "./navbar.scss";
 import Link from "next/link";
 import { onAuthStateChanged, signOut } from "firebase/auth";
