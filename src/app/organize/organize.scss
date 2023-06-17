@@ -1,0 +1,57 @@
+.organize-container {
+  height: 120vh;
+
+  .oc-top {
+    height: 60%;
+    background-color: #333333;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+
+    h1 {
+      font-size: 48px;
+      line-height: 56px;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.02em;
+      font-family: "Archivo", sans-serif;
+      width: 60%;
+    }
+    p {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      width: 60%;
+      text-align: center;
+      letter-spacing: 0.03em;
+      margin-top: 30px;
+    }
+  }
+
+  .oc-bottom {
+    display: flex;
+    justify-content: space-around;
+
+    .workshop-card {
+      width: 517px;
+      height: 160px;
+      display: flex;
+      background-color: #fff;
+      justify-content: space-around;
+      align-items: center;
+
+      img{
+        width: 134px;
+height: 75.85px;
+      }
+    }
+
+    .contest-card {
+      width: 517px;
+      height: 160px;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { BiChevronLeft } from "react-icons/bi";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
+import './organize-workshop.scss';
 
 export default function CreateWorkshop() {
   const steps = ["Basics", "Dates", "Links", "Description", "Advanced"];
@@ -20,6 +21,7 @@ export default function CreateWorkshop() {
     "E-Sports",
     "Sports",
     "Academics",
+    "Ai/Ml",
     "Other",
   ];
   const [activeStep, setActiveStep] = useState(0);
@@ -50,8 +52,8 @@ export default function CreateWorkshop() {
   }
 
   return (
-    <main className="max-w-4xl w-full mt-16 space-y-8 mx-auto">
-      <div className="flex justify-between items-center">
+    <main className="max-w-4xl w-full mt-24 space-y-8 mx-auto workshop-data-container">
+      <div className="flex justify-between items-center mb-20">
         <Link href="/organize" className="flex space-x-1 text-lg items-center">
           <BiChevronLeft className="text-3xl" />
           <span>Go back</span>
@@ -60,7 +62,7 @@ export default function CreateWorkshop() {
           Publish
         </button>
       </div>
-      <div className="flex justify-between items-center px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333]">
+      <div className="flex justify-between items-center px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-[#fff]">
         {steps.map((step, index) => (
           <button
             className={`text-lg py-3 px-5 rounded-lg ${
@@ -77,7 +79,7 @@ export default function CreateWorkshop() {
       </div>
       {/* First Tab */}
       {activeStep === 0 && (
-        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+        <div className="py-16 px-10 space-y-14 border-2 mb-20 border-[#333] rounded-md shadow-[4px_4px_0_#333] mb-32 workshop-basic">
           <div className="space-y-4">
             <label
               className="block w-fit text-xl font-semibold text-[#333]"
@@ -89,7 +91,7 @@ export default function CreateWorkshop() {
               id="name"
               name="name"
               type="text"
-              className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
               placeholder="e.g. Full stack web development 101"
               onChange={formik.handleChange}
               value={formik.values.name}
@@ -106,7 +108,7 @@ export default function CreateWorkshop() {
               id="tagline"
               name="tagline"
               type="text"
-              className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
               placeholder="e.g. Best Web Development workshop in hindi"
               onChange={formik.handleChange}
               value={formik.values.tagline}
@@ -116,9 +118,9 @@ export default function CreateWorkshop() {
             <h1 className="text-xl font-semibold text-[#333]">Mode</h1>
             <div className="flex space-x-4 items-center">
               <button
-                className={`border-theme-blue font-semibold border px-6 py-2 rounded-full ${
+                className={`border-theme-blue font-semibold border px-7 py-3 rounded-full ${
                   formik.values.mode === "Online"
-                    ? "text-white bg-theme-blue-darker"
+                    ? "text-white bg-[#007DFB]"
                     : "text-theme-blue"
                 }`}
                 onClick={() => formik.setFieldValue("mode", "Online")}
@@ -126,9 +128,9 @@ export default function CreateWorkshop() {
                 Online
               </button>
               <button
-                className={`border-theme-blue font-semibold border px-6 py-2 rounded-full ${
+                className={`border-theme-blue font-semibold border px-7 py-3 rounded-full ${
                   formik.values.mode === "Offline"
-                    ? "text-white bg-theme-blue-darker"
+                    ? "text-white bg-[#007DFB]"
                     : "text-theme-blue"
                 }`}
                 onClick={() => formik.setFieldValue("mode", "Offline")}
@@ -144,9 +146,9 @@ export default function CreateWorkshop() {
                 <button
                   key={category}
                   onClick={() => formik.setFieldValue("category", category)}
-                  className={`border-theme-blue font-semibold border px-6 py-2 rounded-full ${
+                  className={`border-theme-blue mb-3.5 font-semibold border px-6 py-2 rounded-full ${
                     formik.values.category === category
-                      ? "text-white bg-theme-blue-darker"
+                      ? "text-white bg-[#007DFB]"
                       : "text-theme-blue"
                   }`}
                 >
@@ -159,7 +161,7 @@ export default function CreateWorkshop() {
       )}
       {/* Second Tab */}
       {activeStep === 1 && (
-        <div className="py-10 px-10 space-y-8 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+        <div className="py-16 px-10 space-y-14 border-2 border-[#333] bg-[#fff] rounded-md shadow-[4px_4px_0_#333]">
           <div className="space-y-4">
             <label
               className="block w-fit text-xl font-semibold text-[#333]"
@@ -171,7 +173,7 @@ export default function CreateWorkshop() {
               id="applicationClosingDate"
               name="applicationClosingDate"
               type="datetime-local"
-              className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              className="px-4 py-2 w-5/6 h-14  rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
               onChange={formik.handleChange}
               value={formik.values.applicationClosingDate}
             />
@@ -187,7 +189,7 @@ export default function CreateWorkshop() {
               id="workshopStartingDate"
               name="workshopStartingDate"
               type="datetime-local"
-              className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              className="px-4 py-2 w-5/6 h-14  rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
               onChange={formik.handleChange}
               value={formik.values.workshopStartingDate}
             />
@@ -203,7 +205,7 @@ export default function CreateWorkshop() {
               id="workshopEndingDate"
               name="workshopEndingDate"
               type="datetime-local"
-              className="px-4 py-2 w-full rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              className="px-4 py-2 w-5/6 h-14  rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
               onChange={formik.handleChange}
               value={formik.values.workshopEndingDate}
             />
