@@ -1,4 +1,3 @@
-import React from "react";
 import "./home-explore.scss";
 import Link from "next/link";
 import Card from "../card/card";
