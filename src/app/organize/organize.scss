@@ -1,8 +1,8 @@
 .organize-container {
-  height: 120vh;
+  height: 150vh;
 
   .oc-top {
-    height: 60%;
+    height: 500px;
     background-color: #333333;
     margin-top: 30px;
     display: flex;
@@ -30,30 +30,112 @@
       margin-top: 30px;
     }
   }
-
+.opportunity-type{
+  font-family: 'Archivo', sans-serif;
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 56px;
+letter-spacing: 0.02em;
+width: 42%;
+text-align: center;
+margin-top: 120px;
+color: #000000;
+}
   .oc-bottom {
     display: flex;
     justify-content: space-around;
+    margin-top: 40px;
 
     .workshop-card {
       width: 517px;
       height: 160px;
       display: flex;
-      background-color: #fff;
       justify-content: space-around;
       align-items: center;
+      background: #ffffff;
+      border: 1px solid #000000;
+      border-radius: 10px;
+      cursor: pointer;
 
-      
-
-      img{
+      img {
         width: 134px;
-height: 75.85px;
+        height: 75.85px;
       }
+
+      .card-text {
+        width: 60%;
+        margin-right: 20px;
+
+        h1 {
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 32px;
+          letter-spacing: 0.03em;
+          color: #000000;
+          font-family: "Public Sans", sans-serif;
+        }
+        p {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.03em;
+          color: #333333;
+        }
+
+       
+      }
+     
     }
 
     .contest-card {
       width: 517px;
       height: 160px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #000000;
+      border-radius: 10px;
+      cursor: pointer;
+
+      img {
+        width: 134px;
+        height: 75.85px;
+      }
+
+      .card-text {
+        width: 60%;
+        margin-right: 20px;
+
+        h1 {
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 32px;
+          letter-spacing: 0.03em;
+          color: #000000;
+          font-family: "Public Sans", sans-serif;
+        }
+        p {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.03em;
+          color: #333333;
+        }
+
+       
+      }
     }
   }
+}
+
+.organize-container .oc-bottom .workshop-card:hover{
+  filter: drop-shadow(3px 3px 0px #000000);
+}
+
+.organize-container .oc-bottom .contest-card:hover{
+  filter: drop-shadow(3px 3px 0px #000000);
 }

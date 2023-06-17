@@ -44,7 +44,8 @@ export default function CreateWorkshop() {
       youtubeLink: "",
       workshopInfo: "",
       instructorInfo: "",
-      instructorName: ""
+      instructorName: "",
+      
 
     },
     onSubmit: () => {},
