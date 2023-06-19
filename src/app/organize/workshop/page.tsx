@@ -1,12 +1,12 @@
 "use client";
 
+import "./organize-workshop.scss";
 import Link from "next/link";
 import { useState } from "react";
-import { BiChevronLeft } from "react-icons/bi";
+import { BiChevronLeft, BiInfoCircle } from "react-icons/bi";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import './organize-workshop.scss';
 
 export default function CreateWorkshop() {
   const steps = ["Basics", "Dates", "Links", "Description", "Advanced"];
@@ -45,8 +45,13 @@ export default function CreateWorkshop() {
       workshopInfo: "",
       instructorInfo: "",
       instructorName: "",
-      
-
+      workingDays: 4,
+      hoursPerDay: 2,
+      isPaid: true,
+      backName: "",
+      bankEmail: "",
+      bankAccNo: "",
+      bankIFSC: "",
     },
     onSubmit: () => {},
   });
@@ -58,7 +63,7 @@ export default function CreateWorkshop() {
   }
 
   return (
-    <main className="max-w-4xl w-full mt-24 space-y-8 mx-auto workshop-data-container">
+    <main className="max-w-4xl w-full py-24 space-y-8 mx-auto workshop-data-container">
       <div className="flex justify-between items-center mb-20">
         <Link href="/organize" className="flex space-x-1 text-lg items-center">
           <BiChevronLeft className="text-3xl" />
@@ -85,7 +90,7 @@ export default function CreateWorkshop() {
       </div>
       {/* First Tab */}
       {activeStep === 0 && (
-        <div className="py-16 px-10 space-y-14 border-2 mb-20 border-[#333] rounded-md shadow-[4px_4px_0_#333] mb-32 workshop-basic">
+        <div className="py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] workshop-basic">
           <div className="space-y-4">
             <label
               className="block w-fit text-xl font-semibold text-[#333]"
@@ -256,7 +261,7 @@ export default function CreateWorkshop() {
               />
             </div>
           </div>
-          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] !mb-24">
+          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
             <div className="space-y-4">
               <label
                 className="block w-fit text-xl font-semibold text-[#333]"
@@ -357,59 +362,213 @@ export default function CreateWorkshop() {
         </>
       )}
       {activeStep === 3 && (
-        <>
-              <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
-            <div className="space-y-4">
-              <label
-                className="block w-fit text-xl font-semibold text-[#333]"
-                htmlFor="instructorName"
-              >
-                Name of Instructor
-              </label>
-              <input
-                id="instructorName"
-                name="instructorName"
-                type="text"
-                className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
-                placeholder="e.g. Puneet Kathuria"
-                onChange={formik.handleChange}
-                value={formik.values.instructorName}
-              />
-            </div>
-            <div className="space-y-4">
-              <label
-                className="block w-fit text-xl font-semibold text-[#333]"
-                htmlFor="instructorInfo"
-              >
-                Tell us more about Instructor
-              </label>
-              <textarea
-                id="instructorInfo"
-                name="instructorInfo"
-                className="px-4 py-2 w-5/6 h-52 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
-                placeholder="e.g. Tell us about your experience in this field or Tell us why you’re perfect for this "
-                onChange={formik.handleChange}
-                value={formik.values.instructorInfo}
-              />
-            </div>
+        <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+          <div className="space-y-4">
+            <label
+              className="block w-fit text-xl font-semibold text-[#333]"
+              htmlFor="instructorName"
+            >
+              Name of Instructor
+            </label>
+            <input
+              id="instructorName"
+              name="instructorName"
+              type="text"
+              className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              placeholder="e.g. Puneet Kathuria"
+              onChange={formik.handleChange}
+              value={formik.values.instructorName}
+            />
+          </div>
+          <div className="space-y-4">
+            <label
+              className="block w-fit text-xl font-semibold text-[#333]"
+              htmlFor="instructorInfo"
+            >
+              Tell us more about Instructor
+            </label>
+            <textarea
+              id="instructorInfo"
+              name="instructorInfo"
+              className="px-4 py-2 w-5/6 h-52 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              placeholder="e.g. Tell us about your experience in this field or Tell us why you’re perfect for this "
+              onChange={formik.handleChange}
+              value={formik.values.instructorInfo}
+            />
+          </div>
 
-            <div className="space-y-4">
-              <label
-                className="block w-fit text-xl font-semibold text-[#333]"
-                htmlFor="workshopInfo"
-              >
-                Tell us more about this Workshop
-              </label>
-              <textarea
-                id="workshopInfo"
-                name="workshopInfo"
-                className="px-4 py-2 w-5/6 h-64 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
-                placeholder="Describe in detail about this workshop or Tell us why people should choose your workshop or What people will learn during this?"
-                onChange={formik.handleChange}
-                value={formik.values.workshopInfo}
-              />
+          <div className="space-y-4">
+            <label
+              className="block w-fit text-xl font-semibold text-[#333]"
+              htmlFor="workshopInfo"
+            >
+              Tell us more about this Workshop
+            </label>
+            <textarea
+              id="workshopInfo"
+              name="workshopInfo"
+              className="px-4 py-2 w-5/6 h-64 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+              placeholder="Describe in detail about this workshop or Tell us why people should choose your workshop or What people will learn during this?"
+              onChange={formik.handleChange}
+              value={formik.values.workshopInfo}
+            />
+          </div>
+        </div>
+      )}
+      {activeStep === 4 && (
+        <>
+          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+            <div className="flex items-center gap-2">
+              <div className="space-y-4 w-full">
+                <label
+                  className="block w-fit text-xl font-semibold text-[#333]"
+                  htmlFor="workingDays"
+                >
+                  {"Workshop duration (in days)"}
+                </label>
+                <input
+                  id="workingDays"
+                  name="workingDays"
+                  type="number"
+                  min="1"
+                  max="10"
+                  className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                  placeholder="e.g. 4"
+                  onChange={formik.handleChange}
+                  value={formik.values.workingDays}
+                />
+              </div>
+              <div className="space-y-4 w-full">
+                <label
+                  className="block w-fit text-xl font-semibold text-[#333]"
+                  htmlFor="hoursPerDay"
+                >
+                  {"Duration per day (in hours)"}
+                </label>
+                <input
+                  id="hoursPerDay"
+                  name="hoursPerDay"
+                  type="number"
+                  min="0"
+                  max="12"
+                  className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                  placeholder="e.g. 2"
+                  onChange={formik.handleChange}
+                  value={formik.values.hoursPerDay}
+                />
+              </div>
             </div>
           </div>
+          <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+            <div className="space-y-4">
+              <h1 className="text-xl font-semibold text-[#333]">
+                Is it a paid opportunity?
+              </h1>
+              <div className="flex space-x-4 items-center">
+                <button
+                  className={`border-theme-blue font-semibold border px-7 py-3 rounded-full ${
+                    formik.values.isPaid
+                      ? "text-white bg-[#007DFB]"
+                      : "text-theme-blue"
+                  }`}
+                  onClick={() => formik.setFieldValue("isPaid", true)}
+                >
+                  Yes
+                </button>
+                <button
+                  className={`border-theme-blue font-semibold border px-7 py-3 rounded-full ${
+                    !formik.values.isPaid
+                      ? "text-white bg-[#007DFB]"
+                      : "text-theme-blue"
+                  }`}
+                  onClick={() => formik.setFieldValue("isPaid", false)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+          {formik.values.isPaid && (
+            <>
+              <div className="p-6 flex items-center space-x-8 text-[#757575] border border-black rounded-md bg-white">
+                <BiInfoCircle className="text-7xl" />
+                <p className="">
+                  Fill in the details of the account to which you would want the
+                  collected amount to be transferred by us once the
+                  registrations are closed. The organizers have to fill in the
+                  bank account details in the Payout Form while enabling the
+                  payment or before the registration deadline to avoid any
+                  payment transfer issues.
+                </p>
+              </div>
+              <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+                <div className="space-y-4">
+                  <label
+                    className="block w-fit text-xl font-semibold text-[#333]"
+                    htmlFor="backName"
+                  >
+                    Name
+                  </label>
+                  <input
+                    id="backName"
+                    name="backName"
+                    type="text"
+                    className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                    onChange={formik.handleChange}
+                    value={formik.values.backName}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <label
+                    className="block w-fit text-xl font-semibold text-[#333]"
+                    htmlFor="bankEmail"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="bankEmail"
+                    name="bankEmail"
+                    type="text"
+                    className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                    onChange={formik.handleChange}
+                    value={formik.values.bankEmail}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <label
+                    className="block w-fit text-xl font-semibold text-[#333]"
+                    htmlFor="bankAccNo"
+                  >
+                    Account Number
+                  </label>
+                  <input
+                    id="bankAccNo"
+                    name="bankAccNo"
+                    type="text"
+                    className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                    onChange={formik.handleChange}
+                    value={formik.values.bankAccNo}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <label
+                    className="block w-fit text-xl font-semibold text-[#333]"
+                    htmlFor="bankIFSC"
+                  >
+                    IFSC Code
+                  </label>
+                  <input
+                    id="bankIFSC"
+                    name="bankIFSC"
+                    type="text"
+                    className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                    onChange={formik.handleChange}
+                    value={formik.values.bankIFSC}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </main>
