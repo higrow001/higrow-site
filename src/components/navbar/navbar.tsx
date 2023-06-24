@@ -21,12 +21,12 @@ const Navbar = () => {
         <Link href="/contests">About us</Link>
       </div>
       <div className="nav-buttons">
-        <Link className="organize-button" href="/organize/workshop">
+        <Link className="organize-button" href="/organize">
           {" "}
           <button> Organize</button>{" "}
         </Link>
         {showSignup ? (
-          <Link className="signup-button" href="signup">
+          <Link className="signup-button" href="/signup">
             {" "}
             <button> Sign up</button>{" "}
           </Link>

@@ -1,9 +1,9 @@
 "use client";
 
 import "./globals.scss";
-import Navbar from "@/components/navbar/navbar";
 import { Public_Sans, Archivo } from "next/font/google";
 import { usePathname } from "next/navigation";
+import Navbar from "@/components/navbar/navbar";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
