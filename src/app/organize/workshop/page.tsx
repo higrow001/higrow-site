@@ -50,7 +50,7 @@ export default function CreateWorkshop() {
                   <button
                     type="button"
                     onClick={handlePreviousStep}
-                    className="px-8 py-3 rounded-lg bg-[#333] text-neutral-200"
+                    className="px-8 py-3 mr-6 rounded-md border-2 border-[#333] text-[#333]"
                   >
                     Previous
                   </button>
@@ -59,7 +59,7 @@ export default function CreateWorkshop() {
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    className="px-8 py-3 rounded-lg bg-[#333] text-neutral-200"
+                    className="px-8 py-3 rounded-md border-2 border-[#333] text-[#333]"
                   >
                     Next
                   </button>
@@ -68,7 +68,7 @@ export default function CreateWorkshop() {
                   <button
                     type="submit"
                     disabled={!props.isValid}
-                    className="px-8 py-3 rounded-lg bg-[#333] text-neutral-200 disabled:cursor-not-allowed disabled:opacity-80"
+                    className="px-8 py-3 rounded-md bg-[#333] text-neutral-200 disabled:cursor-not-allowed disabled:opacity-80"
                     onClick={() => {
                       if (!props.isValid) {
                         alert(
@@ -446,6 +446,7 @@ export default function CreateWorkshop() {
                       placeholder="e.g. 4"
                     />
                   </div>
+                  
                   <div className="space-y-4 w-full">
                     <label
                       className="block w-fit text-xl font-semibold text-[#333]"
@@ -464,6 +465,23 @@ export default function CreateWorkshop() {
                       placeholder="e.g. 2"
                     />
                   </div>
+                  
+                </div>
+                <div className="space-y-4">
+                  <label
+                    className="block w-fit text-xl font-semibold text-[#333]"
+                    htmlFor="workshopEachDay"
+                  >
+                    What you'll teach in each day
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <Field
+                    component="textarea"
+                    id="workshopEachDay"
+                    name="workshopEachDay"
+                    className="px-4 py-2 w-5/6 h-64 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                    placeholder="Describe in brief what you will teach in each day of this workshop. e.g. Day - 1 : We'll learn basics of designing by doing some projects, Day 2 - ..."
+                  />
                 </div>
               </div>
               <div
@@ -503,11 +521,13 @@ export default function CreateWorkshop() {
               </div>
               {props.values.isPaid && (
                 <>
+                
                   <div
                     className={`p-6 flex items-center space-x-8 text-[#757575] border border-black rounded-md bg-white ${
                       activeStep === 4 ? "block" : "hidden"
                     }`}
                   >
+                    
                     <BiInfoCircle className="text-7xl" />
                     <p className="">
                       Fill in the details of the account to which you would want
@@ -526,6 +546,21 @@ export default function CreateWorkshop() {
                     <div className="space-y-4">
                       <label
                         className="block w-fit text-xl font-semibold text-[#333]"
+                        htmlFor="amount"
+                      >
+                        Amount/Fee (in INR)
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <Field
+                        id="amount"
+                        name="amount"
+                        type="number"
+                        className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
+                      />
+                    </div>
+                    <div className="space-y-4">
+                      <label
+                        className="block w-fit text-xl font-semibold text-[#333]"
                         htmlFor="backName"
                       >
                         Name
@@ -537,6 +572,7 @@ export default function CreateWorkshop() {
                         type="text"
                         className="px-4 py-2 w-5/6 h-14 rounded-md border-2 bg-[#F4F4F0] border-[#757575]"
                       />
+                      
                     </div>
                     <div className="space-y-4">
                       <label
