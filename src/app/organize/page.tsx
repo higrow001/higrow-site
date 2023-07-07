@@ -1,8 +1,8 @@
-import "./organize.scss";
-import Image from "next/image";
-import Contestill from "../../assests/12953798_Jan-Success_1.jpg";
-import Workshopill from "../../assests/6974855_4380.jpg";
-import Link from "next/link";
+import "./organize.scss"
+import Image from "next/image"
+import Contestill from "../../assests/contest.webp"
+import Workshopill from "../../assests/workshop.webp"
+import Link from "next/link"
 
 export default function Organize() {
   return (
@@ -23,7 +23,7 @@ export default function Organize() {
           {" "}
           <div className="workshop-card">
             <div className="card-image">
-              <Image src={Workshopill} alt="" />
+              <Image src={Workshopill} alt="workshop-option" />
             </div>
             <div className="card-text">
               <h1>Workshop</h1>
@@ -38,7 +38,7 @@ export default function Organize() {
           {" "}
           <div className="contest-card">
             <div className="card-image">
-              <Image src={Contestill} alt="" />
+              <Image src={Contestill} alt="contest-option" />
             </div>
             <div className="card-text">
               <h1>Contest</h1>
@@ -51,5 +51,5 @@ export default function Organize() {
         </Link>
       </div>
     </div>
-  );
+  )
 }

@@ -7,7 +7,7 @@
   border-bottom: 1px solid black;
   font-family: "Archivo", sans-serif;
   color: #757575;
-  background-color: #f4f4f0;
+  background-color: hsl(var(--accent));
 }
 
 .nav-logo {
@@ -29,9 +29,9 @@
   align-items: center;
   border-right: 1px solid black;
   font-weight: 400;
+  color: #333333;
 
   :hover {
-    color: #333333;
     font-weight: 600;
   }
 }
@@ -53,20 +53,17 @@
     border-right: 1px solid black;
     align-items: center;
     justify-content: center;
+    font-weight: 900;
+    color: #333;
 
     button {
       height: 100%;
       width: 100%;
-      :hover {
+      &:hover {
         background-color: #007dfb;
         color: white;
       }
     }
-  }
-
-  .dark-organize-button {
-    background-color: black;
-    color: white;
   }
 
   .signup-button {
@@ -76,12 +73,13 @@
     border-right: 1px solid black;
     align-items: center;
     justify-content: center;
-    background-color: black;
     color: white;
+    font-weight: 900;
     button {
       height: 100%;
       width: 100%;
-      :hover {
+      background: #333;
+      &:hover {
         background-color: #007dfb;
         color: white;
       }
