@@ -1,150 +1,213 @@
-"use client";
+"use client"
 
-import "./signup.scss";
-import useGoogleLogin from "@/lib/utils/googleLogin";
-import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
-import { setDoc, doc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+import "./signup.scss"
+import useGoogleLogin from "@/lib/utils/google-login"
+import Link from "next/link"
+import { FcGoogle } from "react-icons/fc"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { auth, db } from "@/lib/firebase"
+import { setDoc, doc } from "firebase/firestore"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const signupFormSchema = z
+  .object({
+    displayName: z
+      .string({
+        required_error: "Display name is required.",
+      })
+      .min(2, { message: "Name must be atleast 2 characters long" }),
+    email: z
+      .string({
+        required_error: "Email is required.",
+      })
+      .email(),
+    password: z
+      .string({ required_error: "Password is required." })
+      .min(8, {
+        message: "Password must be at least 8 characters long",
+      })
+      .max(100),
+    confirmPassword: z.string({ required_error: "Enter confirm password" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  })
+const initialValues = {
+  displayName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+}
 
 const SignUp = () => {
-  const loginWithGoogle = useGoogleLogin();
-  const router = useRouter();
-  const signUpUser = async (
-    email: string,
-    password: string,
-    displayName: string
-  ) => {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-    if (user) {
-      await setDoc(doc(db, "users", user.user.uid), {
-        email: user.user.email,
-        display_name: displayName,
-        profile_photo: user.user.photoURL,
-      });
-      router.replace("/");
+  const loginWithGoogle = useGoogleLogin()
+  const router = useRouter()
+
+  const form = useForm({
+    resolver: zodResolver(signupFormSchema),
+    defaultValues: initialValues,
+    mode: "onSubmit",
+  })
+  type DataType = z.infer<typeof signupFormSchema>
+
+  const signUpUser = async (data: DataType) => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+      if (user) {
+        await setDoc(doc(db, "users", user.user.uid), {
+          email: user.user.email,
+          display_name: data.displayName,
+          profile_photo: user.user.photoURL,
+        })
+        router.replace("/")
+      }
+    } catch (error: any) {
+      if (error.message.includes("email-already-in-use")) {
+        alert("This email is already registered to an account.")
+      }
     }
-  };
+  }
 
   return (
-    <main className="flex justify-center min-h-full items-center bg-[#f4f4f0] w-full signup-container">
-      <div className="p-20 max-w-xl bg-white border border-black flex flex-col items-center space-y-16 rounded-lg w-full signup-card">
+    <main className="flex justify-center min-h-full items-center bg-accent w-full signup-container">
+      <div className="p-20 max-w-xl bg-background border shadow flex flex-col items-center space-y-16 rounded-lg w-full signup-card">
         <h1 className="text-4xl font-archivo font-bold text-[#333333]">
           Sign Up for HiGrow
         </h1>
-        <Formik
-          initialValues={{
-            displayName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          }}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email("Invalid email address")
-              .required("Required"),
-            password: Yup.string()
-              .min(8, "Password must be at least 8 characters long")
-              .required("Required"),
-            displayName: Yup.string()
-              .min(3, "Name should be atleast 3 characters long.")
-              .required("Required"),
-            confirmPassword: Yup.string()
-              .oneOf([Yup.ref("password"), ""], "Passwords must match")
-              .required("Required"),
-          })}
-          onSubmit={(values, { setSubmitting }) => {
-            signUpUser(values.email, values.password, values.displayName);
-            setSubmitting(false);
-          }}
-        >
-          <Form className="space-y-16 w-full">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(signUpUser)}
+            className="space-y-16 w-full"
+          >
             <div className="flex flex-col space-y-6 items-center w-full">
-              <button
+              <Button
                 type="button"
-                className="p-3 px-8 w-full text-[#333] text-lg font-archivo font-bold border-2 border-[#333] h-14 rounded-xl flex space-x-6 items-center justify-center hover:bg-neutral-100 transition"
+                variant="outline"
+                size="xl"
+                className="space-x-3 w-full text-lg rounded-lg"
                 onClick={async () => loginWithGoogle()}
               >
-                <span>Continue with Google</span>
                 <FcGoogle className="text-3xl" />
-              </button>
-              <span className="text-[#757575] font-medium text-xl">or</span>
-              <div className="w-full">
-                <Field
-                  name="displayName"
-                  type="text"
-                  placeholder="Display name"
-                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
-                />
-                <ErrorMessage
-                  name="displayName"
-                  component="span"
-                  className="text-red-500"
-                />
+                <span>Continue with Google</span>
+              </Button>
+              <div className="relative w-full">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-muted-foreground">
+                    Or
+                  </span>
+                </div>
               </div>
-              <div className="w-full">
-                <Field
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
-                />
-                <ErrorMessage
-                  name="email"
-                  component="span"
-                  className="text-red-500"
-                />
-              </div>
-              <div className="w-full">
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="span"
-                  className="text-red-500"
-                />
-              </div>
-              <div className="w-full">
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm password"
-                  className="px-6 py-3 text-lg border-2 border-[#333] rounded-md w-full"
-                />
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="span"
-                  className="text-red-500"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="displayName"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        className="px-4 text-lg"
+                        placeholder="Display name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        className="px-4 text-lg"
+                        type="email"
+                        placeholder="Email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        className="px-4 text-lg"
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        className="px-4 text-lg"
+                        type="password"
+                        placeholder="Confirm password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="flex flex-col space-y-8 items-center w-full">
-              <button
+              <Button
+                className="text-lg font-archivo w-full px-6 rounded-xl"
                 type="submit"
-                className="text-lg font-archivo font-semibold bg-theme-blue text-white h-14 w-full px-6 py-3 rounded-xl transition hover:bg-theme-blue-darker"
+                size="xl"
               >
                 Sign Up
-              </button>
+              </Button>
               <p className="text-lg font-medium text-[#757575]">
                 Don't have an account?{" "}
-                <Link className="text-theme-blue font-semibold" href="/signin">
+                <Link
+                  className="text-primary-lighter font-semibold"
+                  href="/signin"
+                >
                   Sign in
                 </Link>
               </p>
             </div>
-          </Form>
-        </Formik>
+          </form>
+        </Form>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

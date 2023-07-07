@@ -1,42 +1,39 @@
-"use client";
-
-import "./globals.scss";
-import { Public_Sans, Archivo } from "next/font/google";
-import { usePathname } from "next/navigation";
-import Navbar from "@/components/navbar/navbar";
+import "./globals.scss"
+import { Public_Sans, Archivo } from "next/font/google"
+import { Metadata } from "next"
+import AppAlert from "@/components/custom-alert"
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-public-sans",
-});
+})
 const archivoBlack = Archivo({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-archivo",
-});
+})
+
+export const metadata: Metadata = {
+  title: "HiGrow",
+  description:
+    "A platform where you join or create workshops and online contests.",
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const pathname = usePathname();
-  const noNav = ["/signin", "/signup"];
-
   return (
     <html
       lang="en"
       className={`${publicSans.variable} ${archivoBlack.variable}`}
     >
-      <head>
-        <title>HiGrow</title>
-      </head>
-
       <body className="font-sans">
-        {!noNav.includes(pathname) && <Navbar />}
+        <AppAlert />
         {children}
       </body>
     </html>
-  );
+  )
 }
