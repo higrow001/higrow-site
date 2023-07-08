@@ -51,7 +51,7 @@ const Card = () => {
           </div>
           <div className="card-bottom">
             <div className="cbb-left">
-              <div className="cbb-button-category">Design</div>
+              <div className="cbb-button-category">Hackathons</div>
               <div className="cbb-button-date">
                 Starts <span>16/07/2023</span>{" "}
               </div>
