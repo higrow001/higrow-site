@@ -5,6 +5,7 @@ import {
   BsDiscord,
   BsLink45Deg,
 } from "react-icons/bs";
+
 import Link from "next/link";
 
 const Card = () => {
