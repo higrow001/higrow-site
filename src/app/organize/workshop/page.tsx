@@ -1,9 +1,6 @@
 "use client"
-
-// TODO: server action
-
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BiChevronLeft, BiInfoCircle } from "react-icons/bi"
 import { auth, db } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
@@ -37,9 +34,17 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useAlert } from "@/states/alert"
 
+const allLinks = (...links: string[]) => {
+  const finalLinks: string[] = []
+  links.forEach((link) => {
+    if (link.length > 0) finalLinks.push(link)
+  })
+  return finalLinks
+}
+
 export default function CreateWorkshop() {
   const [activeStep, setActiveStep] = useState(0)
-  const { showAutoCloseAlert } = useAlert()
+  const { showAutoCloseAlert, showAlert } = useAlert()
 
   const form = useForm({
     resolver: zodResolver(validationSchema),
@@ -67,42 +72,95 @@ export default function CreateWorkshop() {
   const handlePreviousStep = () => setActiveStep(activeStep - 1)
 
   const router = useRouter()
-  if (!auth.currentUser) {
-    router.replace("/signin")
-  }
+  useEffect(() => {
+    if (!auth.currentUser) router.replace("/signin?redirect=organize/workshop")
+  }, [])
 
   const submitData = async (values: typeof initialValues) => {
-    const { bankName, bankEmail, bankAccNo, bankIFSC, ...publicFields } = values
+    const {
+      bankName,
+      bankEmail,
+      bankAccNo,
+      bankIFSC,
+      contactEmail,
+      describeEachDay,
+      discordLink,
+      youtubeLink,
+      facebookLink,
+      instagramLink,
+      instructorInfo,
+      instructorName,
+      isPaid,
+      redirectUrl,
+      timeFormat,
+      timePerDay,
+      workingDays,
+      websiteLink,
+      whatsappLink,
+      workshopAmount,
+      workshopInfo,
+      workshopEndingDate,
+      workshopStartingDate,
+      applicationClosingDate,
+      ...publicFields
+    } = values
+    const allSocialLinks = allLinks(
+      discordLink,
+      youtubeLink,
+      facebookLink,
+      instagramLink,
+      websiteLink,
+      whatsappLink
+    )
     const docRef = await addDoc(collection(db, "workshops"), {
       public: {
         ...publicFields,
-        applicationClosingDate: Timestamp.fromDate(
+        application_closing_date: Timestamp.fromDate(
           new Date(values.applicationClosingDate)
         ),
-        workshopStartingDate: Timestamp.fromDate(
+        workshop_starting_date: Timestamp.fromDate(
           new Date(values.workshopStartingDate)
         ),
-        workshopEndingDate: Timestamp.fromDate(
+        workshop_ending_date: Timestamp.fromDate(
           new Date(values.workshopEndingDate)
         ),
+        created_on: Timestamp.now(),
+        approved: false,
+        participants: [],
+        requested_participants: [],
+        contact_email: contactEmail,
+        redirect_url: redirectUrl,
+        describe_each_day: describeEachDay,
+        social_links: allSocialLinks,
+        instructor_info: instructorInfo,
+        instructor_name: instructorName,
+        workshop_amount: workshopAmount,
+        workshop_info: workshopInfo,
+        time_per_day: timePerDay,
+        time_format: timeFormat,
+        working_days: workingDays,
+        is_paid: isPaid,
+        created_by: auth.currentUser?.uid,
+        editors: [],
       },
       private: {
-        bankName,
-        bankEmail,
-        bankAccNo,
-        bankIFSC,
+        bank_name: bankName,
+        bank_email: bankEmail,
+        bank_account_number: bankAccNo,
+        bank_ifsc: bankIFSC,
+        payment_records: [],
       },
     })
     await updateDoc(doc(db, "users", auth.currentUser!.uid), {
       organizedWorkshops: arrayUnion(docRef.id),
     })
-    showAutoCloseAlert({
+    showAlert({
       title: "Success.",
       description:
-        "Workshop successfully created. View or edit it from dashboard.",
+        "Workshop successfully created. Workshop details will be reviewed. Once the workshop is approved you can view or edit it from dashboard.",
       type: "default",
+      action: { text: "Okay", callback: () => router.replace("/dashboard") },
     })
-    router.replace("/dashboard")
   }
 
   return (
@@ -181,10 +239,10 @@ export default function CreateWorkshop() {
               )}
             </div>
           </div>
-          <div className="flex justify-between items-center px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-[#fff]">
+          <div className="flex justify-between gap-5 items-center px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-[#fff]">
             {steps.map((step, index) => (
               <button
-                className={`text-lg py-3 px-5 rounded-lg ${
+                className={`text-lg py-3 px-5 flex-grow rounded-lg ${
                   index === activeStep
                     ? "bg-[#333] text-neutral-200"
                     : " text-[#757575]"

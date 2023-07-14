@@ -7,7 +7,7 @@ import { FcGoogle } from "react-icons/fc"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth, db } from "@/lib/firebase"
 import { setDoc, doc } from "firebase/firestore"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -55,6 +55,8 @@ const initialValues = {
 const SignUp = () => {
   const loginWithGoogle = useGoogleLogin()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectPath = searchParams.get("redirect")
 
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
@@ -76,7 +78,7 @@ const SignUp = () => {
           display_name: data.displayName,
           profile_photo: user.user.photoURL,
         })
-        router.replace("/")
+        router.replace(`/${redirectPath ?? ""}`)
       }
     } catch (error: any) {
       if (error.message.includes("email-already-in-use")) {
@@ -197,7 +199,7 @@ const SignUp = () => {
                 Don't have an account?{" "}
                 <Link
                   className="text-primary-lighter font-semibold"
-                  href="/signin"
+                  href={`/signin${redirectPath ?? ""}`}
                 >
                   Sign in
                 </Link>

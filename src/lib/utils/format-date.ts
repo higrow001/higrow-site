@@ -1,16 +1,29 @@
 import { TimestampType } from "@/app/_actions/workshop"
 import { Timestamp } from "firebase/firestore"
 
-export function formatDateInDDMMYYYY(input: TimestampType) {
+export function formatDateInDDMMYYYY(input: TimestampType, showTime = false) {
   const timestamp = new Timestamp(input.seconds, input.nanoseconds)
   const date = new Date(timestamp.toDate())
 
-  let day = date.getDate()
-  let dayWithZero = day < 10 ? `0${day}` : day
-  let month = date.getMonth() + 1
-  let monthWithZero = month < 10 ? `0${month}` : month
-  let year = date.getFullYear()
-  let formattedDate = dayWithZero + " / " + monthWithZero + " / " + year
+  const day = date.getDate()
+  const dayWithZero = day < 10 ? `0${day}` : day
 
-  return formattedDate
+  const month = date.getMonth() + 1
+  const monthWithZero = month < 10 ? `0${month}` : month
+
+  const year = date.getFullYear()
+
+  const formattedDate = dayWithZero + " / " + monthWithZero + " / " + year
+
+  const hours = date.getHours()
+  const hoursWithZero = hours < 10 ? `0${hours}` : hours
+
+  const minutes = date.getMinutes()
+  const minutesWithZero = minutes < 10 ? `0${minutes}` : minutes
+
+  const formattedDateWithTime =
+    formattedDate + " - " + hoursWithZero + ":" + minutesWithZero
+
+  if (!showTime) return formattedDate
+  return formattedDateWithTime
 }

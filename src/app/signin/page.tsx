@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 import useGoogleLogin from "@/lib/utils/google-login"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -38,6 +38,8 @@ const initialValues = { email: "", password: "" }
 const SignIn = () => {
   const loginWithGoogle = useGoogleLogin()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectPath = searchParams.get("redirect")
 
   const form = useForm({
     resolver: zodResolver(signinFormSchema),
@@ -50,7 +52,7 @@ const SignIn = () => {
   const signInUser = async (data: DataType) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password)
-      router.replace("/")
+      router.replace(`/${redirectPath ?? ""}`)
     } catch (error: any) {
       if (error.message.includes("user-not-found")) {
         alert("No user is registered with this email!")
@@ -140,7 +142,7 @@ const SignIn = () => {
                 Don't have an account?{" "}
                 <Link
                   className="text-primary-lighter font-semibold"
-                  href="/signup"
+                  href={`/signup${redirectPath ?? ""}`}
                 >
                   Sign up
                 </Link>
