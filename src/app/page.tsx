@@ -2,8 +2,28 @@ import "./home.scss"
 import Link from "next/link"
 import Navbar from "@/components/navbar/navbar"
 import Card from "@/components/card/card"
+import FAQ from "@/components/faq/faq"
 
 export default function Home() {
+
+const faqData = [
+  {
+    question: 'First Question',
+    answer: 'First Answer',
+  },
+  {
+    question: 'Second Question',
+    answer: 'Second Answer',
+  },
+  {
+    question: 'Third Question',
+    answer: 'Third Answer',
+  },
+  {
+    question: 'Fourth Question',
+    answer: 'Fourth Answer',
+  },
+];
   return (
     <>
       <Navbar />
@@ -125,6 +145,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+     <center>   <div className="homefaq-container">
+      <h1>Frequently Asked Questions 👇</h1>
+      <FAQ faqData={faqData} />
+    </div> </center>
+    <div className="bottom-space"></div>
       </div>
     </>
   )

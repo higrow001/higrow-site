@@ -1,5 +1,5 @@
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider, db } from "../firebase";
+import { signInWithPopup } from "firebase/auth"
+import { auth, googleProvider, db } from "../firebase"
 import {
   query,
   where,
@@ -7,34 +7,36 @@ import {
   getDocs,
   setDoc,
   doc,
-} from "firebase/firestore";
-import { useRouter } from "next/navigation";
+} from "firebase/firestore"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const useGoogleLogin = () => {
-  const router = useRouter();
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectPath = searchParams.get("redirect")
 
   const loginWithGoogle = async () => {
     try {
-      const user = await signInWithPopup(auth, googleProvider);
+      const user = await signInWithPopup(auth, googleProvider)
       if (user) {
         const checkUser = query(
           collection(db, "users"),
           where("email", "==", user.user.email)
-        );
-        const userAvailable = await getDocs(checkUser);
+        )
+        const userAvailable = await getDocs(checkUser)
         if (userAvailable.empty) {
           await setDoc(doc(db, "users", user.user.uid), {
             email: user.user.email,
             display_name: user.user.displayName,
             profile_photo: user.user.photoURL,
-          });
+          })
         }
-        router.replace("/");
+        router.replace(`/${redirectPath ?? ""}`)
       }
     } catch (error) {}
-  };
+  }
 
-  return loginWithGoogle;
-};
+  return loginWithGoogle
+}
 
-export default useGoogleLogin;
+export default useGoogleLogin

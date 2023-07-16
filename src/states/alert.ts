@@ -1,6 +1,25 @@
-import { Alert, AlertActions } from "@/lib/types"
 import { create } from "zustand"
 import { devtools, persist, createJSONStorage } from "zustand/middleware"
+
+export interface Alert {
+  show: boolean
+  data: AlertPayload | null
+}
+
+export interface AlertActions {
+  showAlert: (data: AlertPayload) => void
+  showAutoCloseAlert: (data: AlertPayload) => void
+  hideAlert: () => void
+  resetAlert: () => void
+}
+
+export interface AlertPayload {
+  title: string
+  description?: string
+  type: "default" | "destructive"
+  action?: { text: string; cancelText?: string; callback: () => void }
+  clickClose?: { text: string }
+}
 
 export const useAlert = create<Alert & AlertActions>()(
   devtools(
