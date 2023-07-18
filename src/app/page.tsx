@@ -13,7 +13,7 @@ const faqData = [
   },
   {
     question: 'Second Question',
-    answer: 'Second Answer',
+    answer: 'Second Answer'
   },
   {
     question: 'Third Question',

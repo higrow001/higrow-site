@@ -59,10 +59,10 @@ function OrganizedWorkshops() {
           workshops.map((workshop, index) => (
             <div
               key={index}
-              className="flex w-full py-5 px-4 items-center border border-input bg-background rounded-md divide-x-2 divide-input"
+              className="flex w-full py-6 px-4 items-center border border-input bg-background rounded-md divide-x-2 divide-input"
             >
               <span className="text-sm px-4">{`0${index + 1}.`}</span>
-              <h2 className="px-4 grow-[3] truncate">
+              <h2 className="px-6 grow-[3] truncate">
                 {workshop.name} by {workshop.instructor_name}
               </h2>
               <span className=" text-sm px-8 shrink-0">{`${formatDateInDDMMYYYY(
