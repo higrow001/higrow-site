@@ -62,8 +62,8 @@ export const initialValues = {
   instructorInfo: "",
   instructorName: "",
   workshopInfo: "",
-  workingDays: 4,
-  timePerDay: 2,
+  workingDays: "4",
+  timePerDay: "2",
   timeFormat: "hours",
   describeEachDay: "",
   isPaid: true,
@@ -124,27 +124,48 @@ export const validationSchema = z
       .string({ required_error: "Instructor Name is required" })
       .nonempty({ message: "Instructor Name is required." }),
     workingDays: z
-      .number()
-      .int()
-      .min(1, "Working Days should be a positive integer"),
+      .string({ required_error: "Working days is required" })
+      .nonempty({ message: "Working days is required" })
+      .min(1, { message: "Working days should be a positive integer" })
+      .transform((value) => Number(value)),
     timeFormat: z.enum(["hours", "mins"], {
       required_error: "You need to select a time type.",
     }),
     timePerDay: z
-      .number()
-      .int()
-      .min(0.001, "Hours Per Day should be a positive integer"),
+      .string({ required_error: "Instructor Info is required" })
+      .nonempty({ message: "Time Per Day is required" })
+      .min(1, { message: "Time Per Day should be a positive integer" })
+      .transform((value) => Number(value)),
     describeEachDay: z
       .string({ required_error: "Description is required." })
       .nonempty({ message: "Description is required." }),
     isPaid: z.boolean(),
-    workshopAmount: z.string().min(0),
+    workshopAmount: z
+      .string()
+      .min(0)
+      .transform((value) => Number(value)),
     bankName: z.string(),
     bankEmail: z.string(),
     bankAccNo: z.string(),
     bankIFSC: z.string(),
   })
   .superRefine((val, ctx) => {
+    if (val.timePerDay <= 0.0001) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Time Per Day should be a positive integer.",
+        path: ["timePerDay"],
+      })
+    }
+
+    if (val.workingDays <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Worksing days should be a positive integer.",
+        path: ["workingDays"],
+      })
+    }
+
     if (val.isPaid && val.bankEmail.length === 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -153,7 +174,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.workshopAmount.length === 0) {
+    if (val.isPaid && val.workshopAmount === 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Enter workshop fees amount.",
@@ -161,7 +182,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.workshopAmount.length !== 0) {
+    if (val.isPaid && val.workshopAmount <= 0) {
       try {
         const amount = Number(val.workshopAmount)
         if (amount <= 0) {

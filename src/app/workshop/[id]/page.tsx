@@ -1,14 +1,15 @@
-import { getWorkshop } from "@/app/_actions/workshop"
+import { getParticipants, getWorkshop } from "@/app/_actions/workshop"
 import Navbar from "@/components/navbar/navbar"
-import PaymentButton from "@/components/payment-button"
+import PaymentButton from "@/components/workshop/payment-button"
 import ReverseTimer from "@/components/reverse-timer"
 import { Button } from "@/components/ui/button"
 import { PublicWorkshopData } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
-import { Clock, Facebook, Instagram, Mail, MapPin, Youtube } from "lucide-react"
+import { Facebook, Instagram, Mail, Youtube } from "lucide-react"
 import { Metadata } from "next"
 import { BiInfoCircle } from "react-icons/bi"
 import { RiDiscordLine, RiWhatsappLine } from "react-icons/ri"
+import RequestButton from "@/components/workshop/request-button"
 
 export const metadata: Metadata = {
   title: "Workshop Details",
@@ -16,6 +17,9 @@ export const metadata: Metadata = {
 
 async function WorkshopPage({ params }: { params: { id: string } }) {
   const data: PublicWorkshopData = await getWorkshop(params.id)
+  const { participants, requested_participants } = await getParticipants(
+    params.id
+  )
 
   return (
     <>
@@ -36,19 +40,25 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                 <h2 className="text-3xl text-secondary font-medium">
                   About Instructor :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7 ">{data.instructor_info}</p>
+                <p className="text-[#333] tracking-wide leading-7 ">
+                  {data.instructor_info}
+                </p>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
                   About Workshop :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">{data.workshop_info}</p>
+                <p className="text-[#333] tracking-wide leading-7">
+                  {data.workshop_info}
+                </p>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
                   About Instructor :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">{data.describe_each_day}</p>
+                <p className="text-[#333] tracking-wide leading-7">
+                  {data.describe_each_day}
+                </p>
               </div>
               <div
                 className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
@@ -86,22 +96,32 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
               </div>
               <ReverseTimer firebaseDate={data.application_closing_date} />
               <div className="space-y-4">
-                <PaymentButton
-                  amount={Number(data.workshop_amount)}
-                  workshopName={data.name}
-                  workshopId={params.id}
-                  organizerEmail={data.contact_email}
-                >
-                  Join Rs.{data.workshop_amount}
-                </PaymentButton>
+                {data.is_paid ? (
+                  <PaymentButton
+                    amount={Number(data.workshop_amount)}
+                    workshopName={data.name}
+                    workshopId={params.id}
+                    organizerEmail={data.contact_email}
+                    applicationDate={data.application_closing_date}
+                    participants={participants}
+                  >
+                    Join Rs.{data.workshop_amount}
+                  </PaymentButton>
+                ) : (
+                  <RequestButton
+                    id={params.id}
+                    requests={requested_participants}
+                    participants={participants}
+                    applicationDate={data.application_closing_date}
+                  />
+                )}
                 <Button className="w-full" size={"xl"} variant={"outline"}>
                   Add to wishlist
                 </Button>
-                
               </div>
               <div className="py-5 px-5 flex items-center text-secondary border border-black rounded-md bg-white">
-                   <span className="text-sm text-[#333]"> ⭐ {data.tagline} </span> 
-                  </div>
+                <span className="text-sm text-[#333]"> ⭐ {data.tagline} </span>
+              </div>
               <div className="space-y-4">
                 <h3 className="font-medium text-xl">Contact organizer :-</h3>
                 <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">

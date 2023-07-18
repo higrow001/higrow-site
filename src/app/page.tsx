@@ -2,28 +2,32 @@ import "./home.scss"
 import Link from "next/link"
 import Navbar from "@/components/navbar/navbar"
 import Card from "@/components/card/card"
-import FAQ from "@/components/faq/faq"
-
-export default function Home() {
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const faqData = [
   {
-    question: 'First Question',
-    answer: 'First Answer',
+    question: "First Question",
+    answer: "First Answer",
   },
   {
-    question: 'Second Question',
-    answer: 'Second Answer',
+    question: "Second Question",
+    answer: "Second Answer",
   },
   {
-    question: 'Third Question',
-    answer: 'Third Answer',
+    question: "Third Question",
+    answer: "Third Answer",
   },
   {
-    question: 'Fourth Question',
-    answer: 'Fourth Answer',
+    question: "Fourth Question",
+    answer: "Fourth Answer",
   },
-];
+]
+export default function Home() {
   return (
     <>
       <Navbar />
@@ -145,11 +149,28 @@ const faqData = [
             </div>
           </div>
         </div>
-     <center>   <div className="homefaq-container">
-      <h1>Frequently Asked Questions 👇</h1>
-      <FAQ faqData={faqData} />
-    </div> </center>
-    <div className="bottom-space"></div>
+        <div className="w-fit mx-auto pb-20">
+          <h1 className="text-4xl font-bold font-archivo mb-12">
+            Frequently Asked Questions 👇
+          </h1>
+          <Accordion type="single" collapsible className="max-w-2xl">
+            {faqData.map((data) => (
+              <AccordionItem
+                className="border-muted-darker"
+                key={data.question}
+                value={data.question}
+              >
+                <AccordionTrigger className="text-xl font-medium">
+                  {data.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-lg">
+                  {data.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+        <div className="bottom-space"></div>
       </div>
     </>
   )

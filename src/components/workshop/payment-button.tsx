@@ -1,20 +1,23 @@
 "use client"
 
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import Script from "next/script"
-import { useUser } from "@/states/user"
 import { useAlert } from "@/states/alert"
 import { Loader2 } from "lucide-react"
-import { useState } from "react"
-import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+import { useEffect, useState } from "react"
+import { Timestamp, arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db, auth } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
+import { TimestampType } from "@/lib/types"
+import { joinWorkshop } from "@/app/_actions/workshop"
 
 export interface WorkshopDetails {
   amount: number
   organizerEmail: string
   workshopId: string
   workshopName: string
+  applicationDate: TimestampType
+  participants: { email: string }[]
 }
 
 export default function PaymentButton({
@@ -22,12 +25,44 @@ export default function PaymentButton({
   organizerEmail,
   workshopId,
   workshopName,
+  applicationDate,
+  participants,
   children,
 }: WorkshopDetails & { children: React.ReactNode }) {
   const router = useRouter()
-  const { displayName, email } = useUser()
+  const [isParticipated, setIsParticipated] = useState(false)
+  const [email, setEmail] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const { showAlert } = useAlert()
   const [isLoading, setIsLoading] = useState(false)
+  const timestamp = new Timestamp(
+    applicationDate.seconds,
+    applicationDate.nanoseconds
+  )
+  const applicationClosingDate = new Date(timestamp.toDate())
+  const currentDate = new Date()
+  const timeExpired = applicationClosingDate < currentDate
+
+  useEffect(() => {
+    if (document) {
+      const emailCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("email="))
+        ?.split("=")[1]
+      const displayNameCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("display_name="))
+        ?.split("=")[1]
+      setEmail(emailCookie!)
+      setDisplayName(displayNameCookie!)
+    }
+  }, [])
+
+  useEffect(() => {
+    setIsParticipated(
+      participants.findIndex((participant) => participant.email === email) > -1
+    )
+  }, [email])
 
   return (
     <>
@@ -39,7 +74,7 @@ export default function PaymentButton({
         className="w-full text-base"
         size={"xl"}
         variant={"secondary"}
-        disabled={isLoading}
+        disabled={isLoading || timeExpired || isParticipated}
         onClick={async () => {
           if (auth.currentUser) {
             setIsLoading(true)
@@ -76,6 +111,7 @@ export default function PaymentButton({
                     signature: response.razorpay_signature,
                   }),
                 })
+                await joinWorkshop(workshopId)
               },
               prefill: {
                 name: displayName,
@@ -133,6 +169,10 @@ export default function PaymentButton({
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Please wait
           </>
+        ) : isParticipated ? (
+          "Already Participated"
+        ) : timeExpired ? (
+          "Registration Closed"
         ) : (
           children
         )}

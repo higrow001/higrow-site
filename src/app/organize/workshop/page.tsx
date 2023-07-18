@@ -1,7 +1,6 @@
 "use client"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { BiChevronLeft, BiInfoCircle } from "react-icons/bi"
 import { auth, db } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
 import {
@@ -33,6 +32,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useAlert } from "@/states/alert"
+import { Info, Loader2 } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 
 const allLinks = (...links: string[]) => {
   const finalLinks: string[] = []
@@ -44,6 +45,7 @@ const allLinks = (...links: string[]) => {
 
 export default function CreateWorkshop() {
   const [activeStep, setActiveStep] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
   const { showAutoCloseAlert, showAlert } = useAlert()
 
   const form = useForm({
@@ -77,6 +79,7 @@ export default function CreateWorkshop() {
   }, [])
 
   const submitData = async (values: typeof initialValues) => {
+    setIsLoading(true)
     const {
       bankName,
       bankEmail,
@@ -143,17 +146,20 @@ export default function CreateWorkshop() {
         created_by: auth.currentUser?.uid,
         editors: [],
       },
-      private: {
-        bank_name: bankName,
-        bank_email: bankEmail,
-        bank_account_number: bankAccNo,
-        bank_ifsc: bankIFSC,
-        payment_records: [],
-      },
+      private: isPaid
+        ? {
+            bank_name: bankName,
+            bank_email: bankEmail,
+            bank_account_number: bankAccNo,
+            bank_ifsc: bankIFSC,
+            payment_records: [],
+          }
+        : {},
     })
     await updateDoc(doc(db, "users", auth.currentUser!.uid), {
-      organizedWorkshops: arrayUnion(docRef.id),
+      organized_workshops: arrayUnion(docRef.id),
     })
+    setIsLoading(false)
     showAlert({
       title: "Success.",
       description:
@@ -166,18 +172,13 @@ export default function CreateWorkshop() {
   return (
     <Form {...form}>
       <main className="max-w-4xl w-full py-24 space-y-8 mx-auto">
-        <form
-          onError={() => console.log("hello")}
-          onSubmit={form.handleSubmit(submitData)}
-          className="space-y-6"
-        >
+        <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
           <div className="flex justify-between items-center mb-20">
-            <Link
-              href="/organize"
-              className="flex space-x-1 text-lg items-center"
-            >
-              <BiChevronLeft className="text-3xl" />
-              <span>Go back</span>
+            <Link href="/organize" className="flex space-x-1 items-center">
+              <Button className="text-base" variant={"ghost"}>
+                <ChevronLeft className="w-6 h-6 mr-2" />
+                <span>Go back</span>
+              </Button>
             </Link>
             <div className="flex space-x-6 items-center">
               {activeStep > 0 && (
@@ -234,7 +235,14 @@ export default function CreateWorkshop() {
                   //   } catch (error) {}
                   // }}
                 >
-                  Publish
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Publish"
+                  )}
                 </Button>
               )}
             </div>
@@ -300,7 +308,7 @@ export default function CreateWorkshop() {
               <div className="flex space-x-3 items-center">
                 <Button
                   variant={modeValue === "Online" ? "default" : "outline"}
-                  className={`border-secondary font-semibold border rounded-full`}
+                  className={`border-primary font-semibold border rounded-full`}
                   onClick={() => form.setValue("mode", "Online")}
                   type="button"
                   size="lg"
@@ -309,7 +317,7 @@ export default function CreateWorkshop() {
                 </Button>
                 <Button
                   variant={modeValue === "Offline" ? "default" : "outline"}
-                  className={`border-secondary font-semibold border rounded-full`}
+                  className={`border-primary font-semibold border rounded-full`}
                   onClick={() => form.setValue("mode", "Offline")}
                   type="button"
                   size="lg"
@@ -327,7 +335,7 @@ export default function CreateWorkshop() {
                     onClick={() => form.setValue("category", category)}
                     variant={categoryValue === category ? "default" : "outline"}
                     size="lg"
-                    className={`border-secondary font-semibold border rounded-full`}
+                    className={`border-primary font-semibold border rounded-full`}
                     type="button"
                   >
                     {category}
@@ -696,7 +704,7 @@ export default function CreateWorkshop() {
                 <div className="flex space-x-4 items-center">
                   <Button
                     variant={isPaidValue ? "default" : "outline"}
-                    className={`border-secondary font-semibold border rounded-full`}
+                    className={`border-primary font-semibold border rounded-full`}
                     type="button"
                     size="lg"
                     onClick={() => form.setValue("isPaid", true)}
@@ -705,7 +713,7 @@ export default function CreateWorkshop() {
                   </Button>
                   <Button
                     variant={!isPaidValue ? "default" : "outline"}
-                    className={`border-secondary font-semibold border rounded-full`}
+                    className={`border-primary font-semibold border rounded-full`}
                     type="button"
                     size="lg"
                     onClick={() => form.setValue("isPaid", false)}
@@ -722,8 +730,8 @@ export default function CreateWorkshop() {
                     activeStep === 4 ? "block" : "hidden"
                   }`}
                 >
-                  <BiInfoCircle className="text-7xl" />
-                  <p className="">
+                  <Info className="w-20 h-20" />
+                  <p>
                     Fill in the details of the account to which you would want
                     the collected amount to be transferred by us once the
                     registrations are closed. The organizers have to fill in the

@@ -2,6 +2,7 @@ import "./globals.scss"
 import { Public_Sans, Archivo } from "next/font/google"
 import { Metadata } from "next"
 import AppAlert from "@/components/custom-alert"
+import CookieRefresher from "@/components/cookie-refresher"
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="font-sans">
         <AppAlert />
+        <CookieRefresher />
         {children}
       </body>
     </html>

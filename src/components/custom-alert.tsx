@@ -8,55 +8,66 @@ import { Button } from "./ui/button"
 function AppAlert() {
   const { show, data, hideAlert } = useAlert()
   return (
-    <Alert
-      variant={data?.type}
-      className={`w-full max-w-2xl fixed left-1/2 -translate-x-1/2 top-4 transition duration-300 ${
-        show ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-      }`}
-    >
-      {data?.type === "default" ? (
-        <Terminal className="h-4 w-4" />
-      ) : (
-        <AlertCircle className="h-4 w-4" />
-      )}
-      <AlertTitle>{data?.title}</AlertTitle>
-      <AlertDescription>{data?.description}</AlertDescription>
-      {data?.clickClose?.text && (
-        <Button
-          onClick={hideAlert}
-          className="float-right text-neutral-800"
-          variant={"outline"}
-          size={"xsm"}
-        >
-          {data?.clickClose?.text}
-        </Button>
-      )}
-      {data?.action && (
-        <div className="flex space-x-2 items-center float-right">
-          {data.action.cancelText && (
-            <Button
-              className="text-neutral-800"
-              onClick={hideAlert}
-              variant={"ghost"}
-              size={"xsm"}
-            >
-              {data.action.cancelText}
-            </Button>
-          )}
+    <>
+      <div
+        className={`fixed ${
+          show
+            ? "animate-in fade-in"
+            : "animate-out fade-out fill-mode-forwards pointer-events-none"
+        } inset-0 h-full z-[51] w-full bg-black/20`}
+      ></div>
+      <Alert
+        variant={data?.type}
+        className={`w-full max-w-2xl fixed left-1/2 -translate-x-1/2 top-4 transition duration-300 z-[52] ${
+          show
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0 pointer-events-none"
+        }`}
+      >
+        {data?.type === "default" ? (
+          <Terminal className="h-4 w-4" />
+        ) : (
+          <AlertCircle className="h-4 w-4" />
+        )}
+        <AlertTitle>{data?.title}</AlertTitle>
+        <AlertDescription>{data?.description}</AlertDescription>
+        {data?.clickClose?.text && (
           <Button
-            className="text-neutral-800"
-            onClick={() => {
-              data.action?.callback()
-              hideAlert()
-            }}
+            onClick={hideAlert}
+            className="float-right text-neutral-800"
             variant={"outline"}
             size={"xsm"}
           >
-            {data?.action?.text}
+            {data?.clickClose?.text}
           </Button>
-        </div>
-      )}
-    </Alert>
+        )}
+        {data?.action && (
+          <div className="flex space-x-2 items-center float-right">
+            {data.action.cancelText && (
+              <Button
+                className="text-neutral-800"
+                onClick={hideAlert}
+                variant={"ghost"}
+                size={"xsm"}
+              >
+                {data.action.cancelText}
+              </Button>
+            )}
+            <Button
+              className="text-neutral-800"
+              onClick={() => {
+                data.action?.callback()
+                hideAlert()
+              }}
+              variant={"outline"}
+              size={"xsm"}
+            >
+              {data?.action?.text}
+            </Button>
+          </div>
+        )}
+      </Alert>
+    </>
   )
 }
 
