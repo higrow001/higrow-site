@@ -1,5 +1,5 @@
-import { TimestampType } from "@/app/_actions/workshop"
 import { Timestamp } from "firebase/firestore"
+import { TimestampType } from "../types"
 
 export function formatDateInDDMMYYYY(input: TimestampType, showTime = false) {
   const timestamp = new Timestamp(input.seconds, input.nanoseconds)

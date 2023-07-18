@@ -36,6 +36,7 @@ module.exports = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
+          darker: "hsl(var(--muted-darker))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
@@ -76,5 +77,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 }

@@ -182,7 +182,9 @@ export default async function AdminManage() {
                     <span className="flex space-x-2 items-center">
                       <span className="font-semibold">Entry Amount -</span>
                       <span className="text-lg font-medium">
-                        {document.data().public.workshop_amount}
+                        {document.data().public.is_paid
+                          ? document.data().public.workshop_amount
+                          : "Free"}
                       </span>
                     </span>
                   </div>

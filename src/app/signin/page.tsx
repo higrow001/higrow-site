@@ -4,7 +4,7 @@ import "./signin.scss"
 import Link from "next/link"
 import { FcGoogle } from "react-icons/fc"
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "@/lib/firebase"
+import { auth, db } from "@/lib/firebase"
 import useGoogleLogin from "@/lib/utils/google-login"
 import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { doc, getDoc } from "firebase/firestore"
 
 const signinFormSchema = z.object({
   email: z
@@ -51,7 +52,27 @@ const SignIn = () => {
 
   const signInUser = async (data: DataType) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password)
+      const user = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+      const userData = await getDoc(doc(db, "users", user.user.uid))
+      if (userData.exists()) {
+        document.cookie = `display_name=${
+          userData.data().display_name
+        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
+      } else {
+        document.cookie = `display_name=${
+          user.user.displayName
+        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
+      }
+      document.cookie = `uid=${user.user.uid}; SameSite=Lax; max-age=${
+        60 * 60 * 24 * 30
+      }`
+      document.cookie = `email=${user.user.email}; SameSite=Lax; max-age=${
+        60 * 60 * 24 * 30
+      }`
       router.replace(`/${redirectPath ?? ""}`)
     } catch (error: any) {
       if (error.message.includes("user-not-found")) {
