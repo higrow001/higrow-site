@@ -140,10 +140,10 @@ export default function Home() {
         </div>
         <div className="bottom-space"></div>
    <center>   <div className="mx-auto pb-40">
-          <h1 className="text-3xl font-medium font-archivo mb-14">
+          <h1 className="text-3xl faq-title font-medium font-archivo mb-14">
             Frequently asked questions
           </h1>
-          <p className="mb-20 text-2xl">Don't see your question? <Link href=""> Contact us </Link></p>
+          <p className="mb-20 faq-p text-2xl">Don't see your question? <Link href=""> Contact us </Link></p>
           <Accordion type="single" collapsible className="max-w-7xl mb-12">
             {faqData.map((data) => (
               <AccordionItem
@@ -151,10 +151,10 @@ export default function Home() {
                 key={data.question}
                 value={data.question}
               >
-                <AccordionTrigger className="text-5xl font-light">
+                <AccordionTrigger className="text-5xl faq-quest font-light">
                   {data.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-4xl">
+                <AccordionContent className="text-4xl faq-ans">
                   {data.answer}
                 </AccordionContent>
               </AccordionItem>
