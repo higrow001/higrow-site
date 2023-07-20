@@ -1,41 +1,14 @@
 "use client"
-
 import SignOutBtn from "@/components/dashboard/sign-out"
-import { auth, db } from "@/lib/firebase"
-import { useUser } from "@/states/user"
-import { doc, getDoc } from "firebase/firestore"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect } from "react"
 
-export default function DashboardLayout({
+export default function SideLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const { initUserData } = useUser()
-
-  async function getUserInContext() {
-    const fetchUser = await getDoc(doc(db, "users", auth.currentUser!.uid))
-    if (fetchUser.exists()) {
-      const userData = fetchUser.data()
-
-      initUserData({
-        displayName: userData.display_name,
-        id: fetchUser.id,
-        email: userData.email,
-        profilePhoto: userData.profile_photo,
-        organizedWorkshops: userData.organizedWorkshops,
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (auth.currentUser) {
-      getUserInContext()
-    }
-  }, [auth.currentUser])
   return (
     <div className="flex h-full">
       <aside className="basis-[20%] bg-secondary h-full flex flex-col justify-between text-white">

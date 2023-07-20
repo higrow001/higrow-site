@@ -34,13 +34,25 @@ export interface PublicWorkshopData {
   time_per_day: number
   describe_each_day: string
   is_paid: boolean
-  workshop_amount: string
-  participants: string[]
-  requested_participants: string[]
+  workshop_amount: number
   created_on: TimestampType
   created_by: string
   approved: boolean
   editors: string[]
+}
+
+export interface Announcement {
+  id: string
+  title: string
+  message: string
+  timestamp: TimestampType
+}
+
+export interface Participant {
+  id: string
+  name: string
+  email: string
+  application_date: TimestampType
 }
 
 export interface PrivateWorkshopData {

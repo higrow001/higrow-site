@@ -1,4 +1,4 @@
-import { WorkshopDetails } from "@/components/payment-button"
+import { WorkshopDetails } from "@/components/workshop/payment-button"
 import { razorpay } from "@/lib/razorpay"
 import { NextResponse } from "next/server"
 
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   }
 
   return new Promise((resolve) => {
-    razorpay.orders.create(options, function (err:any, order:any) {
+    razorpay.orders.create(options, function (err, order) {
       if (err) {
         console.log(err)
         resolve(NextResponse.json({ error: true }, { status: 400 }))

@@ -2,28 +2,33 @@ import "./home.scss"
 import Link from "next/link"
 import Navbar from "@/components/navbar/navbar"
 import Card from "@/components/card/card"
-import FAQ from "@/components/faq/faq"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
-export default function Home() {
 
 const faqData = [
   {
-    question: 'First Question',
-    answer: 'First Answer',
+    question: "First Question",
+    answer: "First Answer",
   },
   {
     question: 'Second Question',
     answer: 'Second Answer'
   },
   {
-    question: 'Third Question',
-    answer: 'Third Answer',
+    question: "Third Question",
+    answer: "Third Answer",
   },
   {
-    question: 'Fourth Question',
-    answer: 'Fourth Answer',
+    question: "Fourth Question",
+    answer: "Fourth Answer",
   },
-];
+]
+export default function Home() {
   return (
     <>
       <Navbar />
@@ -129,28 +134,35 @@ const faqData = [
             </div>
             <div className="he-bottom">
               <Card />
-              <Card />
             </div>
           </div>
-          <div className="contest-card-container">
-            <div className="he-top">
-              <h1>Explore Contests</h1>
-              <Link href="workshops" className="explore-button">
-                <button>See all</button>
-              </Link>
-            </div>
-            <div className="he-bottom">
-              <Card />
-              <Card />
-            </div>
-          </div>
+          
         </div>
-     <center>   <div className="homefaq-container">
-      <h1>Frequently Asked Questions 👇</h1>
-      <FAQ faqData={faqData} />
-    </div> </center>
-    <div className="bottom-space"></div>
-      </div>
+        <div className="bottom-space"></div>
+   <center>   <div className="mx-auto pb-40">
+          <h1 className="text-3xl font-medium font-archivo mb-14">
+            Frequently asked questions
+          </h1>
+          <p className="mb-20 text-2xl">Don't see your question? <Link href=""> Contact us </Link></p>
+          <Accordion type="single" collapsible className="max-w-7xl mb-12">
+            {faqData.map((data) => (
+              <AccordionItem
+                className="border-muted-darker"
+                key={data.question}
+                value={data.question}
+              >
+                <AccordionTrigger className="text-5xl font-light">
+                  {data.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-4xl">
+                  {data.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div> </center>  
+        <div className="bottom-space"></div> 
+      </div> 
     </>
   )
 }

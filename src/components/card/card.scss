@@ -1,217 +1,169 @@
+// card.scss
+
+.card-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .card {
-  width: 631px;
-  height: 338px;
-  border: 2px solid black;
+  width: calc(25.33% - 20px); /* 33% width with 20px margin between cards */
+  min-width: 250px;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-bottom: 20px;
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  max-width: 400px;
+  margin-bottom: 120px;
+
+  .card-thumbnail img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid black;
+  }
+
+  .card-title {
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+
+    h1 {
+      font-family: "Archivo", sans-serif;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 32px;
+      letter-spacing: 0.6px;
+      min-height: 70px;
+      width: 90%;
+      margin: auto;
+      max-height: 64px; /* Set a maximum height for the title */
+  overflow: hidden;
+    }
+
+    .instructor-name {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      margin: auto;
+      margin-bottom: 20px;
+      margin-top: 20px;
+
+      p {
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.1px;
+        color: #757575;
+      }
+
+      span {
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.1px;
+        color: #757575;
+        text-align: right;
+      }
+    }
+  }
+
+  .card-tagline {
+    border-bottom: 1px solid black;
+    p {
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0.39px;
+      width: 90%;
+      margin: auto;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      max-height: 48px; /* Set a maximum height for the title */
+      overflow: hidden;
+    }
+  }
+
+  .card-extra {
+    display: flex;
+  justify-content: center; /* Center the start date and price horizontally */
+  align-items: center; /* Center the start date and price vertically */
+  margin-bottom: 0;
+  height: 65px;
+
+    .start-date {
+      flex: 1.5; /* The start date will take up 50% of the available space */
+      border-right: 1px solid black;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.59px;
+    margin: 0;
+      }
+      span {
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.89px;
+        margin: 0;
+      }
+    }
+    .price {
+      flex: 1; /* The price will take up 50% of the available space */
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
-  border-radius: 17px;
 
-  .card-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 
-    
-
-    .card-top {
-      height: 30%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      align-items: center;
-
-      .ct-left {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        width: 80%;
-        h1 {
-          font-family: "Archivo", sans-serif;
-          font-style: normal;
-          font-weight: 800;
-          font-size: 24px;
-          line-height: 30px;
-          color: #3770ff;
-          text-align: left;
-        }
-      }
-
-      .ct-right {
-        display: flex;
-        align-items: center;
-        height: 100%;
-
-        p {
-          font-family: "Public Sans", sans-serif;
-          font-size: 13px;
-          line-height: 17px;
-          color: #acb5bd;
-          text-align: right;
-        }
-      }
-    }
-
-    .card-middle {
-      height: 40%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      background: rgba(247, 247, 247, 0.5);
-      justify-content: center;
-      align-items: center;
-
-      .cm-top {
-        width: 90%;
-        height: 50%;
-        display: flex;
-        align-items: center;
-
-        p {
-          font-size: 16px;
-          line-height: 24px;
-          letter-spacing: 0.03em;
-          font-family: "Public Sans", sans-serif;
-          color: #333333;
-        }
-      }
-      .cm-bottom {
-        height: 50%;
-        width: 90%;
-        display: flex;
-        align-items: center;
-        .cmb-left {
-          display: flex;
-          width: 45%;
-          align-items: center;
-
-          .cmb-button {
-            width: 80px;
-            height: 40px;
-            background: #ffffff;
-            border: 1px solid black;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Public Sans", sans-serif;
-            font-size: 13px;
-            line-height: 16px;
-            margin-right: 40px;
-            letter-spacing: 0.03em;
-          }
-        }
-        .cmb-right {
-          display: flex;
-          width: 55%;
-          justify-content: space-between;
-          margin-left: 50px;
-          .cmb-links {
-            padding: 10.5px;
-            border: 1px solid black;
-            border-radius: 100%;
-            color: #333333;
-
-            
-            svg {
-              height: 18px;
-              width: 18px;
-            }
-
-            
-          }
-        }
-      }
-    }
-
-    .card-bottom {
-      height: 30%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-
-      .cbb-left {
-        display: flex;
-        align-items: center;
-        width: 65%;
-
-        .cbb-button-category {
-          background: #ffffff;
-          border: 1px solid black;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: "Public Sans", sans-serif;
-          font-size: 14px;
-          line-height: 16px;
-          margin-right: 30px;
-          letter-spacing: 0.03em;
-          color: #333333;
-          padding: 13.7px 15px;
-        }
-
-        .cbb-button-date {
-          width: 150px;
-          height: 45px;
-          background: #ffffff;
-          border: 1px solid black;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: "Public Sans", sans-serif;
-          font-size: 14px;
-          line-height: 16px;
-          margin-right: 30px;
-          letter-spacing: 0.03em;
-          color: #333333;
-
-          span{
-            color: black;
-            margin-left: 3px;
-          }
-        }
-      }
-      .registration-button {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 25%;
-
-        .rb-button {
-          width: 127px;
-          height: 48px;
-          button {
-            height: 100%;
-            width: 100%;
-            background-color: #007dfb;
-            border-radius: 5px;
-            color: white;
-            font-size: 14px;
-            line-height: 24px;
-            text-align: center;
-            letter-spacing: 0.06em;
-            font-family: "Public Sans", sans-serif;
-            font-weight: 600;
-
-            
-          }
-          :hover{
-            background-color: #0D46D5;
-          }
-        }
+      p {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        letter-spacing: 0.72px;
+        margin: 0;
       }
     }
   }
 }
 
-.card:hover{
-  box-shadow: 2px 2px 0 black;
-  cursor: pointer;
+.card:hover {
+  box-shadow: 4px 4px 0 #333;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1200px) {
+  .card {
+    width: calc(50% - 20px); /* 50% width with 20px margin between cards for tablets */
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    width: 100%; /* 100% width for mobiles */
+    max-width: 320px;
+  }
 }

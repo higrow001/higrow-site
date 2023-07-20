@@ -32,9 +32,9 @@ function ReverseTimer({ firebaseDate }: { firebaseDate: TimestampType }) {
   }, [])
 
   return (
-    <div className="border border-secondary p-4 space-y-6 rounded-md">
-      <h3 className="font-medium text-lg  text-[#333]">Registration Closes in :-</h3>
-      <span className=" text-xl tracking-wider font-bold !mt-2 text-[#007DFB]">
+    <div className="border border-secondary p-4 space-y-4 rounded-md">
+      <h3 className="font-medium text-lg">Registration Closes in :-</h3>
+      <span className="text-primary text-xl font-bold">
         {remaining.days}d:{remaining.hours}h:{remaining.mins}m
       </span>
     </div>

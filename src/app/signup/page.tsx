@@ -77,7 +77,20 @@ const SignUp = () => {
           email: user.user.email,
           display_name: data.displayName,
           profile_photo: user.user.photoURL,
+          organized_workshops: [],
+          organized_contests: [],
+          participated_workshops: [],
+          participated_contests: [],
         })
+        document.cookie = `uid=${user.user.uid}; SameSite=Lax; max-age=${
+          60 * 60 * 24 * 30
+        }`
+        document.cookie = `email=${user.user.email}; SameSite=Lax; max-age=${
+          60 * 60 * 24 * 30
+        }`
+        document.cookie = `display_name=${
+          data.displayName
+        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
         router.replace(`/${redirectPath ?? ""}`)
       }
     } catch (error: any) {

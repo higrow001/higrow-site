@@ -1,48 +1,11 @@
-"use client"
-
 import Link from "next/link"
 import { Button } from "../ui/button"
-import { useState, useEffect } from "react"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
-import { useUser } from "@/states/user"
 import { ChevronRight } from "lucide-react"
-import { PublicWorkshopData } from "@/lib/types"
-import {
-  collection,
-  documentId,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
-} from "firebase/firestore"
-import { db } from "@/lib/firebase"
+import { getUserOrganizedWorkshops } from "@/app/_actions/workshop"
 
-type Data = PublicWorkshopData & { id: string }
-
-function OrganizedWorkshops() {
-  const [workshops, setWorkshops] = useState<Data[]>([])
-  const ids = useUser((state) => state.organizedWorkshops)
-  const getShops = async () => {
-    const allShops: Data[] = []
-    const shops = await getDocs(
-      query(
-        collection(db, "workshops"),
-        where(documentId(), "in", ids),
-        limit(3)
-      )
-    )
-    if (!shops.empty) {
-      shops.docs.forEach((doc) => {
-        allShops.push({ id: doc.id, ...doc.data().public })
-      })
-    }
-    setWorkshops(allShops)
-  }
-
-  useEffect(() => {
-    if (ids.length > 0) getShops()
-  }, [ids])
+async function OrganizedWorkshops() {
+  const workshops = await getUserOrganizedWorkshops()
 
   return (
     <div className="space-y-8">
@@ -51,11 +14,11 @@ function OrganizedWorkshops() {
           Organized Opportunities
         </h1>
         <Link href="/dashboard/all-workshops">
-          <Button variant={"ghost"} className="border border-input">See All</Button>
+          <Button variant={"outline"}>See All</Button>
         </Link>
       </div>
       <div className="space-y-4">
-        {workshops.length > 0 &&
+        {workshops &&
           workshops.map((workshop, index) => (
             <div
               key={index}
@@ -65,14 +28,20 @@ function OrganizedWorkshops() {
               <h2 className="px-6 grow-[3] truncate">
                 {workshop.name} by {workshop.instructor_name}
               </h2>
-              <span className=" text-sm px-8 shrink-0">{`${formatDateInDDMMYYYY(
+              <span className="px-4 shrink-0">{`${formatDateInDDMMYYYY(
                 workshop.application_closing_date
               )}`}</span>
-              <span className="text-primary-lighter text-center shrink-0 grow-[2] font-medium px-8">
+              <span className="text-primary-lighter text-center shrink-0 grow-[2] font-semibold px-4">
                 Accepting applications
               </span>
-              <Link className="px-4" href={`/workshop/${workshop.id}`}>
-                <ChevronRight className="text-secondary w-16 h-6 px-4" />
+              <Link
+                className="px-4"
+                href={`/dashboard/manage-workshop/${workshop.id}/announcements`}
+              >
+                <Button variant={"outline"}>
+                  Manage
+                  <ChevronRight className="text-secondary w-6 h-6 ml-2" />
+                </Button>
               </Link>
             </div>
           ))}
