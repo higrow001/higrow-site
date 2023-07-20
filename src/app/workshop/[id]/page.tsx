@@ -54,7 +54,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
-                  About Instructor :-
+                  What you'll learn :-
                 </h2>
                 <p className="text-[#333] tracking-wide leading-7">
                   {data.describe_each_day}

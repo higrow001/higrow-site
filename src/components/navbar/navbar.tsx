@@ -31,7 +31,7 @@ const Navbar = () => {
             <button> Sign up</button>{" "}
           </Link>
         ) : (
-          <Link className="signup-button" href="/dashboard/admin">
+          <Link className="signup-button" href="/dashboard/enrolled">
             <button>Dashboard</button>
           </Link>
         )}

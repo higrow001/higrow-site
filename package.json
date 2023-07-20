@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
+    "@lexical/react": "^0.11.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
@@ -23,6 +24,7 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "firebase": "^9.23.0",
+    "lexical": "^0.11.2",
     "lucide-react": "^0.258.0",
     "next": "^13.4.10",
     "postcss": "8.4.24",
@@ -45,6 +47,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
     "@types/lodash-es": "^4.17.7",
-    "@types/quill": "^2.0.10"
+    "@types/quill": "^2.0.10",
+    "sharp": "^0.32.3"
   }
 }

@@ -1,9 +1,10 @@
 "use client"
 import MakeAnnoucement from "@/components/dashboard/announcement-modal"
+import AnnouncementSkeleton from "@/components/skeletons/workshop-announcements"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { db } from "@/lib/firebase"
-import { TimestampType } from "@/lib/types"
+import { Announcement, TimestampType } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import {
   collection,
@@ -28,12 +29,7 @@ export default function Announcements({ params }: { params: { id: string } }) {
     }[]
   >([])
   async function getAnnouncements() {
-    let anns: {
-      id: string
-      title: string
-      message: string
-      timestamp: TimestampType
-    }[] = []
+    let anns: Announcement[] = []
     const fetchData = await getDocs(
       query(
         collection(db, "workshops", params.id, "announcements"),
@@ -61,12 +57,7 @@ export default function Announcements({ params }: { params: { id: string } }) {
         orderBy("timestamp", "desc")
       ),
       (docs) => {
-        let anns: {
-          id: string
-          title: string
-          message: string
-          timestamp: TimestampType
-        }[] = []
+        let anns: Announcement[] = []
         if (!docs.empty) {
           docs.forEach((doc) => {
             anns.push({
@@ -87,10 +78,7 @@ export default function Announcements({ params }: { params: { id: string } }) {
   return (
     <>
       {isLoading ? (
-        <div className="max-w-4xl w-full space-y-8 mx-auto">
-          <Skeleton className="w-full h-20" />
-          <Skeleton className="w-full h-80" />
-        </div>
+        <AnnouncementSkeleton />
       ) : (
         <>
           {announcements.length > 0 ? (
@@ -130,7 +118,7 @@ export default function Announcements({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                   <div
-                    className="prose"
+                    className="prose-sm prose-h1:text-2xl prose-h2:text-lg"
                     dangerouslySetInnerHTML={{ __html: ann.message }}
                   ></div>
                 </div>

@@ -163,7 +163,7 @@ const SignIn = () => {
                 Don't have an account?{" "}
                 <Link
                   className="text-primary-lighter font-semibold"
-                  href={`/signup${redirectPath ?? ""}`}
+                  href={`/signup?redirect=${redirectPath ?? ""}`}
                 >
                   Sign up
                 </Link>

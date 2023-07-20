@@ -1,6 +1,6 @@
 "use client"
 
-import { TimestampType } from "@/app/_actions/workshop"
+import { TimestampType } from "@/lib/types"
 import { Timestamp } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
@@ -28,7 +28,9 @@ function ReverseTimer({ firebaseDate }: { firebaseDate: TimestampType }) {
   useEffect(() => {
     updateTime()
     const intervalRef = setInterval(updateTime, 1000 * 60)
-    return clearInterval(intervalRef)
+    return () => {
+      clearInterval(intervalRef)
+    }
   }, [])
 
   return (

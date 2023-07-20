@@ -1,5 +1,6 @@
 "use client"
 import { getParticipants } from "@/app/_actions/workshop"
+import ParticipantsSkeleton from "@/components/skeletons/workkshop-participants"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -17,12 +18,16 @@ import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import {
   Timestamp,
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
+  where,
 } from "firebase/firestore"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -99,9 +104,7 @@ export default function Participants({ params }: { params: { id: string } }) {
   return (
     <>
       {isLoading ? (
-        <div className="max-w-4xl w-full space-y-8 mx-auto">
-          <Skeleton className="w-full h-96" />
-        </div>
+        <ParticipantsSkeleton />
       ) : (
         <>
           {data.participants.length > 0 ||
@@ -146,6 +149,20 @@ export default function Participants({ params }: { params: { id: string } }) {
                                 ),
                               }
                             )
+                            const user = await getDocs(
+                              query(
+                                collection(db, "users"),
+                                where("email", "==", part.email)
+                              )
+                            )
+                            if (!user.empty) {
+                              await updateDoc(
+                                doc(db, "users", user.docs[0].id),
+                                {
+                                  participated_workshops: arrayUnion(part.id),
+                                }
+                              )
+                            }
                             await deleteDoc(
                               doc(
                                 db,

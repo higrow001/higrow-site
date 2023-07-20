@@ -1,6 +1,6 @@
 "use client"
 import "react-quill/dist/quill.snow.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -90,6 +90,38 @@ export default function MakeAnnoucement({
             <ReactQuill
               className="text-lg"
               theme="snow"
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  [
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "blockquote",
+                    "link",
+                  ],
+                  [
+                    { list: "ordered" },
+                    { list: "bullet" },
+                    { indent: "-1" },
+                    { indent: "+1" },
+                  ],
+                  ["clean"],
+                ],
+              }}
+              formats={[
+                "header",
+                "bold",
+                "italic",
+                "underline",
+                "strike",
+                "blockquote",
+                "list",
+                "bullet",
+                "indent",
+                "link",
+              ]}
               value={value}
               onChange={(val) => {
                 if (showPreview) setShowPreview(false)
@@ -122,8 +154,10 @@ export default function MakeAnnoucement({
         {showPreview && (
           <>
             <h3 className="text-xl">Preview in below box</h3>
-            <div className="prose-sm border rounded-md w-full border-secondary p-4">
-              <h1>{title}</h1>
+            <div className="prose-sm prose-h1:text-2xl prose-h2:text-lg border rounded-md w-full border-secondary p-4">
+              <div className="not-prose">
+                <h1 className="text-3xl font-semibold">{title}</h1>
+              </div>
               <div dangerouslySetInnerHTML={{ __html: value }}></div>
             </div>
           </>
