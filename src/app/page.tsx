@@ -131,46 +131,37 @@ export default function Home() {
                 <button>See all</button>
               </Link>
             </div>
-            <div className="he-bottom">
-              <Card />
-              <Card />
-            </div>
+            <div className="he-bottom">{/* <Card /> */}</div>
           </div>
-          <div className="contest-card-container">
-            <div className="he-top">
-              <h1>Explore Contests</h1>
-              <Link href="workshops" className="explore-button">
-                <button>See all</button>
-              </Link>
-            </div>
-            <div className="he-bottom">
-              <Card />
-              <Card />
-            </div>
-          </div>
-        </div>
-        <div className="w-fit mx-auto pb-20">
-          <h1 className="text-4xl font-bold font-archivo mb-12">
-            Frequently Asked Questions 👇
-          </h1>
-          <Accordion type="single" collapsible className="max-w-2xl">
-            {faqData.map((data) => (
-              <AccordionItem
-                className="border-muted-darker"
-                key={data.question}
-                value={data.question}
-              >
-                <AccordionTrigger className="text-xl font-medium">
-                  {data.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-lg">
-                  {data.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
         </div>
         <div className="bottom-space"></div>
+        <center>
+          {" "}
+          <div className="mx-auto pb-40">
+            <h1 className="text-6xl font-medium font-archivo mb-14">
+              Frequently asked questions
+            </h1>
+            <p className="mb-20 faq-p text-2xl">
+              Don't see your question? <Link href="/contact"> Contact us </Link>
+            </p>
+            <Accordion type="single" collapsible className="max-w-5xl mb-32">
+              {faqData.map((data) => (
+                <AccordionItem
+                  className="border-black border-b-2"
+                  key={data.question}
+                  value={data.question}
+                >
+                  <AccordionTrigger className="text-3xl faq-quest font-light">
+                    {data.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-2xl faq-ans">
+                    {data.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>{" "}
+        </center>
       </div>
     </>
   )

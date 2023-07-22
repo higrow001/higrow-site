@@ -64,3 +64,4 @@ export interface PrivateWorkshopData {
 }
 
 export type WorkshopDataType = PublicWorkshopData & PrivateWorkshopData
+export type PublicWorkshopWId = PublicWorkshopData & { id: string }

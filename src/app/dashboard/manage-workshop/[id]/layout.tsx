@@ -4,17 +4,12 @@ import { Button } from "@/components/ui/button"
 import { useAlert } from "@/states/alert"
 import { ChevronLeft, Copy } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useParams, usePathname } from "next/navigation"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { showAutoCloseAlert } = useAlert()
   const pathname = usePathname()
-  const workshop_id = pathname.substring(
-    27,
-    pathname.includes("announcements")
-      ? pathname.indexOf("announcements") - 1
-      : pathname.indexOf("participants") - 1
-  )
+  const params = useParams()
 
   return (
     <>
@@ -31,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             onClick={() => {
               try {
                 navigator.clipboard.writeText(
-                  `${location.origin}/workshop/${workshop_id}`
+                  `${location.origin}/workshop/${params.id}`
                 )
                 showAutoCloseAlert({
                   title: "Link copied in your clipboard.",
@@ -52,7 +47,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="space-y-12">
           <div className="flex justify-between gap-20 items-center px-20 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-background">
             <Link
-              href={`/dashboard/manage-workshop/${workshop_id}/announcements`}
+              href={`/dashboard/manage-workshop/${params.id}/announcements`}
               className="flex-grow"
             >
               <Button
@@ -66,7 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Button>
             </Link>
             <Link
-              href={`/dashboard/manage-workshop/${workshop_id}/participants`}
+              href={`/dashboard/manage-workshop/${params.id}/participants`}
               className="flex-grow"
             >
               <Button

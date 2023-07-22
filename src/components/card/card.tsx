@@ -1,72 +1,50 @@
-import "./card.scss";
-import {
-  BsInstagram,
-  BsWhatsapp,
-  BsDiscord,
-  BsLink45Deg,
-} from "react-icons/bs";
-import Link from "next/link";
+import "./card.scss"
+import { PublicWorkshopWId } from "@/lib/types"
+import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 
-const Card = () => {
+const Card = (
+  props: Pick<
+    PublicWorkshopWId,
+    | "name"
+    | "tagline"
+    | "instructor_name"
+    | "workshop_starting_date"
+    | "is_paid"
+    | "workshop_amount"
+  >
+) => {
   return (
-    <div className="card-binder">
-      <div className="card">
-        <div className="card-container">
-          <div className="card-top">
-            <div className="ct-left">
-              <h1>Complete UI Design Workshop</h1>
-            </div>
-            <div className="ct-right">
-              <p>workshop</p>
-            </div>
-          </div>
-          <div className="card-middle">
-            <div className="cm-top">
-              <p>Biggest Designathon happening online ever in history!</p>
-            </div>
-            <div className="cm-bottom">
-              <div className="cmb-left">
-                <div className="cmb-button">Live</div>
-                <div className="cmb-button">Online</div>
-              </div>
-              <div className="cmb-right">
-                <div className="cmb-links">
-                  {" "}
-                  <BsInstagram />{" "}
-                </div>
-                <div className="cmb-links">
-                  {" "}
-                  <BsWhatsapp />{" "}
-                </div>
-                <div className="cmb-links">
-                  {" "}
-                  <BsDiscord />{" "}
-                </div>
-                <div className="cmb-links">
-                  {" "}
-                  <BsLink45Deg />{" "}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card-bottom">
-            <div className="cbb-left">
-              <div className="cbb-button-category">Design</div>
-              <div className="cbb-button-date">
-                Starts <span>16/07/2023</span>{" "}
-              </div>
-            </div>
-            <div className="registration-button">
-              <Link className="rb-button" href="">
-                {" "}
-                <button> Join ₹299 </button>{" "}
-              </Link>
-            </div>
-          </div>
+    <div className="card">
+      <div className="card-thumbnail">
+        <img src="https://img.freepik.com/free-vector/design-process-concept-landing-page_23-2148313670.jpg" />
+      </div>
+      <div className="card-title">
+        <h1>{props.name}</h1>
+        <div className="instructor-name">
+          {" "}
+          <p>By {props.instructor_name}</p> <span>Workshop</span>{" "}
+        </div>
+      </div>
+      <div className="card-tagline">
+        <p>{props.tagline}</p>
+      </div>
+      <div className="card-extra">
+        <div className="start-date">
+          <p>
+            {" "}
+            Starts -{" "}
+            <span>
+              {" "}
+              {formatDateInDDMMYYYY(props.workshop_starting_date)}{" "}
+            </span>{" "}
+          </p>
+        </div>
+        <div className="price">
+          <p>{props.is_paid ? `${props.workshop_amount}₹` : "FREE"}</p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card

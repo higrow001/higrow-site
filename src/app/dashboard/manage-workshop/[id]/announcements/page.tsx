@@ -1,8 +1,6 @@
 "use client"
-import MakeAnnoucement from "@/components/dashboard/announcement-modal"
 import AnnouncementSkeleton from "@/components/skeletons/workshop-announcements"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { db } from "@/lib/firebase"
 import { Announcement, TimestampType } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
@@ -17,6 +15,12 @@ import {
 } from "firebase/firestore"
 import { XCircle } from "lucide-react"
 import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
+const MakeAnnoucement = dynamic(
+  () => import("@/components/dashboard/announcement-modal"),
+  { ssr: false, loading: () => <Skeleton className="w-full h-16" /> }
+)
 
 export default function Announcements({ params }: { params: { id: string } }) {
   const [isLoading, setIsLoading] = useState(true)

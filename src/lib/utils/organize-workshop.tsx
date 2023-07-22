@@ -16,7 +16,7 @@ export const categories = [
 ]
 
 export const steps = [
-  { title: "Basics", validationFields: ["name", "tagline"] },
+  { title: "Basics", validationFields: ["name", "tagline"], id: "basics" },
   {
     title: "Dates",
     validationFields: [
@@ -24,11 +24,17 @@ export const steps = [
       "workshopStartingDate",
       "workshopEndingDate",
     ],
+    id: "dates",
   },
-  { title: "Links", validationFields: ["contactEmail", "redirectUrl"] },
+  {
+    title: "Links",
+    validationFields: ["contactEmail", "redirectUrl"],
+    id: "links",
+  },
   {
     title: "Description",
     validationFields: ["instructorInfo", "instructorName", "workshopInfo"],
+    id: "description",
   },
   {
     title: "Advanced",
@@ -40,6 +46,7 @@ export const steps = [
       "bankAccNo",
       "bankIFSC",
     ],
+    id: "advanced",
   },
 ]
 
@@ -62,8 +69,8 @@ export const initialValues = {
   instructorInfo: "",
   instructorName: "",
   workshopInfo: "",
-  workingDays: "4",
-  timePerDay: "2",
+  workingDays: "",
+  timePerDay: "",
   timeFormat: "hours",
   describeEachDay: "",
   isPaid: true,
@@ -150,6 +157,42 @@ export const validationSchema = z
     bankIFSC: z.string(),
   })
   .superRefine((val, ctx) => {
+    if (
+      !val.instructorInfo ||
+      val.instructorInfo === "<p><br></p>" ||
+      val.instructorInfo === "<p></p>"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Instructor Info is required.",
+        path: ["instructorInfo"],
+      })
+    }
+
+    if (
+      !val.workshopInfo ||
+      val.workshopInfo === "<p><br></p>" ||
+      val.workshopInfo === "<p></p>"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Workshop Info is required.",
+        path: ["workshopInfo"],
+      })
+    }
+
+    if (
+      !val.describeEachDay ||
+      val.describeEachDay === "<p><br></p>" ||
+      val.describeEachDay === "<p></p>"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Description is required.",
+        path: ["describeEachDay"],
+      })
+    }
+
     if (val.timePerDay <= 0.0001) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

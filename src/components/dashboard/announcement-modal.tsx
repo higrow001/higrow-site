@@ -70,7 +70,7 @@ export default function MakeAnnoucement({
               description: "You can close this popup now.",
             })
           }}
-          className="space-y-8"
+          className="space-y-10"
         >
           <div>
             <Label className="text-lg tracking-wider" htmlFor="title">
@@ -84,11 +84,10 @@ export default function MakeAnnoucement({
             />
           </div>
           <div>
-            <Label className="text-lg tracking-wider" htmlFor="message">
+            <Label className="text-xl tracking-wider" htmlFor="message">
               Message
             </Label>
             <ReactQuill
-              className="text-lg"
               theme="snow"
               modules={{
                 toolbar: [
@@ -110,18 +109,6 @@ export default function MakeAnnoucement({
                   ["clean"],
                 ],
               }}
-              formats={[
-                "header",
-                "bold",
-                "italic",
-                "underline",
-                "strike",
-                "blockquote",
-                "list",
-                "bullet",
-                "indent",
-                "link",
-              ]}
               value={value}
               onChange={(val) => {
                 if (showPreview) setShowPreview(false)
@@ -138,17 +125,6 @@ export default function MakeAnnoucement({
               Preview
             </Button>
             <Button type="submit">Submit</Button>
-            <Button
-              onClick={() => {
-                setTitle("")
-                setValue("")
-                setShowPreview(false)
-              }}
-              variant={"outline"}
-              type="reset"
-            >
-              Reset
-            </Button>
           </div>
         </form>
         {showPreview && (

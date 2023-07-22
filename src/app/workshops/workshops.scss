@@ -1,0 +1,70 @@
+.workshops-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+
+  .wc-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #007dfb;
+    border-bottom: 1px solid black;
+    padding: 3rem 0;
+
+    .header-container {
+      width: 80%;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      .header-up {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 0 2rem;
+
+        .hu-logo {
+          color: white;
+          font-weight: 800;
+          font-style: normal;
+        }
+
+        .hu-search {
+          input {
+            color: #333;
+            letter-spacing: 0.82px;
+          }
+        }
+      }
+
+      .header-tags {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        color: white;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: 0.42px;
+        height: 30px;
+
+        .categories {
+          width: 50%;
+          height: 120%;
+        }
+
+        .categories:hover {
+          padding-top: 5px;
+          padding-bottom: 5px;
+          background-color: white;
+          color: #333;
+          border-radius: 30px;
+          box-shadow: 5px 5px 0 black;
+        }
+      }
+    }
+  }
+}

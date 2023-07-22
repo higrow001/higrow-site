@@ -14,13 +14,7 @@ import {
   orderBy,
 } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import {
-  Announcement,
-  Participant,
-  PrivateWorkshopData,
-  PublicWorkshopData,
-  TimestampType,
-} from "@/lib/types"
+import { Announcement, Participant, PublicWorkshopData } from "@/lib/types"
 
 export async function getWorkshop(id: string, givePrivate = false) {
   const fetchData = await getDoc(doc(db, "workshops", id))
@@ -184,4 +178,52 @@ export async function getParticipants(workshop_id: string) {
     participants: parts,
     requested_participants: req_parts,
   }
+}
+
+interface GetWorkshopProps {
+  [key: string]: string | undefined
+}
+
+export async function getWorkshops({ categories, search }: GetWorkshopProps) {
+  const shops: Data[] = []
+  const everyCategory = categories?.split(".") ?? []
+  const refinedSearch = search?.replace("+", " ") ?? null
+
+  // Build the base query without filters
+  let baseQuery = query(collection(db, "workshops"))
+
+  // Apply filters based on category if provided
+  if (everyCategory.length > 0) {
+    baseQuery = query(baseQuery, where("public.category", "in", everyCategory))
+  }
+
+  // Apply search filter if provided
+  if (refinedSearch) {
+    const searchQuery = query(
+      baseQuery,
+      where("public.name", ">=", refinedSearch),
+      where("public.name", "<=", refinedSearch + "\uf8ff")
+    )
+
+    const data = await getDocs(searchQuery)
+    console.log(data.docs)
+
+    if (!data.empty) {
+      data.docs.forEach((doc) => {
+        // Firestore query already takes care of the prefix search, so we don't need additional filtering
+        shops.push({ id: doc.id, ...doc.data().public })
+      })
+    }
+  } else {
+    // If no search term is provided, fetch all workshops based on the previous filters
+    const data = await getDocs(baseQuery)
+
+    if (!data.empty) {
+      data.docs.forEach((doc) => {
+        shops.push({ id: doc.id, ...doc.data().public })
+      })
+    }
+  }
+
+  return shops
 }

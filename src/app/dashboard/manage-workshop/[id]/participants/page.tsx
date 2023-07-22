@@ -2,7 +2,6 @@
 import { getParticipants } from "@/app/_actions/workshop"
 import ParticipantsSkeleton from "@/components/skeletons/workkshop-participants"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,

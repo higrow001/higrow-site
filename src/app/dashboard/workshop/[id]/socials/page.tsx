@@ -1,7 +1,7 @@
 import { getWorkshop } from "@/app/_actions/workshop"
 import { Button } from "@/components/ui/button"
 import { PublicWorkshopData } from "@/lib/types"
-import { Facebook, Instagram, Link, Mail, Youtube } from "lucide-react"
+import { Link } from "lucide-react"
 import { BiInfoCircle } from "react-icons/bi"
 import {
   RiDiscordLine,
@@ -13,7 +13,8 @@ import {
 } from "react-icons/ri"
 
 export default async function Socials({ params }: { params: { id: string } }) {
-  const { social_links }: PublicWorkshopData = await getWorkshop(params.id)
+  const { social_links, instructor_name }: PublicWorkshopData =
+    await getWorkshop(params.id)
   return (
     <>
       <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-5">
@@ -52,35 +53,77 @@ export default async function Socials({ params }: { params: { id: string } }) {
                   return <RiMailLine className="w-7 h-7" />
                 })()}
               </div>
-              <span className="text-lg font-semibold">
-                {(() => {
-                  if (link.includes("youtube.com") || link.includes("youtu.be"))
-                    return "Youtube"
-                  if (
-                    link.includes("instagram.com") ||
-                    link.includes("instagr.am") ||
-                    link.includes("ig.me")
-                  )
-                    return "Instagram"
-                  if (
-                    link.includes("facebook.com") ||
-                    link.includes("fb.com") ||
-                    link.includes("fb.me") ||
-                    link.includes("fb.gg") ||
-                    link.includes("fb.watch")
-                  )
-                    return "Facebook"
-                  if (
-                    link.includes("discord.gg") ||
-                    link.includes("discord.com") ||
-                    link.includes("discord.new")
-                  )
-                    return "Discord"
-                  if (link.includes("whatsapp.com") || link.includes("wa.me"))
-                    return "WhatsApp"
-                  return "Mail"
-                })()}
-              </span>
+              <div className="space-y-1 flex flex-col">
+                <span className="text-lg font-semibold">
+                  {(() => {
+                    if (
+                      link.includes("youtube.com") ||
+                      link.includes("youtu.be")
+                    )
+                      return "Youtube"
+                    if (
+                      link.includes("instagram.com") ||
+                      link.includes("instagr.am") ||
+                      link.includes("ig.me")
+                    )
+                      return "Instagram"
+                    if (
+                      link.includes("facebook.com") ||
+                      link.includes("fb.com") ||
+                      link.includes("fb.me") ||
+                      link.includes("fb.gg") ||
+                      link.includes("fb.watch")
+                    )
+                      return "Facebook"
+                    if (
+                      link.includes("discord.gg") ||
+                      link.includes("discord.com") ||
+                      link.includes("discord.new")
+                    )
+                      return "Discord"
+                    if (link.includes("whatsapp.com") || link.includes("wa.me"))
+                      return "WhatsApp"
+                    return "Mail"
+                  })()}
+                </span>
+                <span>
+                  {instructor_name +
+                    "'s " +
+                    (() => {
+                      if (
+                        link.includes("youtube.com") ||
+                        link.includes("youtu.be")
+                      )
+                        return "Youtube"
+                      if (
+                        link.includes("instagram.com") ||
+                        link.includes("instagr.am") ||
+                        link.includes("ig.me")
+                      )
+                        return "Instagram"
+                      if (
+                        link.includes("facebook.com") ||
+                        link.includes("fb.com") ||
+                        link.includes("fb.me") ||
+                        link.includes("fb.gg") ||
+                        link.includes("fb.watch")
+                      )
+                        return "Facebook"
+                      if (
+                        link.includes("discord.gg") ||
+                        link.includes("discord.com") ||
+                        link.includes("discord.new")
+                      )
+                        return "Discord"
+                      if (
+                        link.includes("whatsapp.com") ||
+                        link.includes("wa.me")
+                      )
+                        return "WhatsApp"
+                      return "Mail"
+                    })()}
+                </span>
+              </div>
             </div>
             <a
               className="inline-block w-full"
