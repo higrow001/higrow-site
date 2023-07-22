@@ -1,6 +1,4 @@
 .card {
-  width: 631px;
-  height: 338px;
   border: 2px solid black;
   display: flex;
   flex-direction: column;
@@ -22,8 +20,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    
 
     .card-top {
       height: 30%;
@@ -56,43 +52,42 @@
     }
   }
 
-    .card-middle {
-      height: 40%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  .card-middle {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      p {
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 600;
-        letter-spacing: 0.59px;
-        margin: 0;
-      }
-      span {
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 400;
-        letter-spacing: 0.89px;
-        margin: 0;
-      }
+    p {
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.59px;
+      margin: 0;
     }
-    .price {
-      flex: 1; /* The price will take up 50% of the available space */
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    span {
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: 0.89px;
+      margin: 0;
+    }
+  }
+  .price {
+    flex: 1; /* The price will take up 50% of the available space */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      p {
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 24px;
-        letter-spacing: 0.72px;
-        margin: 0;
-      }
+    p {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0.72px;
+      margin: 0;
     }
   }
 }
