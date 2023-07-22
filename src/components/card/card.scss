@@ -1,14 +1,7 @@
-// card.scss
-
 .card {
-  border: 1px solid black;
-  background-color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s ease;
-  margin-bottom: 20px;
-  flex: 1 1 auto;
-  position: relative;
+  width: 631px;
+  height: 338px;
+  border: 2px solid black;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -28,24 +21,13 @@
     border-bottom: 1px solid black;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    flex-grow: 2;
     justify-content: space-between;
 
-    h1 {
-      font-family: "Archivo", sans-serif;
-      font-size: 22px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 32px;
-      letter-spacing: 0.6px;
-      width: 90%;
-      margin: 0 auto;
-      max-height: 64px; /* Set a maximum height for the title */
-      overflow: hidden;
-    }
+    
 
-    .instructor-name {
+    .card-top {
+      height: 30%;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       width: 90%;
@@ -74,35 +56,9 @@
     }
   }
 
-  .card-tagline {
-    border-bottom: 1px solid black;
-    flex-grow: 2;
-    p {
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 24px;
-      letter-spacing: 0.39px;
-      width: 90%;
-      margin: auto;
-      margin-top: 25px;
-      margin-bottom: 25px;
-      max-height: 48px; /* Set a maximum height for the title */
-      overflow: hidden;
-    }
-  }
-
-  .card-extra {
-    display: flex;
-    justify-content: center; /* Center the start date and price horizontally */
-    align-items: center; /* Center the start date and price vertically */
-    margin-bottom: 0;
-    height: 65px;
-
-    .start-date {
-      flex: 1.5; /* The start date will take up 50% of the available space */
-      border-right: 1px solid black;
-      height: 100%;
+    .card-middle {
+      height: 40%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
