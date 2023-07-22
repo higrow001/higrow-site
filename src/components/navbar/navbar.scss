@@ -9,6 +9,13 @@
   color: #757575;
   background-color: hsl(var(--accent));
 }
+@media screen and (max-width: 1023px) {
+  .navbar-container {
+    flex-direction: column;
+    text-align: initial;
+    height: initial;
+  }
+}
 
 .nav-logo {
   width: 25%;
@@ -22,9 +29,18 @@
   font-size: 32px;
 }
 
+@media screen and (max-width: 1023px) {
+  .nav-logo {
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    width: 100%;
+    font-size: 1.5rem;
+    border-right: 0 solid black;
+  }
+}
+
 .nav-links {
   width: 50%;
-  display: flex;
   justify-content: space-evenly;
   align-items: center;
   border-right: 1px solid black;
@@ -37,7 +53,6 @@
 }
 .nav-buttons {
   width: 25%;
-  display: flex;
   align-items: center;
   justify-content: end;
 

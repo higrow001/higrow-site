@@ -1,6 +1,5 @@
 "use client"
 
-import "./signin.scss"
 import Link from "next/link"
 import { FcGoogle } from "react-icons/fc"
 import { signInWithEmailAndPassword } from "firebase/auth"
@@ -85,26 +84,26 @@ const SignIn = () => {
   }
 
   return (
-    <main className="flex justify-center min-h-full items-center bg-accent">
-      <div className="p-20 max-w-xl border shadow flex flex-col items-center space-y-20 rounded-lg w-full signup-card bg-background">
-        <h1 className="text-4xl font-archivo font-bold text-[#333333]">
+    <main className="flex justify-center min-h-full items-center bg-accent w-full py-10">
+      <div className="md:px-20 px-8 py-20 mx-4 max-w-xl border shadow flex flex-col items-center space-y-20 rounded-lg w-full bg-background">
+        <h1 className="text-2xl md:text-4xl font-archivo font-bold text-[#333333]">
           Sign in for HiGrow
         </h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(signInUser)}
-            className="space-y-20 w-full"
+            className="space-y-10 md:space-y-20 w-full"
           >
             <div className="flex flex-col space-y-8 items-center w-full">
               <Button
                 type="button"
                 variant="outline"
                 size="xl"
-                className="space-x-3 w-full text-lg rounded-lg"
+                className="space-x-3 w-full md:text-lg rounded-lg"
                 onClick={async () => loginWithGoogle()}
               >
-                <FcGoogle className="text-3xl" />
-                <span>Continue with Google</span>
+                <FcGoogle className="md:text-3xl text-2xl shrink-0" />
+                <span className="shrink-0">Continue with Google</span>
               </Button>
               <div className="relative w-full">
                 <div className="absolute inset-0 flex items-center">
@@ -123,7 +122,7 @@ const SignIn = () => {
                   <FormItem className="w-full">
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4"
                         type="email"
                         placeholder="Email"
                         {...field}
@@ -140,7 +139,7 @@ const SignIn = () => {
                   <FormItem className="w-full">
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4"
                         type="password"
                         placeholder="Password"
                         {...field}
@@ -153,17 +152,21 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col space-y-8 items-center w-full">
               <Button
-                className="text-lg font-archivo w-full px-6 rounded-xl"
+                className="md:text-lg font-archivo w-full px-6 rounded-xl"
                 type="submit"
                 size="xl"
               >
                 Sign in
               </Button>
-              <p className="text-lg font-medium text-[#757575]">
+              <p className="md:text-lg font-medium text-[#757575]">
                 Don't have an account?{" "}
                 <Link
                   className="text-primary-lighter font-semibold"
-                  href={`/signup${redirectPath ?? ""}`}
+                  href={`/signup${
+                    redirectPath !== "" && redirectPath !== null
+                      ? `?redirect=${redirectPath}`
+                      : ""
+                  }`}
                 >
                   Sign up
                 </Link>

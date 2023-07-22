@@ -1,28 +1,11 @@
-// card.scss
-
-.card-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .card {
-  width: calc(25.33% - 20px); /* 33% width with 20px margin between cards */
-  min-width: 250px;
-  border: 1px solid black;
-  background-color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s ease;
-  margin-bottom: 20px;
-  flex: 1 1 auto;
-  position: relative;
+  border: 2px solid black;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin: 0 auto;
   max-width: 400px;
-  margin-bottom: 120px;
+  width: 100%;
+  height: 100%;
 
   .card-thumbnail img {
     width: 100%;
@@ -36,24 +19,11 @@
     border-bottom: 1px solid black;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    justify-content: space-between;
 
-
-    h1 {
-      font-family: "Archivo", sans-serif;
-      font-size: 22px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 32px;
-      letter-spacing: 0.6px;
-      min-height: 70px;
-      width: 90%;
-      margin: auto;
-      max-height: 64px; /* Set a maximum height for the title */
-  overflow: hidden;
-    }
-
-    .instructor-name {
+    .card-top {
+      height: 30%;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       width: 90%;
@@ -82,88 +52,46 @@
     }
   }
 
-  .card-tagline {
-    border-bottom: 1px solid black;
+  .card-middle {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     p {
       font-size: 13px;
       font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.59px;
+      margin: 0;
+    }
+    span {
+      font-size: 13px;
+      font-style: normal;
       font-weight: 400;
-      line-height: 24px;
-      letter-spacing: 0.39px;
-      width: 90%;
-      margin: auto;
-      margin-top: 25px;
-      margin-bottom: 25px;
-      max-height: 48px; /* Set a maximum height for the title */
-      overflow: hidden;
+      letter-spacing: 0.89px;
+      margin: 0;
     }
   }
-
-  .card-extra {
+  .price {
+    flex: 1; /* The price will take up 50% of the available space */
+    height: 100%;
     display: flex;
-  justify-content: center; /* Center the start date and price horizontally */
-  align-items: center; /* Center the start date and price vertically */
-  margin-bottom: 0;
-  height: 65px;
+    align-items: center;
+    justify-content: center;
 
-    .start-date {
-      flex: 1.5; /* The start date will take up 50% of the available space */
-      border-right: 1px solid black;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      p {
-        font-size: 13px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: 0.59px;
-    margin: 0;
-      }
-      span {
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 400;
-        letter-spacing: 0.89px;
-        margin: 0;
-      }
-    }
-    .price {
-      flex: 1; /* The price will take up 50% of the available space */
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-
-      p {
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 24px;
-        letter-spacing: 0.72px;
-        margin: 0;
-      }
+    p {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0.72px;
+      margin: 0;
     }
   }
 }
 
 .card:hover {
   box-shadow: 4px 4px 0 #333;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 1200px) {
-  .card {
-    width: calc(50% - 20px); /* 50% width with 20px margin between cards for tablets */
-    max-width: 400px;
-  }
-}
-
-@media (max-width: 767px) {
-  .card {
-    width: 100%; /* 100% width for mobiles */
-    max-width: 320px;
-  }
 }

@@ -1,4 +1,5 @@
 "use client"
+import "react-quill/dist/quill.snow.css"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { auth, db } from "@/lib/firebase"
@@ -34,6 +35,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useAlert } from "@/states/alert"
 import { Info, Loader2 } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
+import ReactQuill from "react-quill"
 
 const allLinks = (...links: string[]) => {
   const finalLinks: string[] = []
@@ -69,9 +71,36 @@ export default function CreateWorkshop() {
     name: "isPaid",
     defaultValue: true,
   })
+  const instructorInfoValue = useWatch({
+    control: form.control,
+    name: "instructorInfo",
+    defaultValue: "",
+  })
+  const workshopInfoValue = useWatch({
+    control: form.control,
+    name: "workshopInfo",
+    defaultValue: "",
+  })
+  const describeEachDayValue = useWatch({
+    control: form.control,
+    name: "describeEachDay",
+    defaultValue: "",
+  })
 
-  const handleNextStep = () => setActiveStep(activeStep + 1)
-  const handlePreviousStep = () => setActiveStep(activeStep - 1)
+  const handleNextStep = () => {
+    if (document) {
+      const reqEl = document.getElementById(steps[activeStep + 1].id)
+      reqEl?.scrollIntoView({ behavior: "smooth", inline: "center" })
+    }
+    setActiveStep(activeStep + 1)
+  }
+  const handlePreviousStep = () => {
+    if (document) {
+      const reqEl = document.getElementById(steps[activeStep - 1].id)
+      reqEl?.scrollIntoView({ behavior: "smooth", inline: "center" })
+    }
+    setActiveStep(activeStep - 1)
+  }
 
   const router = useRouter()
   useEffect(() => {
@@ -171,23 +200,25 @@ export default function CreateWorkshop() {
 
   return (
     <Form {...form}>
-      <main className="max-w-4xl w-full py-24 space-y-8 mx-auto">
+      <main className="max-w-4xl px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
         <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
-          <div className="flex justify-between items-center mb-20">
-            <Link href="/organize" className="flex space-x-1 items-center">
+          <div className="flex justify-between md:items-center mb-16 md:mb-20 flex-col gap-y-2 md:flex-row">
+            <Link
+              href="/organize"
+              className="flex space-x-1 items-center w-fit"
+            >
               <Button className="text-base" variant={"ghost"}>
-                <ChevronLeft className="w-6 h-6 mr-2" />
+                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                 <span>Go back</span>
               </Button>
             </Link>
-            <div className="flex space-x-6 items-center">
+            <div className="flex space-x-3 md:space-x-6 items-center justify-end">
               {activeStep > 0 && (
                 <Button
                   type="button"
-                  size="lg"
                   variant="outline"
                   onClick={handlePreviousStep}
-                  className="bg-transparent border-[#333]"
+                  className="bg-transparent border-secondary h-9 md:h-11 rounded-md md:px-8"
                 >
                   Previous
                 </Button>
@@ -195,10 +226,9 @@ export default function CreateWorkshop() {
               {activeStep < steps.length - 1 && (
                 <Button
                   type="button"
-                  size="lg"
                   variant="outline"
                   onClick={handleNextStep}
-                  className="bg-transparent border-[#333]"
+                  className="bg-transparent border-secondary h-9 md:h-11 rounded-md md:px-8"
                 >
                   Next
                 </Button>
@@ -207,8 +237,7 @@ export default function CreateWorkshop() {
                 <Button
                   type="submit"
                   variant="secondary"
-                  size="lg"
-                  className="border border-secondary"
+                  className="border border-secondary h-9 md:h-11 rounded-md md:px-8"
                   onClick={() => {
                     if (!form.formState.isValid) {
                       showAutoCloseAlert({
@@ -247,16 +276,24 @@ export default function CreateWorkshop() {
               )}
             </div>
           </div>
-          <div className="flex justify-between gap-5 items-center px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-[#fff]">
+          <div className="flex justify-between gap-5 items-center px-8 overflow-x-auto lg:px-16 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-[#fff] snap-x snap-mandatory">
             {steps.map((step, index) => (
               <button
-                className={`text-lg py-3 px-5 flex-grow rounded-lg ${
+                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${
                   index === activeStep
                     ? "bg-[#333] text-neutral-200"
                     : " text-[#757575]"
                 }`}
                 key={step.title}
-                onClick={() => setActiveStep(index)}
+                id={step.id}
+                onClick={(e) => {
+                  const target = e.target as Element
+                  target.scrollIntoView({
+                    behavior: "smooth",
+                    inline: "center",
+                  })
+                  setActiveStep(index)
+                }}
                 type="button"
               >
                 {step.title}
@@ -265,7 +302,7 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
               activeStep === 0 ? "block" : "hidden"
             }`}
           >
@@ -274,10 +311,10 @@ export default function CreateWorkshop() {
               name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-xl">Title</FormLabel>
+                  <FormLabel className="text-lg md:text-xl">Title</FormLabel>
                   <FormControl>
                     <Input
-                      className="px-4 text-lg"
+                      className="px-4"
                       placeholder="Web development bootcamp"
                       {...field}
                     />
@@ -291,10 +328,10 @@ export default function CreateWorkshop() {
               name="tagline"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-xl">Tagline</FormLabel>
+                  <FormLabel className="text-xl md:text-xl">Tagline</FormLabel>
                   <FormControl>
                     <Input
-                      className="px-4 text-lg"
+                      className="px-4"
                       placeholder="e.g. Best Web Development workshop in hindi"
                       {...field}
                     />
@@ -304,38 +341,39 @@ export default function CreateWorkshop() {
               )}
             />
             <div className="space-y-4">
-              <h1 className="text-xl font-semibold text-[#333]">Mode</h1>
+              <h1 className="text-lg md:text-xl font-semibold text-[#333]">
+                Mode
+              </h1>
               <div className="flex space-x-3 items-center">
                 <Button
                   variant={modeValue === "Online" ? "default" : "outline"}
-                  className={` font-semibold border rounded-full`}
+                  className={` font-semibold border rounded-full md:h-11 md:px-8`}
                   onClick={() => form.setValue("mode", "Online")}
                   type="button"
-                  size="lg"
                 >
                   Online
                 </Button>
                 <Button
                   variant={modeValue === "Offline" ? "default" : "outline"}
-                  className={`border font-semibold border rounded-full`}
+                  className={`border font-semibold rounded-full md:h-11 md:px-8`}
                   onClick={() => form.setValue("mode", "Offline")}
                   type="button"
-                  size="lg"
                 >
                   Offline
                 </Button>
               </div>
             </div>
             <div className="space-y-4">
-              <h1 className="text-xl font-semibold text-[#333]">Category</h1>
+              <h1 className="text-lg md:text-xl font-semibold text-[#333]">
+                Category
+              </h1>
               <div className="flex w-full flex-wrap gap-3">
                 {categories.map((category) => (
                   <Button
                     key={category}
                     onClick={() => form.setValue("category", category)}
                     variant={categoryValue === category ? "default" : "outline"}
-                    size="lg"
-                    className={`border font-semibold border rounded-full`}
+                    className={`border font-semibold rounded-full md:h-11 md:px-8`}
                     type="button"
                   >
                     {category}
@@ -346,7 +384,7 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: Second Tab */}
           <div
-            className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
               activeStep === 1 ? "block" : "hidden"
             }`}
           >
@@ -355,13 +393,11 @@ export default function CreateWorkshop() {
               name="applicationClosingDate"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-xl">Application Close</FormLabel>
+                  <FormLabel className="text-lg md:text-xl">
+                    Application Close
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      className="px-4 text-lg"
-                      type="datetime-local"
-                      {...field}
-                    />
+                    <Input className="px-4" type="datetime-local" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -372,13 +408,11 @@ export default function CreateWorkshop() {
               name="workshopStartingDate"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-xl">Workshop starting</FormLabel>
+                  <FormLabel className="text-lg md:text-xl">
+                    Workshop starting
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      className="px-4 text-lg"
-                      type="datetime-local"
-                      {...field}
-                    />
+                    <Input className="px-4" type="datetime-local" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -389,13 +423,11 @@ export default function CreateWorkshop() {
               name="workshopEndingDate"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-xl">Workshop ending</FormLabel>
+                  <FormLabel className="text-lg md:text-xl">
+                    Workshop ending
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      className="px-4 text-lg"
-                      type="datetime-local"
-                      {...field}
-                    />
+                    <Input className="px-4" type="datetime-local" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -405,7 +437,7 @@ export default function CreateWorkshop() {
           {/*TODO: Third Step */}
           <>
             <div
-              className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
                 activeStep === 2 ? "block" : "hidden"
               }`}
             >
@@ -414,10 +446,12 @@ export default function CreateWorkshop() {
                 name="contactEmail"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Contact email</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Contact email
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4"
                         placeholder="e.g. help@higrow.com"
                         {...field}
                       />
@@ -431,12 +465,12 @@ export default function CreateWorkshop() {
                 name="redirectUrl"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-lg md:text-xl">
                       Where people will be redirected to after joining?
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4"
                         placeholder="e.g. link of your whatsapp group invite"
                         {...field}
                       />
@@ -447,7 +481,7 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
                 activeStep === 2 ? "block" : "hidden"
               }`}
             >
@@ -456,9 +490,11 @@ export default function CreateWorkshop() {
                 name="websiteLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Website</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Website
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -469,9 +505,11 @@ export default function CreateWorkshop() {
                 name="facebookLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Facebook</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Facebook
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -482,9 +520,11 @@ export default function CreateWorkshop() {
                 name="discordLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Discord</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Discord
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -495,9 +535,11 @@ export default function CreateWorkshop() {
                 name="whatsappLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Whatsapp</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Whatsapp
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -508,9 +550,11 @@ export default function CreateWorkshop() {
                 name="instagramLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Instagram</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Instagram
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -521,9 +565,11 @@ export default function CreateWorkshop() {
                 name="youtubeLink"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">Youtube</FormLabel>
+                    <FormLabel className="text-lg md:text-xl">
+                      Youtube
+                    </FormLabel>
                     <FormControl>
-                      <Input className="px-4 text-lg" {...field} />
+                      <Input className="px-4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -533,18 +579,18 @@ export default function CreateWorkshop() {
           </>
           {/*TODO: Fourth Step */}
           {activeStep === 3 && (
-            <div className="py-16 px-10 space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
+            <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333]">
               <FormField
                 control={form.control}
                 name="instructorName"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-lg md:text-xl">
                       Name of Instructor
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4"
                         placeholder="e.g. Puneet Kathuria"
                         {...field}
                       />
@@ -556,13 +602,37 @@ export default function CreateWorkshop() {
               <FormField
                 control={form.control}
                 name="instructorInfo"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-lg md:text-xl">
                       Tell us more about Instructor
                     </FormLabel>
                     <FormControl>
-                      <Textarea rows={6} className="px-4 text-lg" {...field} />
+                      <ReactQuill
+                        theme="snow"
+                        modules={{
+                          toolbar: [
+                            [{ header: [1, 2, false] }],
+                            [
+                              "bold",
+                              "italic",
+                              "underline",
+                              "strike",
+                              "blockquote",
+                              "link",
+                            ],
+                            [
+                              { list: "ordered" },
+                              { list: "bullet" },
+                              { indent: "-1" },
+                              { indent: "+1" },
+                            ],
+                            ["clean"],
+                          ],
+                        }}
+                        value={instructorInfoValue}
+                        onChange={(val) => form.setValue("instructorInfo", val)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -571,13 +641,37 @@ export default function CreateWorkshop() {
               <FormField
                 control={form.control}
                 name="workshopInfo"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-lg md:text-xl">
                       Tell us more about this Workshop
                     </FormLabel>
                     <FormControl>
-                      <Textarea rows={6} className="px-4 text-lg" {...field} />
+                      <ReactQuill
+                        theme="snow"
+                        modules={{
+                          toolbar: [
+                            [{ header: [1, 2, false] }],
+                            [
+                              "bold",
+                              "italic",
+                              "underline",
+                              "strike",
+                              "blockquote",
+                              "link",
+                            ],
+                            [
+                              { list: "ordered" },
+                              { list: "bullet" },
+                              { indent: "-1" },
+                              { indent: "+1" },
+                            ],
+                            ["clean"],
+                          ],
+                        }}
+                        value={workshopInfoValue}
+                        onChange={(val) => form.setValue("workshopInfo", val)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -588,24 +682,24 @@ export default function CreateWorkshop() {
           {/* TODO: Fifth Step */}
           <>
             <div
-              className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
                 activeStep === 4 ? "block" : "hidden"
               }`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row lg:items-center gap-2">
                 <FormField
                   control={form.control}
                   name="workingDays"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel className="text-xl">
+                      <FormLabel className="text-lg md:text-xl">
                         Workshop duration (in days)
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={1}
-                          className="px-4 text-lg"
+                          className="px-4"
                           placeholder="e.g. 4"
                           {...field}
                         />
@@ -619,14 +713,16 @@ export default function CreateWorkshop() {
                   name="timePerDay"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel className="text-xl flex space-x-1">
+                      <FormLabel className="text-lg md:text-xl flex space-x-1">
                         <span>Duration per day</span>
                         <FormField
                           control={form.control}
                           name="timeFormat"
                           render={({ field }) => (
                             <FormItem className="flex items-center space-y-0 space-x-2">
-                              <FormLabel className="text-xl">(in</FormLabel>
+                              <FormLabel className="text-lg md:text-xl">
+                                (in
+                              </FormLabel>
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={field.onChange}
@@ -661,7 +757,7 @@ export default function CreateWorkshop() {
                         <Input
                           type="number"
                           min={1}
-                          className="px-4 text-lg"
+                          className="px-4"
                           placeholder="e.g. 4"
                           {...field}
                         />
@@ -674,17 +770,39 @@ export default function CreateWorkshop() {
               <FormField
                 control={form.control}
                 name="describeEachDay"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-lg md:text-xl">
                       What you'll teach in each day
                     </FormLabel>
                     <FormControl>
-                      <Textarea
-                        className="px-4 text-lg"
-                        rows={6}
+                      <ReactQuill
+                        theme="snow"
                         placeholder="Describe in brief what you will teach in each day of this workshop. e.g. Day - 1 : We'll learn basics of designing by doing some projects, Day 2 - ..."
-                        {...field}
+                        modules={{
+                          toolbar: [
+                            [{ header: [1, 2, false] }],
+                            [
+                              "bold",
+                              "italic",
+                              "underline",
+                              "strike",
+                              "blockquote",
+                              "link",
+                            ],
+                            [
+                              { list: "ordered" },
+                              { list: "bullet" },
+                              { indent: "-1" },
+                              { indent: "+1" },
+                            ],
+                            ["clean"],
+                          ],
+                        }}
+                        value={describeEachDayValue}
+                        onChange={(val) =>
+                          form.setValue("describeEachDay", val)
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -693,18 +811,18 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
                 activeStep === 4 ? "block" : "hidden"
               }`}
             >
               <div className="space-y-4">
-                <h1 className="text-xl font-semibold text-[#333]">
+                <h1 className="text-lg md:text-xl font-semibold text-[#333]">
                   Is it a paid opportunity?
                 </h1>
                 <div className="flex space-x-4 items-center">
                   <Button
                     variant={isPaidValue ? "default" : "outline"}
-                    className={`border font-semibold border rounded-full`}
+                    className={`border font-semibold rounded-full`}
                     type="button"
                     size="lg"
                     onClick={() => form.setValue("isPaid", true)}
@@ -713,7 +831,7 @@ export default function CreateWorkshop() {
                   </Button>
                   <Button
                     variant={!isPaidValue ? "default" : "outline"}
-                    className={`border font-semibold border rounded-full`}
+                    className={`border font-semibold rounded-full`}
                     type="button"
                     size="lg"
                     onClick={() => form.setValue("isPaid", false)}
@@ -731,7 +849,7 @@ export default function CreateWorkshop() {
                   }`}
                 >
                   <Info className="w-20 h-20" />
-                  <p>
+                  <p className="text-sm md:text-base">
                     Fill in the details of the account to which you would want
                     the collected amount to be transferred by us once the
                     registrations are closed. The organizers have to fill in the
@@ -741,7 +859,7 @@ export default function CreateWorkshop() {
                   </p>
                 </div>
                 <div
-                  className={`py-16 px-10 space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
+                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-2 border-[#333] rounded-md shadow-[4px_4px_0_#333] bg-white ${
                     activeStep === 4 ? "block" : "hidden"
                   }`}
                 >
@@ -750,14 +868,14 @@ export default function CreateWorkshop() {
                     name="workshopAmount"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-xl">
+                        <FormLabel className="text-lg md:text-xl">
                           Entry Amount/Fee (in INR)
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             min={0}
-                            className="px-4 text-lg"
+                            className="px-4"
                             {...field}
                           />
                         </FormControl>
@@ -770,11 +888,11 @@ export default function CreateWorkshop() {
                     name="bankName"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-xl">
+                        <FormLabel className="text-lg md:text-xl">
                           Account holder name
                         </FormLabel>
                         <FormControl>
-                          <Input className="px-4 text-lg" {...field} />
+                          <Input className="px-4" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -785,9 +903,11 @@ export default function CreateWorkshop() {
                     name="bankEmail"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-xl">Email</FormLabel>
+                        <FormLabel className="text-lg md:text-xl">
+                          Email
+                        </FormLabel>
                         <FormControl>
-                          <Input className="px-4 text-lg" {...field} />
+                          <Input className="px-4" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -798,11 +918,11 @@ export default function CreateWorkshop() {
                     name="bankAccNo"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-xl">
+                        <FormLabel className="text-lg md:text-xl">
                           Account Number
                         </FormLabel>
                         <FormControl>
-                          <Input className="px-4 text-lg" {...field} />
+                          <Input className="px-4" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -813,9 +933,11 @@ export default function CreateWorkshop() {
                     name="bankIFSC"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-xl">IFSC Code</FormLabel>
+                        <FormLabel className="text-lg md:text-xl">
+                          IFSC Code
+                        </FormLabel>
                         <FormControl>
-                          <Input className="px-4 text-lg" {...field} />
+                          <Input className="px-4" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

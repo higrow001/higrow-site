@@ -92,3 +92,10 @@ body {
   color: white;
   background: #222;
 }
+
+.ql-editor {
+  min-height: 150px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 1rem;
+}

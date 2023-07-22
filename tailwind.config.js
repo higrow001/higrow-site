@@ -66,14 +66,35 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "nav-show": {
+          from: { height: 0 },
+          to: { height: "var(--nav-collapsible-height)" },
+        },
+        "nav-hide": {
+          from: { height: "var(--nav-collapsible-height)" },
+          to: { height: 0 },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "nav-show": "nav-show 0.2s ease-out forwards",
+        "nav-hide": "nav-hide 0.2s ease-out forwards",
       },
       fontFamily: {
         sans: ["var(--font-public-sans)"],
         archivo: ["var(--font-archivo)"],
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            p: {
+              "& br:first-of-type": {
+                display: "none",
+              },
+            },
+          },
+        },
       },
     },
   },

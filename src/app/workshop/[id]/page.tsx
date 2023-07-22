@@ -40,25 +40,28 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                 <h2 className="text-3xl text-secondary font-medium">
                   About Instructor :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7 ">
-                  {data.instructor_info}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.instructor_info }}
+                ></div>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
                   About Workshop :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">
-                  {data.workshop_info}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.workshop_info }}
+                ></div>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
-                  About Instructor :-
+                  What you'll learn :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">
-                  {data.describe_each_day}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.describe_each_day }}
+                ></div>
               </div>
               <div
                 className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
