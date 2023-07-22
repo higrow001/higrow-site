@@ -124,13 +124,13 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
               </div>
               <div className="space-y-4">
                 <h3 className="font-medium text-xl">Contact organizer :-</h3>
-                <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">
+                <div className="flex flex-wrap justify-center gap-y-5">
                   {data.social_links.map(
                     (link) =>
                       link.length > 0 && (
                         <a
                           key={link}
-                          className="p-3 border border-secondary rounded-md"
+                          className="p-4  w-full border border-secondary rounded-md color-[#fff]"
                           href={link}
                           target="_blank"
                         >
@@ -139,16 +139,113 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                               link.includes("youtube.com") ||
                               link.includes("youtu.be")
                             )
-                              return <Youtube />
+                              return (
+                                <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                  {" "}
+                                  <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                    <Youtube />
+                                  </div>
+                                  <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                    {" "}
+                                    <div className="font-archivo font-medium tracking-wide">
+                                      Puneet's Instagram
+                                    </div>
+                                    <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                    https://instagram.com/puneet.25_
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              )
                             if (link.includes("instagram.com"))
-                              return <Instagram />
+                              return (
+                                <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                  {" "}
+                                  <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                    <Instagram />
+                                  </div>
+                                  <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                    {" "}
+                                    <div className="font-archivo font-medium tracking-wide">
+                                      Puneet's Instagram
+                                    </div>
+                                    <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                    https://instagram.com/puneet.25_
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              )
                             if (link.includes("facebook.com"))
-                              return <Facebook />
+                              return (
+                                <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                  {" "}
+                                  <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                    <Facebook/>
+                                  </div>
+                                  <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                    {" "}
+                                    <div className="font-archivo font-medium tracking-wide">
+                                      Puneet's Instagram
+                                    </div>
+                                    <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                    https://instagram.com/puneet.25_
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              )
                             if (link.includes("discord.gg"))
-                              return <RiDiscordLine className="text-2xl" />
+                              return (
+                                <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                  {" "}
+                                  <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                  <RiDiscordLine className="text-2xl" />
+                                  </div>
+                                  <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                    {" "}
+                                    <div className="font-archivo font-medium tracking-wide">
+                                      Puneet's Instagram
+                                    </div>
+                                    <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                    https://instagram.com/puneet.25_
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              )
                             if (link.includes("whatsapp.com"))
-                              return <RiWhatsappLine className="text-2xl" />
-                            return <Mail />
+                              return (
+                                <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                  {" "}
+                                  <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                  <RiWhatsappLine className="text-2xl" />
+                                  </div>
+                                  <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                    {" "}
+                                    <div className="font-archivo font-medium tracking-wide">
+                                      Puneet's Instagram
+                                    </div>
+                                    <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                    https://instagram.com/puneet.25_
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              )
+                            return (
+                              <div className="w-full p-[5px] pt-2 pb-2 flex">
+                                {" "}
+                                <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                <Mail />
+                                </div>
+                                <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
+                                  {" "}
+                                  <div className="font-archivo font-medium tracking-wide">
+                                    Puneet's Instagram
+                                  </div>
+                                  <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
+                                  https://instagram.com/puneet.25_
+                                  </div>{" "}
+                                </div>
+                              </div>
+                            )
+                            
                           })()}
                         </a>
                       )

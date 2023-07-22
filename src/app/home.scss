@@ -439,7 +439,7 @@ center{
 
 .faq-ans{
   text-align: left;
-  padding-bottom: 40px;
+  line-height: 1;
   width: 93%;
   margin: auto;
   color: #333;
@@ -474,6 +474,11 @@ center{
   
 }
 
-.text-2xl a:hover{
+.faq-p a:hover{
   color: #000000;
 }
+
+.pb-4 {
+  padding-bottom: 2.5rem;
+}
+

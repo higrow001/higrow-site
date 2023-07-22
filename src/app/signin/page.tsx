@@ -123,7 +123,7 @@ const SignIn = () => {
                   <FormItem className="w-full">
                     <FormControl>
                       <Input
-                        className="px-4 text-lg"
+                        className="px-4 text-lg outline-0"
                         type="email"
                         placeholder="Email"
                         {...field}
