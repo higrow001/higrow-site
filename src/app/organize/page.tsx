@@ -2,53 +2,28 @@ import "./organize.scss"
 import Image from "next/image"
 import Contestill from "../../assests/contest.webp"
 import Workshopill from "../../assests/workshop.webp"
+import Illustration from "../../assests/illustration.jpg"
 import Link from "next/link"
 
 export default function Organize() {
   return (
     <div className="organize-container">
-      <div className="oc-top">
-        <h1>You don’t have to spend on marketing to reach people 📈</h1>
-        <p>
-          Higrow works as a marketplace for contests and workshops. You can
-          organize your own contest or workshop. What’s different then? Well by
-          using HiGrow, you don’t have to spend on marketing to reach out to
-          more people. You don’t have to be panic about how to recieve money
-          from them. Just focus on what you’re good at. Rest of us is our duty!
-        </p>
-      </div>
-      <h1 className="opportunity-type">Choose opportunity</h1>
-      <div className="oc-bottom">
-        <Link href="/organize/workshop">
-          {" "}
-          <div className="workshop-card">
-            <div className="card-image">
-              <Image src={Workshopill} alt="workshop-option" />
-            </div>
-            <div className="card-text">
+      <div className="organize-categories">
+        <div className="oc-left">
+          <h1>Select an Opportunity you want to organize <span>→</span> </h1>
+        </div>
+        <div className="oc-right">
+          <div className="ocr-cards">
+            <div className="workshop-card">
               <h1>Workshop</h1>
-              <p>
-                It’s period of discussion and practical work on a particular
-                subject.
-              </p>
+              <p>Host an interactive workshop with everything you need with diverse range of workshops categories.</p>
             </div>
-          </div>{" "}
-        </Link>
-        <Link href="/organize/contest">
-          {" "}
-          <div className="contest-card">
-            <div className="card-image">
-              <Image src={Contestill} alt="contest-option" />
-            </div>
-            <div className="card-text">
+            <div className="contest-card">
               <h1>Contest</h1>
-              <p>
-                Contests is an organized event in which people try to win
-                something.
-              </p>
+              <p>Host a contest with everything you need from team building to announcements to finishing and everything in between</p>
             </div>
-          </div>{" "}
-        </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

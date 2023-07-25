@@ -1,141 +1,120 @@
 .organize-container {
-  height: 150vh;
+  
 
-  .oc-top {
-    height: 500px;
-    background-color: #333333;
-    margin-top: 30px;
+  .organize-categories {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    flex-direction: column;
-
-    h1 {
-      font-size: 48px;
-      line-height: 56px;
-      font-weight: 800;
-      text-align: center;
-      letter-spacing: 0.02em;
+    justify-content: space-between;
+    padding-top: 70px;
+    max-width: 90%;
+  margin: auto;
+    .oc-left h1 {
       font-family: "Archivo", sans-serif;
-      width: 60%;
-    }
-    p {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 24px;
-      width: 60%;
-      text-align: center;
-      letter-spacing: 0.03em;
-      margin-top: 30px;
-    }
-  }
-.opportunity-type{
-  font-family: 'Archivo', sans-serif;
-font-style: normal;
-font-weight: 700;
-font-size: 40px;
-line-height: 56px;
-letter-spacing: 0.02em;
-width: 42%;
-text-align: center;
-margin-top: 120px;
-color: #000000;
-}
-  .oc-bottom {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 40px;
-
-    .workshop-card {
-      width: 517px;
-      height: 160px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: 10px;
-      cursor: pointer;
-
-      img {
-        width: 134px;
-        height: 75.85px;
-      }
-
-      .card-text {
-        width: 60%;
-        margin-right: 20px;
-
-        h1 {
-          font-weight: 700;
-          font-size: 24px;
-          line-height: 32px;
-          letter-spacing: 0.03em;
-          color: #000000;
-          font-family: "Public Sans", sans-serif;
-        }
-        p {
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          letter-spacing: 0.03em;
-          color: #333333;
-        }
-
-       
-      }
-     
+      font-size: 42px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 56px;
+      letter-spacing: 0.84px;
+      color: #333;
+      width: 85%;
+      padding-top: 20px;
     }
 
-    .contest-card {
-      width: 517px;
-      height: 160px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: 10px;
-      cursor: pointer;
+    .oc-right {
+      .ocr-cards {
+        .workshop-card {
+          padding: 20px;
+          background-color: white;
+          color: #333;
+          border: 2px solid black;
+          border-radius: 6px;
+          width: 90%;
+          margin: auto;
+          margin-bottom: 30px;
+          padding-top: 25px;
+          padding-bottom: 25px;
+          
 
-      img {
-        width: 134px;
-        height: 75.85px;
-      }
+          h1 {
+            font-family: "Archivo", sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 30px; /* 125% */
+            letter-spacing: 0.48px;
+            width: 90%;
+            margin: auto;
+            margin-bottom: 10px;
+          }
+          p {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px; /* 150% */
+            letter-spacing: 0.48px;
+            width: 90%;
+            margin: auto;
+          }
 
-      .card-text {
-        width: 60%;
-        margin-right: 20px;
-
-        h1 {
-          font-weight: 700;
-          font-size: 24px;
-          line-height: 32px;
-          letter-spacing: 0.03em;
-          color: #000000;
-          font-family: "Public Sans", sans-serif;
+          
         }
-        p {
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          letter-spacing: 0.03em;
-          color: #333333;
+        .workshop-card:hover{
+          cursor: pointer;
+          box-shadow: 3px 3px 0 black;
         }
 
-       
+        .contest-card {
+          padding: 20px;
+          color: #333;
+          border: 2px solid black;
+          border-radius: 6px;
+          position: relative;
+          width: 90%;
+          margin: auto;
+          padding-top: 25px;
+          padding-bottom: 25px;
+
+          h1 {
+            font-family: "Archivo", sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 30px; /* 125% */
+            letter-spacing: 0.48px;
+            width: 90%;
+            margin: auto;
+            margin-bottom: 10px;
+          }
+          p {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px; /* 150% */
+            letter-spacing: 0.48px;
+            width: 90%;
+            margin: auto;
+          }
+          p::after {
+            content: "Coming soon";
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            border-bottom: 2px solid #000;
+            border-left: 2px solid #000;
+            border-radius: 2px;
+            text-align: center;
+            font-size: 7.5px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 16px;
+            letter-spacing: 0.15px;
+            color: white;
+            background-color: #007DFB;
+            padding-left: 13px;
+            padding-right: 13px;
+          }
+        }
       }
     }
   }
-}
-
-.organize-container .oc-bottom .workshop-card:hover{
-  filter: drop-shadow(3px 3px 0px #000000);
-}
-
-.organize-container .oc-bottom .contest-card:hover{
-  filter: drop-shadow(3px 3px 0px #000000);
 }

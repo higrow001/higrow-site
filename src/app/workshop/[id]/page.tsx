@@ -40,25 +40,28 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                 <h2 className="text-3xl text-secondary font-medium">
                   About Instructor :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7 ">
-                  {data.instructor_info}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.instructor_info }}
+                ></div>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
                   About Workshop :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">
-                  {data.workshop_info}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.workshop_info }}
+                ></div>
               </div>
               <div className="space-y-5">
                 <h2 className="text-3xl text-secondary font-medium">
-                  About Instructor :-
+                  What you'll learn :-
                 </h2>
-                <p className="text-[#333] tracking-wide leading-7">
-                  {data.describe_each_day}
-                </p>
+                <div
+                  className="prose max-w-[90ch]"
+                  dangerouslySetInnerHTML={{ __html: data.describe_each_day }}
+                ></div>
               </div>
               <div
                 className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
@@ -148,10 +151,10 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                   <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
                                     {" "}
                                     <div className="font-archivo font-medium tracking-wide">
-                                      Puneet's Instagram
+                                      Puneet's Youtube
                                     </div>
                                     <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                    https://instagram.com/puneet.25_
+                                    youtube.com
                                     </div>{" "}
                                   </div>
                                 </div>
@@ -169,7 +172,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                       Puneet's Instagram
                                     </div>
                                     <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                    https://instagram.com/puneet.25_
+                                    instagram.com
                                     </div>{" "}
                                   </div>
                                 </div>
@@ -184,10 +187,10 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                   <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
                                     {" "}
                                     <div className="font-archivo font-medium tracking-wide">
-                                      Puneet's Instagram
+                                      Puneet's Facebook
                                     </div>
                                     <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                    https://instagram.com/puneet.25_
+                                    facebook.com
                                     </div>{" "}
                                   </div>
                                 </div>
@@ -202,10 +205,10 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                   <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
                                     {" "}
                                     <div className="font-archivo font-medium tracking-wide">
-                                      Puneet's Instagram
+                                      Puneet's Discord
                                     </div>
                                     <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                    https://instagram.com/puneet.25_
+                                    discord.gg
                                     </div>{" "}
                                   </div>
                                 </div>
@@ -220,10 +223,10 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                   <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
                                     {" "}
                                     <div className="font-archivo font-medium tracking-wide">
-                                      Puneet's Instagram
+                                      Puneet's Whatsapp
                                     </div>
                                     <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                    https://instagram.com/puneet.25_
+                                    whatsapp.com
                                     </div>{" "}
                                   </div>
                                 </div>

@@ -16,7 +16,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main className="max-w-4xl w-full py-24 mx-auto">
         <div className="flex justify-between items-center mb-20">
-          <Link href="/dashboard/admin" className="flex space-x-1 items-center">
+          <Link
+            href="/dashboard/enrolled"
+            className="flex space-x-1 items-center"
+          >
             <Button className="text-base" variant={"ghost"}>
               <ChevronLeft className="w-6 h-6 mr-2" />
               <span>Dashboard</span>
@@ -45,9 +48,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Button>
         </div>
         <div className="space-y-12">
-          <div className="flex justify-between gap-20 items-center px-20 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-background">
+          <div className="flex justify-between gap-10 items-center px-20 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-background">
             <Link
-              href={`/dashboard/manage-workshop/${params.id}/announcements`}
+              href={`/dashboard/workshop/${params.id}/announcements`}
               className="flex-grow"
             >
               <Button
@@ -61,17 +64,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Button>
             </Link>
             <Link
-              href={`/dashboard/manage-workshop/${params.id}/participants`}
+              href={`/dashboard/workshop/${params.id}/details`}
               className="flex-grow"
             >
               <Button
                 className="w-full text-base"
-                variant={
-                  pathname.includes("participants") ? "secondary" : "ghost"
-                }
+                variant={pathname.includes("details") ? "secondary" : "ghost"}
                 size={"lg"}
               >
-                All Participants
+                Overview
+              </Button>
+            </Link>
+            <Link
+              href={`/dashboard/workshop/${params.id}/socials`}
+              className="flex-grow"
+            >
+              <Button
+                className="w-full text-base"
+                variant={pathname.includes("socials") ? "secondary" : "ghost"}
+                size={"lg"}
+              >
+                Contact Organizer
               </Button>
             </Link>
           </div>

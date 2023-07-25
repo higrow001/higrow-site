@@ -33,6 +33,7 @@ export default function PaymentButton({
   const [isParticipated, setIsParticipated] = useState(false)
   const [email, setEmail] = useState("")
   const [displayName, setDisplayName] = useState("")
+  const [userID, setUserID] = useState("")
   const { showAlert } = useAlert()
   const [isLoading, setIsLoading] = useState(false)
   const timestamp = new Timestamp(
@@ -53,8 +54,13 @@ export default function PaymentButton({
         .split("; ")
         .find((row) => row.startsWith("display_name="))
         ?.split("=")[1]
+      const userIDCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("uid="))
+        ?.split("=")[1]
       setEmail(emailCookie!)
       setDisplayName(displayNameCookie!)
+      setUserID(userIDCookie!)
     }
   }, [])
 
@@ -110,6 +116,9 @@ export default function PaymentButton({
                     order_id: response.razorpay_order_id,
                     signature: response.razorpay_signature,
                   }),
+                })
+                await updateDoc(doc(db, "users", userID), {
+                  participated_workshops: arrayUnion(workshopId),
                 })
                 await joinWorkshop(workshopId)
               },

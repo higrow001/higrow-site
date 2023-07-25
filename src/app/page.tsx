@@ -9,24 +9,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-
 const faqData = [
   {
-    question: "First Question",
-    answer: "First Answer",
+    question: "What is HiGrow?",
+    answer: "HiGrow is platform where our aim is to help empowering minds worldwide to Learn, compete, and grow together by workshops and contests!",
   },
   {
-    question: 'Second Question',
-    answer: 'Second Answer'
+    question: "How can I join a workshop?",
+    answer: "Joining a workshop is a breeze! Just head to our workshops page and filter your preferred category. Browse through the available workshops, read the details, and if needed, contact the workshop host for more information. Once you find the perfect fit, click 'Join,' and you're all set to enjoy the workshop! It's that simple!",
   },
   {
-    question: "Third Question",
-    answer: "Third Answer",
+    question: "Is this platform free for users?",
+    answer: "Yes, it's completely free for users to explore and learn new skills. However, if a workshop has a fee set by the organizer, you'll need to pay for that particular workshop. Enjoy learning without any platform charges!",
   },
   {
-    question: "Fourth Question",
-    answer: "Fourth Answer",
+    question: "Can I contact the workshop provider?",
+    answer: "Absolutely! You can easily get in touch with the workshop organizers through the social links they provide on the workshop's page. Feel free to reach out to them for any extra details or inquiries. They'll be happy to assist you!",
   },
+  
 ]
 export default function Home() {
   return (
@@ -36,20 +36,17 @@ export default function Home() {
         <div className="home-hero">
           <div className="hero-top">
             <div className="htop-left">
-              <h1> What do we do? </h1>
+              <h1> Our Mission </h1>
 
               <p>
                 {" "}
-                We're building a platform where organizers can organize any
-                contest or workshop doesn't matter which category is it & also
-                participants to join any contest or workshop of each and every
-                category at one stop{" "}
+                Empowering learners with an inclusive, interactive platform. Enabling personal growth through workshops, friendly contests, and abundant resources, accessible worldwide.{" "}
               </p>
             </div>
             <div className="htop-center">
               <h1>
                 {" "}
-                <span> HiGrow </span> - Say Hi 👋 to your growth 📈
+                <span> HiGrow </span> - Say Hi👋 to your growth📈
               </h1>
               <p>
                 Participate in exciting workshops, contests and grow your
@@ -57,16 +54,13 @@ export default function Home() {
                 you can also organize your own workshop or contest
               </p>
               <Link href="#" className="htopc-button">
-                <button>Explore Now</button>
+                <button>Explore Now  </button>
               </Link>
             </div>
             <div className="htop-right">
               <h1> Our Aim </h1>
               <p>
-                To provide a one stop platform to both organizers and
-                participants to join or organize any sort of contest or workshop
-                from publishing to joining participants to the whole management
-                to finishing it!
+              Redefining education by cultivating a diverse online marketplace. Inspiring continuous learning, fostering creativity, and connecting enthusiasts globally.
               </p>
             </div>
           </div>
@@ -74,7 +68,7 @@ export default function Home() {
           <div className="hero-bottom">
             <div className="hbottom-left">
               <Link className="hbottom-links" href="#">
-                <button>Give Us Feedback</button>
+                <button>Give Us Feedback <span> → </span> </button>
               </Link>
             </div>
             <div className="hbottom-center">
@@ -102,9 +96,10 @@ export default function Home() {
               </h1>
               <p>
                 Become even greater in your field or upscale your skills by
-                joining workshops. <br /> <br /> Explore different contests and
+                joining workshops. <br />Explore different contests and
                 compete with the fellows to upscale your skills!
               </p>
+              <p> <Link href=""> Explore Now <span> → </span> </Link> </p>
             </div>
             <div className="htd-boxright">
               <h1>
@@ -112,9 +107,10 @@ export default function Home() {
               </h1>
               <p>
                 Host any contest or workshop of any category according to your
-                interest. <br /> <br /> HiGrow gives you audience* so you don't
+                interest. <br /> HiGrow gives you audience* so you don't
                 have to spend money on marketing!{" "}
               </p>
+              <p> <Link href=""> Organize Now <span> → </span> </Link> </p>
             </div>
           </div>
           <div className="htd-bottom">
@@ -122,6 +118,8 @@ export default function Home() {
               *At this early stage we don't have so much audience but feel free
               to become a starting part of a big story ;)
             </p>
+
+            
           </div>
         </div>
         <div className="he-container">
@@ -132,37 +130,38 @@ export default function Home() {
                 <button>See all</button>
               </Link>
             </div>
-            <div className="he-bottom">
-              <Card />
-            </div>
+            <div className="he-bottom">{/* <Card /> */}</div>
           </div>
-          
         </div>
         <div className="bottom-space"></div>
-   <center>   <div className="mx-auto pb-40">
-          <h1 className="text-3xl faq-title font-medium font-archivo mb-14">
-            Frequently asked questions
-          </h1>
-          <p className="mb-20 faq-p text-2xl">Don't see your question? <Link href=""> Contact us </Link></p>
-          <Accordion type="single" collapsible className="max-w-7xl mb-12">
-            {faqData.map((data) => (
-              <AccordionItem
-                className="border-muted-darker"
-                key={data.question}
-                value={data.question}
-              >
-                <AccordionTrigger className="text-5xl faq-quest font-light">
-                  {data.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-4xl faq-ans">
-                  {data.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div> </center>  
-        <div className="bottom-space"></div> 
-      </div> 
+        <center>
+          {" "}
+          <div className="mx-auto pb-40">
+            <h1 className="text-[34px] sm:text-center text-left w-[80%] m-[auto] sm:font-medium font-bold sm:text-6xl font-archivo mb-8 sm:mb-14">
+              Frequently asked questions
+            </h1>
+            <p className="mb-20 sm:text-center text-left w-[80%] m-[auto]  faq-p text-lg sm:text-2xl">
+              Don't see your question? <Link href="/contact"> Contact us </Link>
+            </p>
+            <Accordion type="single" collapsible className="max-w-5xl border-t-2 border-black mb-32">
+              {faqData.map((data) => (
+                <AccordionItem
+                  className="border-black border-b-2"
+                  key={data.question}
+                  value={data.question}
+                >
+                  <AccordionTrigger className="text-[16px] sm:text-3xl mr-2 faq-quest font-light">
+                    {data.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[11px] sm:text-[20px] leading-7 tracking-wide md:tracking-wider md:leading-8 faq-ans">
+                    {data.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>{" "}
+        </center>
+      </div>
     </>
   )
 }
