@@ -1,10 +1,10 @@
 import "./card.scss"
-import { PublicWorkshopWId } from "@/lib/types"
+import { WorkshopDataType } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 
 const Card = (
   props: Pick<
-    PublicWorkshopWId,
+    WorkshopDataType,
     | "name"
     | "tagline"
     | "instructor_name"

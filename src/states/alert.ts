@@ -16,7 +16,7 @@ export interface AlertActions {
 export interface AlertPayload {
   title: string
   description?: string
-  type: "default" | "destructive"
+  type?: "default" | "destructive"
   action?: { text: string; cancelText?: string; callback: () => void }
   clickClose?: { text: string }
 }
@@ -25,16 +25,22 @@ export const useAlert = create<Alert & AlertActions>()(
   devtools((set, get) => ({
     show: false,
     data: null,
-    showAlert: ({ type = "default", ...AlertPayload }) =>
+    showAlert: ({ type, ...AlertPayload }) =>
       !get().show &&
-      set(() => ({ show: true, data: { type, ...AlertPayload } })),
+      set(() => ({
+        show: true,
+        data: { type: type || "default", ...AlertPayload },
+      })),
     hideAlert: () => {
       set({ show: false })
       setTimeout(get().resetAlert, 500)
     },
-    showAutoCloseAlert: ({ type = "default", ...AlertPayload }) => {
+    showAutoCloseAlert: ({ type, ...AlertPayload }) => {
       if (!get().show) {
-        set(() => ({ show: true, data: { type, ...AlertPayload } }))
+        set(() => ({
+          show: true,
+          data: { type: type || "default", ...AlertPayload },
+        }))
         setTimeout(get().hideAlert, 2500)
       }
     },

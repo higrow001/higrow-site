@@ -1,28 +1,13 @@
-export interface User {
-  displayName: string
-  email: string
-  id: string
-  profilePhoto: string | null
-  organizedWorkshops: string[]
-}
-
-export interface UserActions {
-  initUserData: (data: User) => void
-}
-
-export type TimestampType = {
-  seconds: number
-  nanoseconds: number
-}
+import { Database } from "./database"
 
 export interface PublicWorkshopData {
   name: string
   tagline: string
   mode: string
   category: string
-  application_closing_date: TimestampType
-  workshop_starting_date: TimestampType
-  workshop_ending_date: TimestampType
+  application_closing_date: string
+  workshop_starting_date: string
+  workshop_ending_date: string
   contact_email: string
   redirect_url: string
   social_links: string[]
@@ -34,25 +19,28 @@ export interface PublicWorkshopData {
   time_per_day: number
   describe_each_day: string
   is_paid: boolean
-  workshop_amount: number
-  created_on: TimestampType
+  workshop_amount: number | null
+  created_on: string
   created_by: string
   approved: boolean
-  editors: string[]
 }
 
 export interface Announcement {
-  id: string
   title: string
   message: string
-  timestamp: TimestampType
+  timestamp: string
 }
 
 export interface Participant {
-  id: string
   name: string
   email: string
-  application_date: TimestampType
+  application_date: string
+}
+
+export interface PaymentRecord {
+  order_id: string
+  payment_id: string
+  signature: string
 }
 
 export interface PrivateWorkshopData {
@@ -60,8 +48,25 @@ export interface PrivateWorkshopData {
   bank_email: string
   bank_account_number: string
   bank_ifsc: string
-  payment_records: { order_id: string; payment_id: string; signature: string }[]
+  payment_records: PaymentRecord[]
 }
 
-export type WorkshopDataType = PublicWorkshopData & PrivateWorkshopData
-export type PublicWorkshopWId = PublicWorkshopData & { id: string }
+export type ModifiedWorkshopType = {
+  participants: Participant[]
+  requested_participants: Participant[]
+  announcements: Announcement[]
+  payment_records: PaymentRecord[] | null
+  bank_details: { [key: string]: string }
+}
+
+type WorkshopType = Database["public"]["Tables"]["workshops"]["Row"]
+type OmittedWorkshopType = Omit<
+  WorkshopType,
+  | "announcements"
+  | "participants"
+  | "requested_participants"
+  | "payment_records"
+  | "bank_details"
+>
+
+export type WorkshopDataType = OmittedWorkshopType & ModifiedWorkshopType

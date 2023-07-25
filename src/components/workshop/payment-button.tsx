@@ -5,19 +5,18 @@ import Script from "next/script"
 import { useAlert } from "@/states/alert"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Timestamp, arrayUnion, doc, updateDoc } from "firebase/firestore"
-import { db, auth } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
-import { TimestampType } from "@/lib/types"
 import { joinWorkshop } from "@/app/_actions/workshop"
+import { Participant } from "@/lib/types"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export interface WorkshopDetails {
   amount: number
   organizerEmail: string
   workshopId: string
   workshopName: string
-  applicationDate: TimestampType
-  participants: { email: string }[]
+  applicationDate: string
+  participants: Participant[]
 }
 
 export default function PaymentButton({
@@ -30,40 +29,27 @@ export default function PaymentButton({
   children,
 }: WorkshopDetails & { children: React.ReactNode }) {
   const router = useRouter()
+  const supabase = createClientComponentClient()
   const [isParticipated, setIsParticipated] = useState(false)
   const [email, setEmail] = useState("")
   const [displayName, setDisplayName] = useState("")
-  const [userID, setUserID] = useState("")
   const { showAlert } = useAlert()
   const [isLoading, setIsLoading] = useState(false)
-  const timestamp = new Timestamp(
-    applicationDate.seconds,
-    applicationDate.nanoseconds
-  )
-  const applicationClosingDate = new Date(timestamp.toDate())
+  const applicationClosingDate = new Date(applicationDate)
   const currentDate = new Date()
   const timeExpired = applicationClosingDate < currentDate
 
-  useEffect(() => {
-    if (document) {
-      const emailCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("email="))
-        ?.split("=")[1]
-      const displayNameCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("display_name="))
-        ?.split("=")[1]
-      const userIDCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("uid="))
-        ?.split("=")[1]
-      setEmail(emailCookie!)
-      setDisplayName(displayNameCookie!)
-      setUserID(userIDCookie!)
-    }
-  }, [])
+  const checkUpdates = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    setEmail(session?.user.email!)
+    setDisplayName(session?.user.user_metadata.full_name!)
+  }
 
+  useEffect(() => {
+    checkUpdates()
+  }, [supabase.auth])
   useEffect(() => {
     setIsParticipated(
       participants.findIndex((participant) => participant.email === email) > -1
@@ -82,7 +68,10 @@ export default function PaymentButton({
         variant={"secondary"}
         disabled={isLoading || timeExpired || isParticipated}
         onClick={async () => {
-          if (auth.currentUser) {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession()
+          if (session) {
             setIsLoading(true)
             const data = await fetch("/api/payment", {
               method: "POST",
@@ -110,17 +99,11 @@ export default function PaymentButton({
                 "https://i.pinimg.com/originals/55/de/1c/55de1ca51a58ba79c63c1032d52aa4dd.jpg",
               handler: async function (response: any) {
                 setIsLoading(false)
-                await updateDoc(doc(db, "workshops", workshopId), {
-                  "private.payment_records": arrayUnion({
-                    payment_id: response.razorpay_payment_id,
-                    order_id: response.razorpay_order_id,
-                    signature: response.razorpay_signature,
-                  }),
+                await joinWorkshop(workshopId, {
+                  payment_id: response.razorpay_payment_id,
+                  order_id: response.razorpay_order_id,
+                  signature: response.razorpay_signature,
                 })
-                await updateDoc(doc(db, "users", userID), {
-                  participated_workshops: arrayUnion(workshopId),
-                })
-                await joinWorkshop(workshopId)
               },
               prefill: {
                 name: displayName,
