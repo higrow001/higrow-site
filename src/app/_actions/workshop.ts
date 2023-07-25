@@ -1,183 +1,111 @@
 "use server"
 import { cookies } from "next/headers"
-import {
-  getDoc,
-  doc,
-  getDocs,
-  query,
-  collection,
-  where,
-  documentId,
-  limit,
-  Timestamp,
-  addDoc,
-  orderBy,
-} from "firebase/firestore"
-import { db } from "@/lib/firebase"
-import { Announcement, Participant, PublicWorkshopData } from "@/lib/types"
+import { PaymentRecord, WorkshopDataType } from "@/lib/types"
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
+import { Database } from "@/lib/types/database"
 
-export async function getWorkshop(id: string, givePrivate = false) {
-  const fetchData = await getDoc(doc(db, "workshops", id))
-  if (fetchData.exists()) {
-    if (givePrivate) {
-      return { private: fetchData.data().private, ...fetchData.data().public }
-    } else {
-      return fetchData.data().public
-    }
+const supabase = createServerActionClient({ cookies })
+
+type UserType = Database["public"]["Tables"]["users"]["Row"]
+
+export async function getWorkshop(id: string) {
+  const fetchData = await supabase.from("workshops").select("*").eq("id", id)
+  if (fetchData.data) {
+    return fetchData.data[0] as WorkshopDataType
   }
 }
 
 export async function getUser() {
-  const cookieStore = cookies()
-  const uid = cookieStore.get("uid")
-  if (uid) {
-    const user = await getDoc(doc(db, "users", uid.value))
-    if (user.exists()) {
-      const data = user.data()
-      return data
-    }
-  }
+  const session = await supabase.auth.getSession()
+  const user = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", session.data.session?.user.id)
+    .maybeSingle()
+  if (user.data) return user.data as UserType
 }
-
-type Data = PublicWorkshopData & { id: string }
 
 export async function getUserOrganizedWorkshops() {
   const userData = await getUser()
-
   if (userData) {
     const ids = userData.organized_workshops
-    const allShops: Data[] = []
-    try {
-      const shops = await getDocs(
-        query(
-          collection(db, "workshops"),
-          where(documentId(), "in", ids),
-          limit(3)
-        )
-      )
-      if (!shops.empty) {
-        shops.docs.forEach((doc) => {
-          allShops.push({ id: doc.id, ...doc.data().public })
-        })
-      }
-      return allShops
-    } catch (error) {
-      return allShops
+    const { data } = await supabase
+      .from("workshops")
+      .select("name, instructor_name, workshop_starting_date, id")
+      .in("id", ids)
+      .order("created_at", { ascending: false })
+    if (data) {
+      return data
     }
   }
+  return []
 }
 
 export async function getParticipatedWorkshops() {
   const userData = await getUser()
-
   if (userData) {
     const ids = userData.participated_workshops
-    const allShops: Data[] = []
-    try {
-      const shops = await getDocs(
-        query(
-          collection(db, "workshops"),
-          where(documentId(), "in", ids),
-          limit(3)
-        )
-      )
-      if (!shops.empty) {
-        shops.docs.forEach((doc) => {
-          allShops.push({ id: doc.id, ...doc.data().public })
-        })
-      }
-      return allShops
-    } catch (error) {
-      return allShops
+    const { data } = await supabase
+      .from("workshops")
+      .select("name, instructor_name, workshop_starting_date, id")
+      .in("id", ids)
+      .order("created_at", { ascending: false })
+    if (data) {
+      return data
     }
   }
+  return []
 }
 
 export async function requestWorkshop(workshop_id: string) {
-  const cookieStore = cookies()
-  const user_display_name = cookieStore.get("display_name")
-  const user_email = cookieStore.get("email")
-  await addDoc(
-    collection(db, "workshops", workshop_id, "requested_participants"),
-    {
-      name: user_display_name?.value,
-      email: user_email?.value,
-      application_date: Timestamp.now(),
-    }
-  )
+  const workshopData = await getWorkshop(workshop_id)
+  const userData = await getUser()
+  if (workshopData && userData) {
+    const shopsReqs = workshopData.requested_participants
+    shopsReqs.push({
+      name: userData.display_name,
+      email: userData.email,
+      application_date: new Date().toISOString(),
+    })
+    supabase
+      .from("workshops")
+      .update({ requested_participants: shopsReqs })
+      .eq("id", workshop_id)
+  }
 }
 
-export async function joinWorkshop(workshop_id: string) {
-  const cookieStore = cookies()
-  const user_display_name = cookieStore.get("display_name")
-  const user_email = cookieStore.get("email")
-  await addDoc(collection(db, "workshops", workshop_id, "participants"), {
-    name: user_display_name?.value,
-    email: user_email?.value,
-    application_date: Timestamp.now(),
-  })
+export async function joinWorkshop(
+  workshop_id: string,
+  payment_record: PaymentRecord
+) {
+  const workshopData = await getWorkshop(workshop_id)
+  const userData = await getUser()
+  if (workshopData && userData) {
+    const shopsParticipants = workshopData.participants
+    const pay_recs = workshopData.payment_records ?? []
+    const user_parts = userData.participated_workshops
+    pay_recs.push(payment_record)
+    user_parts.push(workshop_id)
+    shopsParticipants.push({
+      name: userData.display_name,
+      email: userData.email,
+      application_date: new Date().toISOString(),
+    })
+    const { error: e1 } = await supabase
+      .from("workshops")
+      .update({ participants: shopsParticipants, payment_records: pay_recs })
+      .eq("id", workshop_id)
+    const { error: e2 } = await supabase
+      .from("users")
+      .update({ participated_workshops: user_parts })
+      .eq("id", userData.id)
+    console.log(e1, e2)
+  }
 }
 
 export async function getAnnouncements(workshop_id: string) {
-  let anns: Announcement[] = []
-  const fetchData = await getDocs(
-    query(
-      collection(db, "workshops", workshop_id, "announcements"),
-      orderBy("timestamp", "desc")
-    )
-  )
-  if (!fetchData.empty) {
-    fetchData.forEach((doc) => {
-      anns.push({
-        id: doc.id,
-        timestamp: doc.data().timestamp,
-        title: doc.data().title,
-        message: doc.data().message,
-      })
-    })
-  }
-  return anns
-}
-
-export async function getParticipants(workshop_id: string) {
-  let parts: Participant[] = []
-  let req_parts: Participant[] = []
-  const { is_paid }: PublicWorkshopData = await getWorkshop(workshop_id)
-  const participants = await getDocs(
-    query(
-      collection(db, "workshops", workshop_id, "participants"),
-      orderBy("application_date", "desc")
-    )
-  )
-  if (!participants.empty) {
-    participants.forEach((part) => {
-      if (part.exists()) {
-        parts.push({ id: part.id, ...(part.data() as Omit<Participant, "id">) })
-      }
-    })
-  }
-  const requested_participants = await getDocs(
-    query(
-      collection(db, "workshops", workshop_id, "requested_participants"),
-      orderBy("application_date", "desc")
-    )
-  )
-  if (!requested_participants.empty) {
-    requested_participants.forEach((part) => {
-      if (part.exists()) {
-        req_parts.push({
-          id: part.id,
-          ...(part.data() as Omit<Participant, "id">),
-        })
-      }
-    })
-  }
-
-  return {
-    is_paid,
-    participants: parts,
-    requested_participants: req_parts,
-  }
+  const workshop = await getWorkshop(workshop_id)
+  return workshop?.announcements ?? []
 }
 
 interface GetWorkshopProps {
@@ -185,45 +113,23 @@ interface GetWorkshopProps {
 }
 
 export async function getWorkshops({ categories, search }: GetWorkshopProps) {
-  const shops: Data[] = []
   const everyCategory = categories?.split(".") ?? []
   const refinedSearch = search?.replace("+", " ") ?? null
 
-  // Build the base query without filters
-  let baseQuery = query(collection(db, "workshops"))
+  let baseQuery = supabase
+    .from("workshops")
+    .select("*")
+    .order("created_at", { ascending: false })
 
-  // Apply filters based on category if provided
   if (everyCategory.length > 0) {
-    baseQuery = query(baseQuery, where("public.category", "in", everyCategory))
+    baseQuery = baseQuery.in("category", everyCategory)
   }
 
-  // Apply search filter if provided
   if (refinedSearch) {
-    const searchQuery = query(
-      baseQuery,
-      where("public.name", ">=", refinedSearch),
-      where("public.name", "<=", refinedSearch + "\uf8ff")
-    )
-
-    const data = await getDocs(searchQuery)
-    console.log(data.docs)
-
-    if (!data.empty) {
-      data.docs.forEach((doc) => {
-        // Firestore query already takes care of the prefix search, so we don't need additional filtering
-        shops.push({ id: doc.id, ...doc.data().public })
-      })
-    }
+    const workshops = await baseQuery.textSearch("name", refinedSearch)
+    return workshops.data
   } else {
-    // If no search term is provided, fetch all workshops based on the previous filters
-    const data = await getDocs(baseQuery)
-
-    if (!data.empty) {
-      data.docs.forEach((doc) => {
-        shops.push({ id: doc.id, ...doc.data().public })
-      })
-    }
+    const workshops = await baseQuery
+    return workshops.data
   }
-
-  return shops
 }

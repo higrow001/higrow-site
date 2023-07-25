@@ -2,8 +2,6 @@
 
 import Link from "next/link"
 import { FcGoogle } from "react-icons/fc"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth, db } from "@/lib/firebase"
 import useGoogleLogin from "@/lib/utils/google-login"
 import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { doc, getDoc } from "firebase/firestore"
+import { useAlert } from "@/states/alert"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 const signinFormSchema = z.object({
   email: z
@@ -40,6 +39,8 @@ const SignIn = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectPath = searchParams.get("redirect")
+  const { showAutoCloseAlert } = useAlert()
+  const supabase = createClientComponentClient()
 
   const form = useForm({
     resolver: zodResolver(signinFormSchema),
@@ -49,37 +50,20 @@ const SignIn = () => {
 
   type DataType = z.infer<typeof signinFormSchema>
 
-  const signInUser = async (data: DataType) => {
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      )
-      const userData = await getDoc(doc(db, "users", user.user.uid))
-      if (userData.exists()) {
-        document.cookie = `display_name=${
-          userData.data().display_name
-        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
-      } else {
-        document.cookie = `display_name=${
-          user.user.displayName
-        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
-      }
-      document.cookie = `uid=${user.user.uid}; SameSite=Lax; max-age=${
-        60 * 60 * 24 * 30
-      }`
-      document.cookie = `email=${user.user.email}; SameSite=Lax; max-age=${
-        60 * 60 * 24 * 30
-      }`
+  const signInUser = async (udata: DataType) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: udata.email,
+      password: udata.password,
+    })
+    if (data.user) {
       router.replace(`/${redirectPath ?? ""}`)
-    } catch (error: any) {
-      if (error.message.includes("user-not-found")) {
-        alert("No user is registered with this email!")
-      }
-      if (error.message.includes("wrong-password")) {
-        alert("Wrong password!")
-      }
+    }
+    if (error) {
+      showAutoCloseAlert({
+        title: "Error!",
+        description: error.message,
+        type: "destructive",
+      })
     }
   }
 

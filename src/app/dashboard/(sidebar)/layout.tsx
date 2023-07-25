@@ -1,7 +1,7 @@
 "use client"
-import SignOutBtn from "@/components/dashboard/sign-out"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function SideLayout({
   children,
@@ -9,6 +9,9 @@ export default function SideLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+
   return (
     <div className="flex h-full">
       <aside className="basis-[20%] bg-secondary h-full flex flex-col justify-between text-white">
@@ -44,7 +47,15 @@ export default function SideLayout({
           </Link>
         </div>
         <div className="flex flex-col">
-          <SignOutBtn style="text-lg py-6 px-12 border-t text-start border-[#757575] hover:bg-[#2c2c2c] transition" />
+          <button
+            className="text-lg py-6 px-12 border-t text-start border-[#757575] hover:bg-[#2c2c2c] transition"
+            onClick={async () => {
+              await supabase.auth.signOut()
+              router.push("/")
+            }}
+          >
+            Log Out
+          </button>
         </div>
       </aside>
       {children}

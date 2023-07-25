@@ -14,14 +14,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ReactQuill from "react-quill"
 import { useAlert } from "@/states/alert"
-import { Timestamp, addDoc, collection } from "firebase/firestore"
-import { db } from "@/lib/firebase"
+import { Announcement } from "@/lib/types"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export default function MakeAnnoucement({
   workshop_id,
+  announcements,
 }: {
   workshop_id: string
+  announcements: Announcement[]
 }) {
+  const supabase = createClientComponentClient()
   const [value, setValue] = useState("")
   const [title, setTitle] = useState("")
   const [showPreview, setShowPreview] = useState(false)
@@ -56,14 +59,18 @@ export default function MakeAnnoucement({
                 type: "destructive",
               })
 
-            await addDoc(
-              collection(db, "workshops", workshop_id, "announcements"),
-              {
-                title,
-                message: value,
-                timestamp: Timestamp.now(),
-              }
-            )
+            const anns = announcements
+            anns.push({
+              title,
+              message: value,
+              timestamp: new Date().toISOString(),
+            })
+            await supabase
+              .from("workshops")
+              .update({
+                announcements: anns,
+              })
+              .eq("id", workshop_id)
             showAutoCloseAlert({
               title: "Announcement created.",
               type: "default",

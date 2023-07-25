@@ -33,8 +33,8 @@ async function Organized() {
                   <h2 className="text-lg px-4 grow-[3] truncate">
                     {workshop.name} by {workshop.instructor_name}
                   </h2>
-                  <span className="px-4 shrink-0">{`${formatDateInDDMMYYYY(
-                    workshop.application_closing_date
+                  <span className="px-4 shrink-0 tracking-widest">{`${formatDateInDDMMYYYY(
+                    workshop.workshop_starting_date
                   )}`}</span>
                   <span className="text-primary-lighter text-center shrink-0 grow-[2] font-semibold px-4">
                     Accepting applications

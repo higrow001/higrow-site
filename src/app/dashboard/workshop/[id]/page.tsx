@@ -1,9 +1,10 @@
-import Link from "next/link"
+import { redirect } from "next/navigation"
 
 export default function WorkshopDetails({
   params,
 }: {
   params: { id: string }
 }) {
-  return <Link href={`/dashboard/workshop/${params.id}/details`}>go</Link>
+  redirect(`/dashboard/workshop/${params.id}/announcements`)
+  return <p>Redirecting</p>
 }

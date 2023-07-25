@@ -1,16 +1,15 @@
 "use client"
-
-import { TimestampType } from "@/lib/types"
-import { Timestamp } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
-function ReverseTimer({ firebaseDate }: { firebaseDate: TimestampType }) {
+function ReverseTimer({
+  applicationClosingDate,
+}: {
+  applicationClosingDate: string
+}) {
   const [remaining, setRemaining] = useState({ days: 0, hours: 0, mins: 0 })
 
   function updateTime() {
-    const targetDate = new Date(
-      new Timestamp(firebaseDate.seconds, firebaseDate.nanoseconds).toDate()
-    )
+    const targetDate = new Date(applicationClosingDate)
     const currentDate = new Date()
     const remainingTime = targetDate.getTime() - currentDate.getTime()
 

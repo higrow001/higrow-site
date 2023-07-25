@@ -1,7 +1,6 @@
 import "./home.scss"
 import Link from "next/link"
 import Navbar from "@/components/navbar/navbar"
-import Card from "@/components/card/card"
 import {
   Accordion,
   AccordionContent,
