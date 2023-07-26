@@ -93,6 +93,12 @@ module.exports = {
                 display: "none",
               },
             },
+            h1: {
+              "margin-bottom": "0.6888888999999995em",
+            },
+            h2: {
+              "margin-top": 0,
+            },
           },
         },
       },

@@ -20,16 +20,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useAlert } from "@/states/alert"
-import { Info, Loader2 } from "lucide-react"
+import { CalendarIcon, Info, Loader2 } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import ReactQuill from "react-quill"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/lib/types/database"
 import * as z from "zod"
 import { getUser } from "@/app/_actions/workshop"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
 
 const allLinks = (...links: string[]) => {
   const finalLinks: string[] = []
@@ -57,6 +71,11 @@ export default function CreateWorkshop() {
     name: "mode",
     defaultValue: "Online",
   })
+  const eventLocationValue = useWatch({
+    control: form.control,
+    name: "eventLocation",
+    defaultValue: "",
+  })
   const categoryValue = useWatch({
     control: form.control,
     name: "category",
@@ -65,7 +84,7 @@ export default function CreateWorkshop() {
   const isPaidValue = useWatch({
     control: form.control,
     name: "isPaid",
-    defaultValue: true,
+    defaultValue: false,
   })
   const instructorInfoValue = useWatch({
     control: form.control,
@@ -76,6 +95,11 @@ export default function CreateWorkshop() {
     control: form.control,
     name: "workshopInfo",
     defaultValue: "",
+  })
+  const timeFormatValue = useWatch({
+    control: form.control,
+    name: "timeFormat",
+    defaultValue: "hours",
   })
   const describeEachDayValue = useWatch({
     control: form.control,
@@ -113,6 +137,8 @@ export default function CreateWorkshop() {
     setIsLoading(true)
     const user = await supabase.auth.getSession()
     const {
+      eventLocation,
+      otherCategory,
       bankName,
       bankEmail,
       bankAccNo,
@@ -151,6 +177,8 @@ export default function CreateWorkshop() {
       .from("workshops")
       .insert({
         ...publicFields,
+        event_location: eventLocation,
+        other_category: otherCategory,
         application_closing_date: new Date(
           values.applicationClosingDate
         ).toISOString(),
@@ -184,7 +212,6 @@ export default function CreateWorkshop() {
           : null,
       })
       .select("id")
-    console.log(data.error)
     const userData = await getUser()
     if (userData && data.data) {
       const shops = userData.organized_workshops
@@ -201,7 +228,10 @@ export default function CreateWorkshop() {
         description:
           "Workshop successfully created. Workshop details will be reviewed. Once the workshop is approved you can view or edit it from dashboard.",
         type: "default",
-        action: { text: "Okay", callback: () => router.replace("/dashboard") },
+        action: {
+          text: "Okay",
+          callback: () => router.replace("/dashboard/admin"),
+        },
       })
   }
 
@@ -348,9 +378,7 @@ export default function CreateWorkshop() {
               )}
             />
             <div className="space-y-4">
-              <h1 className="text-md md:text-xl">
-                Mode
-              </h1>
+              <h1 className="text-md md:text-xl">Mode</h1>
               <div className="flex space-x-3 items-center">
                 <Button
                   variant={modeValue === "Online" ? "default" : "outline"}
@@ -370,10 +398,31 @@ export default function CreateWorkshop() {
                 </Button>
               </div>
             </div>
+            {modeValue === "Offline" && (
+              <FormField
+                control={form.control}
+                name="eventLocation"
+                render={() => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      Location of offline event
+                    </FormLabel>
+                    <FormControl>
+                      <ReactQuill
+                        theme="bubble"
+                        value={eventLocationValue}
+                        onChange={(val) => form.setValue("eventLocation", val)}
+                        placeholder="Enter location here"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="space-y-4">
-              <h1 className="text-md md:text-xl">
-                Category
-              </h1>
+              <h1 className="text-md md:text-xl">Category</h1>
               <div className="flex w-full flex-wrap gap-3">
                 {categories.map((category) => (
                   <Button
@@ -388,6 +437,23 @@ export default function CreateWorkshop() {
                 ))}
               </div>
             </div>
+            {categoryValue === "Other" && (
+              <FormField
+                control={form.control}
+                name="otherCategory"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      Name of category
+                    </FormLabel>
+                    <FormControl>
+                      <Input className="px-4" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           {/*TODO: Second Tab */}
           <div
@@ -399,13 +465,38 @@ export default function CreateWorkshop() {
               control={form.control}
               name="applicationClosingDate"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="flex flex-col">
                   <FormLabel className="text-md md:text-xl">
                     Application Close
                   </FormLabel>
-                  <FormControl>
-                    <Input className="px-4" type="datetime-local" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        onSelect={field.onChange}
+                        disabled={(date) => date <= new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
@@ -414,13 +505,38 @@ export default function CreateWorkshop() {
               control={form.control}
               name="workshopStartingDate"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="flex flex-col">
                   <FormLabel className="text-md md:text-xl">
                     Workshop starting
                   </FormLabel>
-                  <FormControl>
-                    <Input className="px-4" type="datetime-local" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        onSelect={field.onChange}
+                        disabled={(date) => date <= new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
@@ -429,13 +545,38 @@ export default function CreateWorkshop() {
               control={form.control}
               name="workshopEndingDate"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="flex flex-col">
                   <FormLabel className="text-md md:text-xl">
                     Workshop ending
                   </FormLabel>
-                  <FormControl>
-                    <Input className="px-4" type="datetime-local" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        onSelect={field.onChange}
+                        disabled={(date) => date <= new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
@@ -693,24 +834,54 @@ export default function CreateWorkshop() {
                 activeStep === 4 ? "block" : "hidden"
               }`}
             >
+              <FormField
+                control={form.control}
+                name="workingDays"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      Workshop duration (in days)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={1}
+                        className="px-4"
+                        placeholder="e.g. 4"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row lg:items-center gap-2">
                 <FormField
                   control={form.control}
-                  name="workingDays"
+                  name="timeFormat"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel className="text-md md:text-xl">
-                        Workshop duration (in days)
+                        Duration per day format
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min={1}
-                          className="px-4"
-                          placeholder="e.g. 4"
-                          {...field}
-                        />
-                      </FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="text-base h-11">
+                            <SelectValue placeholder="Select the time format of workshop duration" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem className="text-base" value="hours">
+                            Hours
+                          </SelectItem>
+                          <SelectItem className="text-base" value="mins">
+                            Minutes
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -722,50 +893,15 @@ export default function CreateWorkshop() {
                     <FormItem className="w-full">
                       <FormLabel className="text-md md:text-xl flex space-x-1">
                         <span>Duration per day</span>
-                        <FormField
-                          control={form.control}
-                          name="timeFormat"
-                          render={({ field }) => (
-                            <FormItem className="flex items-center space-y-0 space-x-2">
-                              <FormLabel className="text-md md:text-xl">
-                                (in
-                              </FormLabel>
-                              <FormControl>
-                                <RadioGroup
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  className="flex space-x-1 items-center"
-                                >
-                                  <FormItem className="flex items-center space-x-1 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="hours" />
-                                    </FormControl>
-                                    <FormLabel className="text-base">
-                                      hrs
-                                    </FormLabel>
-                                  </FormItem>
-                                  <FormItem className="flex items-center space-x-1 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="mins" />
-                                    </FormControl>
-                                    <FormLabel className="text-base">
-                                      mins
-                                    </FormLabel>
-                                  </FormItem>
-                                </RadioGroup>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        )
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={1}
                           className="px-4"
-                          placeholder="e.g. 4"
+                          placeholder={
+                            timeFormatValue === "hours" ? "e.g. 2" : "e.g. 120"
+                          }
                           {...field}
                         />
                       </FormControl>
