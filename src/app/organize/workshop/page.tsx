@@ -2,7 +2,6 @@
 import "react-quill/dist/quill.snow.css"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { auth, db } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
 import {
   steps,
@@ -10,14 +9,6 @@ import {
   initialValues,
   validationSchema,
 } from "@/lib/utils/organize-workshop"
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  updateDoc,
-  Timestamp,
-} from "firebase/firestore"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -30,12 +21,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useAlert } from "@/states/alert"
 import { Info, Loader2 } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import ReactQuill from "react-quill"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Database } from "@/lib/types/database"
+import * as z from "zod"
+import { getUser } from "@/app/_actions/workshop"
 
 const allLinks = (...links: string[]) => {
   const finalLinks: string[] = []
@@ -46,6 +40,8 @@ const allLinks = (...links: string[]) => {
 }
 
 export default function CreateWorkshop() {
+  const supabase = createClientComponentClient<Database>()
+  const router = useRouter()
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const { showAutoCloseAlert, showAlert } = useAlert()
@@ -102,13 +98,20 @@ export default function CreateWorkshop() {
     setActiveStep(activeStep - 1)
   }
 
-  const router = useRouter()
+  const checkSession = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    if (!session) router.replace("/signin?redirect=organize/workshop")
+  }
+
   useEffect(() => {
-    if (!auth.currentUser) router.replace("/signin?redirect=organize/workshop")
+    checkSession()
   }, [])
 
-  const submitData = async (values: typeof initialValues) => {
+  const submitData: any = async (values: z.infer<typeof validationSchema>) => {
     setIsLoading(true)
+    const user = await supabase.auth.getSession()
     const {
       bankName,
       bankEmail,
@@ -137,27 +140,24 @@ export default function CreateWorkshop() {
       ...publicFields
     } = values
     const allSocialLinks = allLinks(
-      discordLink,
-      youtubeLink,
-      facebookLink,
-      instagramLink,
-      websiteLink,
-      whatsappLink
+      discordLink!,
+      youtubeLink!,
+      facebookLink!,
+      instagramLink!,
+      websiteLink!,
+      whatsappLink!
     )
-    const docRef = await addDoc(collection(db, "workshops"), {
-      public: {
+    const data = await supabase
+      .from("workshops")
+      .insert({
         ...publicFields,
-        application_closing_date: Timestamp.fromDate(
-          new Date(values.applicationClosingDate)
-        ),
-        workshop_starting_date: Timestamp.fromDate(
-          new Date(values.workshopStartingDate)
-        ),
-        workshop_ending_date: Timestamp.fromDate(
-          new Date(values.workshopEndingDate)
-        ),
-        created_on: Timestamp.now(),
-        approved: false,
+        application_closing_date: new Date(
+          values.applicationClosingDate
+        ).toISOString(),
+        workshop_starting_date: new Date(
+          values.workshopStartingDate
+        ).toISOString(),
+        workshop_ending_date: new Date(values.workshopEndingDate).toISOString(),
         participants: [],
         requested_participants: [],
         contact_email: contactEmail,
@@ -166,36 +166,43 @@ export default function CreateWorkshop() {
         social_links: allSocialLinks,
         instructor_info: instructorInfo,
         instructor_name: instructorName,
-        workshop_amount: workshopAmount,
+        workshop_amount: isPaid ? workshopAmount : null,
         workshop_info: workshopInfo,
         time_per_day: timePerDay,
         time_format: timeFormat,
         working_days: workingDays,
         is_paid: isPaid,
-        created_by: auth.currentUser?.uid,
-        editors: [],
-      },
-      private: isPaid
-        ? {
-            bank_name: bankName,
-            bank_email: bankEmail,
-            bank_account_number: bankAccNo,
-            bank_ifsc: bankIFSC,
-            payment_records: [],
-          }
-        : {},
-    })
-    await updateDoc(doc(db, "users", auth.currentUser!.uid), {
-      organized_workshops: arrayUnion(docRef.id),
-    })
+        created_by: user.data.session!.user.id,
+        announcements: [],
+        bank_details: isPaid
+          ? {
+              name: bankName,
+              email: bankEmail,
+              IFSC: bankIFSC,
+              account_number: bankAccNo,
+            }
+          : null,
+      })
+      .select("id")
+    console.log(data.error)
+    const userData = await getUser()
+    if (userData && data.data) {
+      const shops = userData.organized_workshops
+      shops.push(data.data[0].id)
+      supabase
+        .from("users")
+        .update({ organized_workshops: shops })
+        .eq("id", userData.id)
+    }
     setIsLoading(false)
-    showAlert({
-      title: "Success.",
-      description:
-        "Workshop successfully created. Workshop details will be reviewed. Once the workshop is approved you can view or edit it from dashboard.",
-      type: "default",
-      action: { text: "Okay", callback: () => router.replace("/dashboard") },
-    })
+    if (!data.error)
+      showAlert({
+        title: "Success.",
+        description:
+          "Workshop successfully created. Workshop details will be reviewed. Once the workshop is approved you can view or edit it from dashboard.",
+        type: "default",
+        action: { text: "Okay", callback: () => router.replace("/dashboard") },
+      })
   }
 
   return (

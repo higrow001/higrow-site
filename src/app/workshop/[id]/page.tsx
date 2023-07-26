@@ -1,9 +1,8 @@
-import { getParticipants, getWorkshop } from "@/app/_actions/workshop"
+import { getWorkshop } from "@/app/_actions/workshop"
 import Navbar from "@/components/navbar/navbar"
 import PaymentButton from "@/components/workshop/payment-button"
-import ReverseTimer from "@/components/reverse-timer"
+import ReverseTimer from "@/components/workshop/reverse-timer"
 import { Button } from "@/components/ui/button"
-import { PublicWorkshopData } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import { Facebook, Instagram, Mail, Youtube } from "lucide-react"
 import { Metadata } from "next"
@@ -16,119 +15,122 @@ export const metadata: Metadata = {
 }
 
 async function WorkshopPage({ params }: { params: { id: string } }) {
-  const data: PublicWorkshopData = await getWorkshop(params.id)
-  const { participants, requested_participants } = await getParticipants(
-    params.id
-  )
+  const data = await getWorkshop(params.id)
 
   return (
     <>
       <Navbar />
-      <section className="py-20 px-36 w-full ">
-        <div className="bg-background border border-secondary">
-          <header className="w-full space-y-1 py-8 px-12 border-b border-secondary">
-            <h1 className="text-3xl font-bold font-archivo mb-1 text-[#333]">
-              {data.name}
-            </h1>
-            <span className="text-secondary text-sm font-medium inline-block">
-              By {data.instructor_name}
-            </span>
-          </header>
-          <div className="flex">
-            <main className="basis-[75%] border-r border-secondary space-y-16 py-12 px-12">
-              <div className="space-y-5">
-                <h2 className="text-3xl text-secondary font-medium">
-                  About Instructor :-
-                </h2>
+      {data && (
+        <section className="py-20 px-36 w-full ">
+          <div className="bg-background border border-secondary">
+            <header className="w-full space-y-1 py-8 px-12 border-b border-secondary">
+              <h1 className="text-3xl font-bold font-archivo mb-1 text-[#333]">
+                {data.name}
+              </h1>
+              <span className="text-secondary text-sm font-medium inline-block">
+                By {data.instructor_name}
+              </span>
+            </header>
+            <div className="flex">
+              <main className="basis-[75%] border-r border-secondary space-y-16 py-12 px-12">
+                <div className="space-y-5">
+                  <h2 className="text-3xl text-secondary font-medium">
+                    About Instructor :-
+                  </h2>
+                  <div
+                    className="prose max-w-[90ch]"
+                    dangerouslySetInnerHTML={{ __html: data.instructor_info }}
+                  ></div>
+                </div>
+                <div className="space-y-5">
+                  <h2 className="text-3xl text-secondary font-medium">
+                    About Workshop :-
+                  </h2>
+                  <div
+                    className="prose max-w-[90ch]"
+                    dangerouslySetInnerHTML={{ __html: data.workshop_info }}
+                  ></div>
+                </div>
+                <div className="space-y-5">
+                  <h2 className="text-3xl text-secondary font-medium">
+                    What you'll learn :-
+                  </h2>
+                  <div
+                    className="prose max-w-[90ch]"
+                    dangerouslySetInnerHTML={{ __html: data.describe_each_day }}
+                  ></div>
+                </div>
                 <div
-                  className="prose max-w-[90ch]"
-                  dangerouslySetInnerHTML={{ __html: data.instructor_info }}
-                ></div>
-              </div>
-              <div className="space-y-5">
-                <h2 className="text-3xl text-secondary font-medium">
-                  About Workshop :-
-                </h2>
-                <div
-                  className="prose max-w-[90ch]"
-                  dangerouslySetInnerHTML={{ __html: data.workshop_info }}
-                ></div>
-              </div>
-              <div className="space-y-5">
-                <h2 className="text-3xl text-secondary font-medium">
-                  What you'll learn :-
-                </h2>
-                <div
-                  className="prose max-w-[90ch]"
-                  dangerouslySetInnerHTML={{ __html: data.describe_each_day }}
-                ></div>
-              </div>
-              <div
-                className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
-              >
-                <BiInfoCircle className="text-6xl" />
-                <p className="text-sm text-[#333] tracking-wide leading-6">
-                  This opportunity has been listed by {data.instructor_name}.
-                  Higrow is not responsible for any content mentioned in this
-                  opportunity or the process followed by the organizers for this
-                  opportunity. However, please contact us if you want to report
-                  this opportunity
-                </p>
-              </div>
-            </main>
-            <aside className="basis-[35%] h-full py-12 px-8 space-y-12">
-              <div className="space-y-6">
-                <span className="flex space-x-2 items-center">
-                  <span className="font-semibold"> ⏱️ Starts from -</span>
-                  <span>
-                    {formatDateInDDMMYYYY(data.workshop_starting_date)}
+                  className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
+                >
+                  <BiInfoCircle className="text-6xl" />
+                  <p className="text-sm text-[#333] tracking-wide leading-6">
+                    This opportunity has been listed by {data.instructor_name}.
+                    Higrow is not responsible for any content mentioned in this
+                    opportunity or the process followed by the organizers for
+                    this opportunity. However, please contact us if you want to
+                    report this opportunity
+                  </p>
+                </div>
+              </main>
+              <aside className="basis-[35%] h-full py-12 px-8 space-y-12">
+                <div className="space-y-6">
+                  <span className="flex space-x-2 items-center">
+                    <span className="font-semibold"> ⏱️ Starts from -</span>
+                    <span>
+                      {formatDateInDDMMYYYY(data.workshop_starting_date)}
+                    </span>
                   </span>
-                </span>
-                <span className="flex space-x-2 items-center">
-                  <span className="font-semibold"> ⏱️ Duration -</span>
-                  <span>
-                    {data.time_format === "hours"
-                      ? `${data.time_per_day} hours X ${data.working_days} Days`
-                      : `${data.time_per_day} mins X ${data.working_days} Days`}
+                  <span className="flex space-x-2 items-center">
+                    <span className="font-semibold"> ⏱️ Duration -</span>
+                    <span>
+                      {data.time_format === "hours"
+                        ? `${data.time_per_day} hours X ${data.working_days} Days`
+                        : `${data.time_per_day} mins X ${data.working_days} Days`}
+                    </span>
                   </span>
-                </span>
-                <span className="flex space-x-2 items-center">
-                  <span className="font-semibold">📍 Happening -</span>
-                  <span>{data.mode}</span>
-                </span>
-              </div>
-              <ReverseTimer firebaseDate={data.application_closing_date} />
-              <div className="space-y-4">
-                {data.is_paid ? (
-                  <PaymentButton
-                    amount={Number(data.workshop_amount)}
-                    workshopName={data.name}
-                    workshopId={params.id}
-                    organizerEmail={data.contact_email}
-                    applicationDate={data.application_closing_date}
-                    participants={participants}
-                  >
-                    Join Rs.{data.workshop_amount}
-                  </PaymentButton>
-                ) : (
-                  <RequestButton
-                    id={params.id}
-                    requests={requested_participants}
-                    participants={participants}
-                    applicationDate={data.application_closing_date}
-                  />
-                )}
-                <Button className="w-full" size={"xl"} variant={"outline"}>
-                  Add to wishlist
-                </Button>
-              </div>
-              <div className="py-5 px-5 flex items-center text-secondary border border-black rounded-md bg-white">
-                <span className="text-sm text-[#333]"> ⭐ {data.tagline} </span>
-              </div>
-              <div className="space-y-4">
-                <h3 className="font-medium text-xl">Contact organizer :-</h3>
-                <div className="flex flex-wrap justify-center gap-y-5">
-                  {data.social_links.map(
+                  <span className="flex space-x-2 items-center">
+                    <span className="font-semibold">📍 Happening -</span>
+                    <span>{data.mode}</span>
+                  </span>
+                </div>
+                <ReverseTimer
+                  applicationClosingDate={data.application_closing_date}
+                />
+                <div className="space-y-4">
+                  {data.is_paid ? (
+                    <PaymentButton
+                      amount={Number(data.workshop_amount)}
+                      workshopName={data.name}
+                      workshopId={params.id}
+                      organizerEmail={data.contact_email}
+                      applicationDate={data.application_closing_date}
+                      participants={data.participants}
+                    >
+                      Join Rs.{data.workshop_amount}
+                    </PaymentButton>
+                  ) : (
+                    <RequestButton
+                      id={params.id}
+                      requests={data.requested_participants}
+                      participants={data.participants}
+                      applicationDate={data.application_closing_date}
+                    />
+                  )}
+                  <Button className="w-full" size={"xl"} variant={"outline"}>
+                    Add to wishlist
+                  </Button>
+                </div>
+                <div className="py-5 px-5 flex items-center text-secondary border border-black rounded-md bg-white">
+                  <span className="text-sm text-[#333]">
+                    {" "}
+                    ⭐ {data.tagline}{" "}
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-medium text-xl">Contact organizer :-</h3>
+                  <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">
+                    {data.social_links.map(
                     (link) =>
                       link.length > 0 && (
                         <a
@@ -243,7 +245,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                     Puneet's Instagram
                                   </div>
                                   <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                  https://instagram.com/puneet.25_
+                                 instagram.com
                                   </div>{" "}
                                 </div>
                               </div>
@@ -253,12 +255,13 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         </a>
                       )
                   )}
+                  </div>
                 </div>
-              </div>
-            </aside>
+              </aside>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   )
 }

@@ -1,5 +1,5 @@
 "use client"
-import { getParticipants } from "@/app/_actions/workshop"
+import { getUser, getWorkshop } from "@/app/_actions/workshop"
 import ParticipantsSkeleton from "@/components/skeletons/workkshop-participants"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,27 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { db } from "@/lib/firebase"
 import { Participant, PublicWorkshopData } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
-import {
-  Timestamp,
-  addDoc,
-  arrayUnion,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function Participants({ params }: { params: { id: string } }) {
+  const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState<
     Pick<PublicWorkshopData, "is_paid"> & {
@@ -40,64 +27,34 @@ export default function Participants({ params }: { params: { id: string } }) {
     }
   >({ is_paid: false, requested_participants: [], participants: [] })
   const getData = async () => {
-    const res = await getParticipants(params.id)
-    setData(res)
+    const res = await getWorkshop(params.id)
+    setData(res!)
     setIsLoading(false)
   }
 
   useEffect(() => {
     getData()
-    const unsubreq = onSnapshot(
-      query(
-        collection(db, "workshops", params.id, "requested_participants"),
-        orderBy("application_date", "desc")
-      ),
-      (docs) => {
-        if (!docs.empty) {
-          let reqparts: Participant[] = []
-          docs.forEach((doc) => {
-            reqparts.push({
-              id: doc.id,
-              application_date: doc.data().application_date,
-              name: doc.data().name,
-              email: doc.data().email,
-            })
-          })
+    const unsub = supabase
+      .channel("db_table_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "workshops",
+          filter: `id=eq.${params.id}`,
+        },
+        (payload) => {
           setData({
             is_paid: data.is_paid,
-            requested_participants: reqparts,
-            participants: data.participants,
+            participants: payload.new.participants,
+            requested_participants: payload.new.requested_participants,
           })
         }
-      }
-    )
-    const unsubparts = onSnapshot(
-      query(
-        collection(db, "workshops", params.id, "participants"),
-        orderBy("application_date", "desc")
-      ),
-      (docs) => {
-        if (!docs.empty) {
-          let parts: Participant[] = []
-          docs.forEach((doc) => {
-            parts.push({
-              id: doc.id,
-              application_date: doc.data().application_date,
-              name: doc.data().name,
-              email: doc.data().email,
-            })
-          })
-          setData({
-            is_paid: data.is_paid,
-            requested_participants: data.requested_participants,
-            participants: parts,
-          })
-        }
-      }
-    )
+      )
+      .subscribe()
     return () => {
-      unsubreq()
-      unsubparts()
+      unsub.unsubscribe()
     }
   }, [])
   return (
@@ -120,8 +77,8 @@ export default function Participants({ params }: { params: { id: string } }) {
               </TableHeader>
               <TableBody>
                 {!data.is_paid &&
-                  data.requested_participants.map((part) => (
-                    <TableRow key={part.id}>
+                  data.requested_participants.map((part, index) => (
+                    <TableRow key={index}>
                       <TableCell className="font-medium">{part.name}</TableCell>
                       <TableCell>
                         {formatDateInDDMMYYYY(part.application_date)}
@@ -130,47 +87,34 @@ export default function Participants({ params }: { params: { id: string } }) {
                       <TableCell className="space-x-2">
                         <Button
                           onClick={async () => {
-                            await addDoc(
-                              collection(
-                                db,
-                                "workshops",
-                                params.id,
-                                "participants"
-                              ),
-                              {
-                                name: part.name,
-                                email: part.email,
-                                application_date: Timestamp.fromDate(
-                                  new Timestamp(
-                                    part.application_date.seconds,
-                                    part.application_date.nanoseconds
-                                  ).toDate()
-                                ),
-                              }
-                            )
-                            const user = await getDocs(
-                              query(
-                                collection(db, "users"),
-                                where("email", "==", part.email)
+                            const req_parts =
+                              data.requested_participants.filter(
+                                (parti) => parti.email !== part.email
                               )
-                            )
-                            if (!user.empty) {
-                              await updateDoc(
-                                doc(db, "users", user.docs[0].id),
-                                {
-                                  participated_workshops: arrayUnion(part.id),
-                                }
-                              )
+                            const partis = data.participants
+                            partis.push({
+                              name: part.name,
+                              email: part.email,
+                              application_date: part.application_date,
+                            })
+                            const user = await getUser()
+                            if (user) {
+                              const part_shops = user.participated_workshops
+                              part_shops.push(params.id)
+                              await supabase
+                                .from("users")
+                                .update({
+                                  participated_workshops: part_shops,
+                                })
+                                .eq("id", user.id)
                             }
-                            await deleteDoc(
-                              doc(
-                                db,
-                                "workshops",
-                                params.id,
-                                "requested_participants",
-                                part.id
-                              )
-                            )
+                            await supabase
+                              .from("workshops")
+                              .update({
+                                requested_participants: req_parts,
+                                partcipants: partis,
+                              })
+                              .eq("id", params.id)
                           }}
                           variant={"outline"}
                           size={"sm"}
@@ -179,15 +123,13 @@ export default function Participants({ params }: { params: { id: string } }) {
                         </Button>
                         <Button
                           onClick={async () => {
-                            await deleteDoc(
-                              doc(
-                                db,
-                                "workshops",
-                                params.id,
-                                "requested_participants",
-                                part.id
-                              )
+                            const reqparts = data.requested_participants.filter(
+                              (parti) => parti.email !== part.email
                             )
+                            await supabase
+                              .from("workshops")
+                              .update({ requested_participants: reqparts })
+                              .eq("id", params.id)
                           }}
                           variant={"outline"}
                           size={"sm"}
@@ -197,8 +139,8 @@ export default function Participants({ params }: { params: { id: string } }) {
                       </TableCell>
                     </TableRow>
                   ))}
-                {data.participants.map((part) => (
-                  <TableRow key={part.id}>
+                {data.participants.map((part, index) => (
+                  <TableRow key={index}>
                     <TableCell className="font-medium">{part.name}</TableCell>
                     <TableCell>
                       {formatDateInDDMMYYYY(part.application_date)}

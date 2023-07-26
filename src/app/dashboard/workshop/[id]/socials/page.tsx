@@ -1,6 +1,5 @@
 import { getWorkshop } from "@/app/_actions/workshop"
 import { Button } from "@/components/ui/button"
-import { PublicWorkshopData } from "@/lib/types"
 import { Link } from "lucide-react"
 import { BiInfoCircle } from "react-icons/bi"
 import {
@@ -13,12 +12,11 @@ import {
 } from "react-icons/ri"
 
 export default async function Socials({ params }: { params: { id: string } }) {
-  const { social_links, instructor_name }: PublicWorkshopData =
-    await getWorkshop(params.id)
+  const workshop = await getWorkshop(params.id)
   return (
     <>
       <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-5">
-        {social_links.map((link) => (
+        {workshop?.social_links.map((link) => (
           <div
             key={link}
             className="space-y-6 block bg-background w-full py-6 px-10 border border-black rounded-md"
@@ -87,7 +85,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
                   })()}
                 </span>
                 <span>
-                  {instructor_name +
+                  {workshop?.instructor_name +
                     "'s " +
                     (() => {
                       if (

@@ -1,20 +1,32 @@
 "use client"
 import "./navbar.scss"
 import Link from "next/link"
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "@/lib/firebase"
 import { useEffect, useRef, useState } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "../ui/button"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 const Navbar = () => {
   const [showSignup, setShowSignup] = useState(true)
   const [expanded, setExpanded] = useState(false)
   const [mobileNavHeight, setMobileNavHeight] = useState(0)
   const mobileNavRef = useRef<HTMLDivElement>(null)
-  onAuthStateChanged(auth, (user) =>
-    user ? setShowSignup(false) : setShowSignup(true)
-  )
+  const supabase = createClientComponentClient()
+
+  const checkUser = async () => {
+    const user = await supabase.auth.getSession()
+    user.data.session ? setShowSignup(false) : setShowSignup(true)
+  }
+
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_IN") {
+      setShowSignup(false)
+    }
+    if (event === "SIGNED_OUT") {
+      setShowSignup(true)
+    }
+  })
+
   const heightStyle: React.CSSProperties = {
     "--nav-collapsible-height": `${mobileNavHeight}px`,
   } as any
@@ -24,6 +36,10 @@ const Navbar = () => {
       setMobileNavHeight(mobileNavRef.current.scrollHeight)
     }
   }, [mobileNavRef])
+
+  useEffect(() => {
+    checkUser()
+  }, [])
   return (
     <div className="navbar-container">
       <div

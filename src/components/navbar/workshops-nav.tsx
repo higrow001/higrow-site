@@ -82,11 +82,11 @@ export default function WorkshopNavbar() {
           <div className="hu-logo text-3xl lg:text-4xl font-archivo">
             <Link href="/">HiGrow.</Link>
           </div>
-          <div className="xl:max-w-2xl w-full hidden lg:block">
-            <div className="hu-search flex items-center border-b px-6 bg-background rounded-md">
-              <Search className="mr-2 h-4 w-4 md:h-5 md:w-5 shrink-0 opacity-50" />
+          <div className="xl:max-w-3xl w-full hidden lg:block">
+            <div className="hu-search flex items-center border ml-4 border-black px-5 bg-background rounded-sm">
+              <Search className="h-4 w-4 md:h-5 md:w-5 shrink-0 opacity-50" />
               <Input
-                className="flex w-full rounded-md bg-transparent py-3 text-base focus-visible:outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                className="flex w-full rounded-sm  bg-transparent py-3 text-base focus-visible:outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
                 placeholder="Search for Workshops"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

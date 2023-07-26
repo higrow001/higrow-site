@@ -1,82 +1,47 @@
 "use client"
 import AnnouncementSkeleton from "@/components/skeletons/workshop-announcements"
 import { Button } from "@/components/ui/button"
-import { db } from "@/lib/firebase"
-import { Announcement, TimestampType } from "@/lib/types"
+import { Announcement } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore"
 import { XCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getAnnouncements } from "@/app/_actions/workshop"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 const MakeAnnoucement = dynamic(
   () => import("@/components/dashboard/announcement-modal"),
   { ssr: false, loading: () => <Skeleton className="w-full h-16" /> }
 )
 
 export default function Announcements({ params }: { params: { id: string } }) {
+  const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(true)
-  const [announcements, setAnnouncements] = useState<
-    {
-      id: string
-      title: string
-      message: string
-      timestamp: TimestampType
-    }[]
-  >([])
-  async function getAnnouncements() {
-    let anns: Announcement[] = []
-    const fetchData = await getDocs(
-      query(
-        collection(db, "workshops", params.id, "announcements"),
-        orderBy("timestamp", "desc")
-      )
-    )
-    if (!fetchData.empty) {
-      fetchData.forEach((doc) => {
-        anns.push({
-          id: doc.id,
-          timestamp: doc.data().timestamp,
-          title: doc.data().title,
-          message: doc.data().message,
-        })
-      })
-    }
-    setAnnouncements(anns)
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  async function getData() {
+    const fetchData = await getAnnouncements(params.id)
+    setAnnouncements(fetchData)
     setIsLoading(false)
   }
   useEffect(() => {
-    getAnnouncements()
-    const unsub = onSnapshot(
-      query(
-        collection(db, "workshops", params.id, "announcements"),
-        orderBy("timestamp", "desc")
-      ),
-      (docs) => {
-        let anns: Announcement[] = []
-        if (!docs.empty) {
-          docs.forEach((doc) => {
-            anns.push({
-              id: doc.id,
-              timestamp: doc.data().timestamp,
-              title: doc.data().title,
-              message: doc.data().message,
-            })
-          })
+    getData()
+    const unsub = supabase
+      .channel("db_table_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "workshops",
+          filter: `id=eq.${params.id}`,
+        },
+        (payload) => {
+          setAnnouncements(payload.new.announcements)
         }
-        setAnnouncements(anns)
-      }
-    )
+      )
+      .subscribe()
     return () => {
-      unsub()
+      unsub.unsubscribe()
     }
   }, [])
   return (
@@ -85,12 +50,15 @@ export default function Announcements({ params }: { params: { id: string } }) {
         <AnnouncementSkeleton />
       ) : (
         <>
+          <MakeAnnoucement
+            announcements={announcements}
+            workshop_id={params.id}
+          />
           {announcements.length > 0 ? (
             <div className="w-full space-y-4">
-              <MakeAnnoucement workshop_id={params.id} />
-              {announcements.map((ann) => (
+              {announcements.map((ann, index) => (
                 <div
-                  key={ann.id}
+                  key={index}
                   className="py-10 px-24 space-y-6 border-2 border-[#333] rounded-md shadow-[2px_2px_0_#333] bg-background"
                 >
                   <div className="flex items-center justify-between w-full">
@@ -103,15 +71,15 @@ export default function Announcements({ params }: { params: { id: string } }) {
                       </span>
                       <Button
                         onClick={async () => {
-                          await deleteDoc(
-                            doc(
-                              db,
-                              "workshops",
-                              params.id,
-                              "announcements",
-                              ann.id
-                            )
+                          const newAnnouncements = announcements.filter(
+                            (anns) => anns.timestamp !== ann.timestamp
                           )
+                          await supabase
+                            .from("workshops")
+                            .update({
+                              announcements: newAnnouncements,
+                            })
+                            .eq("id", params.id)
                         }}
                         size={"sm"}
                         variant={"secondary"}
@@ -129,12 +97,9 @@ export default function Announcements({ params }: { params: { id: string } }) {
               ))}
             </div>
           ) : (
-            <>
-              <MakeAnnoucement workshop_id={params.id} />
-              <p className="text-center text-xl">
-                No announcments posted till now.
-              </p>
-            </>
+            <p className="text-center text-xl">
+              No announcments posted till now.
+            </p>
           )}
         </>
       )}

@@ -3,8 +3,7 @@ import { requestWorkshop } from "@/app/_actions/workshop"
 import { Button } from "../ui/button"
 import { useEffect, useState } from "react"
 import { useAlert } from "@/states/alert"
-import { TimestampType } from "@/lib/types"
-import { Timestamp } from "firebase/firestore"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export default function RequestButton({
   id,
@@ -15,27 +14,32 @@ export default function RequestButton({
   id: string
   requests: { email: string }[]
   participants: { email: string }[]
-  applicationDate: TimestampType
+  applicationDate: string
 }) {
-  const timestamp = new Timestamp(
-    applicationDate.seconds,
-    applicationDate.nanoseconds
-  )
-  const applicationClosingDate = new Date(timestamp.toDate())
+  const supabase = createClientComponentClient()
+  const applicationClosingDate = new Date(applicationDate)
   const currentDate = new Date()
   const timeExpired = applicationClosingDate < currentDate
   const { showAlert } = useAlert()
   const [isRequested, setIsRequested] = useState(false)
   const [isAccepted, setIsAccepted] = useState(false)
   const [requestedSent, setRequesteSent] = useState(false)
+
+  const checkUpdates = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    setIsRequested(
+      requests.findIndex((req) => req.email === session?.user.email) > -1
+    )
+    setIsAccepted(
+      participants.findIndex((req) => req.email === session?.user.email) > -1
+    )
+  }
+
   useEffect(() => {
-    const email = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("email="))
-      ?.split("=")[1]
-    setIsRequested(requests.findIndex((req) => req.email === email) > -1)
-    setIsAccepted(participants.findIndex((req) => req.email === email) > -1)
-  }, [])
+    checkUpdates()
+  }, [supabase.auth])
 
   return (
     <Button

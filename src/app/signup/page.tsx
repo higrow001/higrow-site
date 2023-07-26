@@ -4,9 +4,6 @@ import "./signup.scss"
 import useGoogleLogin from "@/lib/utils/google-login"
 import Link from "next/link"
 import { FcGoogle } from "react-icons/fc"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth, db } from "@/lib/firebase"
-import { setDoc, doc } from "firebase/firestore"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -20,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useAlert } from "@/states/alert"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 const signupFormSchema = z
   .object({
@@ -38,7 +37,7 @@ const signupFormSchema = z
       .min(8, {
         message: "Password must be at least 8 characters long",
       })
-      .max(100),
+      .max(32),
     confirmPassword: z.string({ required_error: "Enter confirm password" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -57,6 +56,8 @@ const SignUp = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectPath = searchParams.get("redirect")
+  const { showAutoCloseAlert, showAlert, hideAlert } = useAlert()
+  const supabase = createClientComponentClient()
 
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
@@ -65,38 +66,31 @@ const SignUp = () => {
   })
   type DataType = z.infer<typeof signupFormSchema>
 
-  const signUpUser = async (data: DataType) => {
-    try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      )
-      if (user) {
-        await setDoc(doc(db, "users", user.user.uid), {
-          email: user.user.email,
-          display_name: data.displayName,
-          profile_photo: user.user.photoURL,
-          organized_workshops: [],
-          organized_contests: [],
-          participated_workshops: [],
-          participated_contests: [],
-        })
-        document.cookie = `uid=${user.user.uid}; SameSite=Lax; max-age=${
-          60 * 60 * 24 * 30
-        }`
-        document.cookie = `email=${user.user.email}; SameSite=Lax; max-age=${
-          60 * 60 * 24 * 30
-        }`
-        document.cookie = `display_name=${
-          data.displayName
-        }; SameSite=Lax; max-age=${60 * 60 * 24 * 30}`
-        router.replace(`/${redirectPath ?? ""}`)
-      }
-    } catch (error: any) {
-      if (error.message.includes("email-already-in-use")) {
-        alert("This email is already registered to an account.")
-      }
+  const signUpUser = async (udata: DataType) => {
+    const { data, error } = await supabase.auth.signUp({
+      email: udata.email,
+      password: udata.password,
+      options: {
+        data: {
+          full_name: udata.displayName,
+          avatar_url: null,
+        },
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    })
+    if (data.user) {
+      showAlert({
+        title:
+          "We've sent you a confirmation link to your entered email. please open that link to login.",
+        action: { text: "Okay", callback: hideAlert },
+      })
+    }
+    if (error) {
+      showAutoCloseAlert({
+        title: "Error!",
+        description: error.message,
+        type: "destructive",
+      })
     }
   }
 
