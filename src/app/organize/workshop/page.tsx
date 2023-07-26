@@ -619,7 +619,7 @@ export default function CreateWorkshop() {
                         theme="snow"
                         modules={{
                           toolbar: [
-                            [{ header: [1, 2, false] }],
+                            [{ header: [false] }],
                             [
                               "bold",
                               "italic",
@@ -658,7 +658,7 @@ export default function CreateWorkshop() {
                         theme="snow"
                         modules={{
                           toolbar: [
-                            [{ header: [1, 2, false] }],
+                            [{ header: [false] }],
                             [
                               "bold",
                               "italic",
@@ -788,7 +788,7 @@ export default function CreateWorkshop() {
                         placeholder="Describe in brief what you will teach in each day of this workshop. e.g. Day - 1 : We'll learn basics of designing by doing some projects, Day 2 - ..."
                         modules={{
                           toolbar: [
-                            [{ header: [1, 2, false] }],
+                            [{ header: [false] }],
                             [
                               "bold",
                               "italic",

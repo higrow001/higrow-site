@@ -6,18 +6,18 @@
     max-width: 90%;
     margin: auto;
     .oc-left {
-    h1 {
-      font-family: "Archivo", sans-serif;
-      font-size: 42px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 56px;
-      letter-spacing: 0.84px;
-      color: #333;
-      width: 85%;
-      padding-top: 30px;
+      h1 {
+        font-family: "Archivo", sans-serif;
+        font-size: 42px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 56px;
+        letter-spacing: 0.84px;
+        color: #333;
+        width: 85%;
+        padding-top: 30px;
+      }
     }
-  }
     .oc-right {
       .ocr-cards {
         .workshop-card {
@@ -114,7 +114,7 @@
     }
   }
 
-  .wtch{
+  .wtch {
     height: 60vh;
     background-color: white;
     width: 100%;
@@ -126,7 +126,7 @@
     align-items: center;
     color: #333;
 
-    h1{
+    h1 {
       font-size: 23px;
       font-style: normal;
       font-weight: 400;
@@ -135,7 +135,7 @@
       padding-top: 20px;
     }
 
-    p{
+    p {
       font-size: 38px;
       font-style: normal;
       line-height: 46px;
@@ -146,7 +146,7 @@
       width: 40%;
     }
 
-    span{
+    span {
       width: 45%;
       font-size: 20px;
       font-style: normal;
@@ -197,14 +197,14 @@
       }
     }
 
-    .wtc-right{
+    .wtc-right {
       height: 100%;
       background-color: #333;
       width: 50%;
       display: flex;
       align-items: center;
 
-      img{
+      img {
         margin: auto;
       }
     }
@@ -215,30 +215,169 @@
     border-top: 2px solid black;
     border-bottom: 2px solid black;
   }
-  
+
   .faq-quest {
     line-height: 3;
     color: black;
     text-align: left;
   }
-  
+
   .faq-ans {
     text-align: left;
     color: #333;
   }
-  
+
   .hover\:underline:hover {
     text-decoration-line: none;
     color: #333;
   }
-  
+
   .faq-title {
     font-size: 70px;
   }
-  
+
   .faq-p a {
     text-decoration: underline;
     cursor: pointer;
     color: #333;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .organize-container {
+    .organize-categories {
+      flex-direction: column;
+      padding-top: 65px;
+      max-width: 80%;
+      .oc-left {
+        margin-bottom: 70px;
+        h1 {
+          font-size: 27px;
+          line-height: 36px;
+          letter-spacing: 0.5px;
+          width: 100%;
+          span {
+            display: none;
+          }
+        }
+
+        p {
+          font-size: 16px;
+        }
+      }
+
+      .oc-right{
+        .ocr-cards{
+          .workshop-card{
+            width: 100%;
+            padding: 17px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            margin-bottom: 50px;
+
+            h1{
+              font-size: 20px;
+              line-height: 26px;
+              letter-spacing: 0.36px;
+            }
+              p{
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: .4px;
+              }
+       
+          }
+
+          .contest-card{
+            width: 100%;
+            padding: 17px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+
+            h1{
+              font-size: 20px;
+              line-height: 26px;
+              letter-spacing: 0.36px;
+            }
+
+            p{
+              font-size: 14px;
+              line-height: 20px;
+              letter-spacing: .4px;
+            }
+          }
+        }
+      }
+    }
+    .wtch{
+      height: 55vh;
+      h1{
+        width: 80%;
+      margin: auto;
+      text-align: left;
+      font-size: 17px;
+      margin-top: 0;
+      margin-bottom: 0;
+      }
+
+      p{
+        width: 80%;
+      margin: auto;
+      text-align: left;
+      font-size: 32px;
+      line-height: 38px;
+      letter-spacing: .5px;
+      padding-top: 50px;
+      margin-top: 0;
+      margin-bottom: 0;
+      }
+
+      span{
+        width: 80%;
+      margin: auto;
+      text-align: left;
+      font-size: 16px;
+      padding-top: 20px;
+      margin-top: 0;
+      margin-bottom: 0;
+      line-height: 24px;
+      letter-spacing: .4px;
+      }
+    }
+
+    .wtc{
+      flex-direction: column-reverse;
+      height: 120vh;
+
+      .wtc-right{
+        width: 100%;
+        img{
+          width: 90%;
+          margin: auto;
+        }
+      }
+
+      .wtc-left{
+        width: 100%;
+        padding-top: 30px;
+        padding-bottom: 30px;
+
+        h1{
+          font-size: 27px;
+          line-height: 36px;
+          letter-spacing: .6px;
+          margin-top: 30px;
+        }
+
+        p{
+          font-size: 16px;
+          padding-top: 10px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+    center{
+      padding-top: 100px;
+    }
   }
 }

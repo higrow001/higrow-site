@@ -67,7 +67,7 @@ export default function Organize() {
       <div className="wtch">
         <h1 id="wtch" >Why to choose us?</h1>
         <p> Focus on what you're good at Rest of work is ours! </p>
-      <span> HiGrow makes organizing workshops a breeze with its user-friendly interface, streamlined event management tools. </span>
+      <span> HiGrow makes organizing workshops a breeze with its user-friendly interface and management tools. </span>
       </div>
       <div className="wtc">
         <div className="wtc-left">
