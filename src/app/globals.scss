@@ -72,6 +72,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   height: 100%;
@@ -98,4 +102,17 @@ body {
   max-height: 200px;
   overflow-y: auto;
   font-size: 1rem;
+}
+
+.ql-editor::before {
+  white-space: pre-wrap;
+}
+
+.ql-bubble {
+  border: 1px solid #ccc;
+}
+
+.ql-bubble .ql-editor {
+  min-height: 100px;
+  max-height: 150px;
 }

@@ -67,7 +67,7 @@ export async function requestWorkshop(workshop_id: string) {
       email: userData.email,
       application_date: new Date().toISOString(),
     })
-    supabase
+    await supabase
       .from("workshops")
       .update({ requested_participants: shopsReqs })
       .eq("id", workshop_id)

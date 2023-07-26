@@ -9,12 +9,15 @@ import dynamic from "next/dynamic"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getAnnouncements } from "@/app/_actions/workshop"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { RealtimeChannel } from "@supabase/supabase-js"
+import { useAlert } from "@/states/alert"
 const MakeAnnoucement = dynamic(
   () => import("@/components/dashboard/announcement-modal"),
   { ssr: false, loading: () => <Skeleton className="w-full h-16" /> }
 )
 
 export default function Announcements({ params }: { params: { id: string } }) {
+  const { showAlert } = useAlert()
   const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(true)
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
@@ -25,21 +28,31 @@ export default function Announcements({ params }: { params: { id: string } }) {
   }
   useEffect(() => {
     getData()
-    const unsub = supabase
-      .channel("db_table_changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "workshops",
-          filter: `id=eq.${params.id}`,
-        },
-        (payload) => {
-          setAnnouncements(payload.new.announcements)
-        }
-      )
-      .subscribe()
+    let unsub: RealtimeChannel
+    try {
+      unsub = supabase
+        .channel("db_table_changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "workshops",
+            filter: `id=eq.${params.id}`,
+          },
+          (payload) => {
+            setAnnouncements(payload.new.announcements)
+          }
+        )
+        .subscribe()
+    } catch (error) {
+      showAlert({
+        title: "Realtime updates not available.",
+        description:
+          "You will not get the UI updates when you create or delete an annoncements. Just refresh the page after clicking button to make sure it updated.",
+        type: "destructive",
+      })
+    }
     return () => {
       unsub.unsubscribe()
     }

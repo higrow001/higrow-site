@@ -5,7 +5,6 @@
   justify-content: space-between;
   text-align: center;
   border-bottom: 1px solid black;
-  font-family: "Archivo", sans-serif;
   color: #757575;
   background-color: hsl(var(--accent));
 }
@@ -24,9 +23,8 @@
   align-items: center;
   justify-content: center;
   color: #333333;
-  font-weight: 800;
-  font-style: normal;
-  font-size: 32px;
+  font-weight: 900;
+  font-size: 36px;
 }
 
 @media screen and (max-width: 1023px) {
@@ -50,8 +48,8 @@
   letter-spacing: 1px;
 
   :hover {
-     border-bottom: 1px solid black;
-     color: black;
+    border-bottom: 1px solid black;
+    color: black;
   }
 }
 .nav-buttons {

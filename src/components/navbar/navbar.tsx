@@ -41,7 +41,7 @@ const Navbar = () => {
     checkUser()
   }, [])
   return (
-    <div className="navbar-container">
+    <div className="navbar-container font-archivo">
       <div
         className={`nav-logo transition-none ${
           expanded ? "bg-black !text-white" : ""
@@ -101,10 +101,10 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="py-6 space-y-4 flex flex-col px-8">
-        <Link href="/workshops">Workshops</Link>
-        <Link href="/contests">Contests</Link>
-        <Link href="/faqs">FAQs</Link>
-        <Link href="/aboutus">Contact</Link>
+          <Link href="/workshops">Workshops</Link>
+          <Link href="/contests">Contests</Link>
+          <Link href="/faqs">FAQs</Link>
+          <Link href="/aboutus">Contact</Link>
         </div>
       </div>
     </div>
