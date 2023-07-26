@@ -14,7 +14,7 @@ export default function SideLayout({
 
   return (
     <div className="flex h-full">
-      <aside className="basis-[20%] bg-secondary h-full flex flex-col justify-between text-white">
+      <aside className="lg:basis-[20%] fixed bg-secondary h-full flex flex-col justify-between text-white">
         <div className="flex flex-col">
           <h1 className="font-archivo font-black text-4xl px-12 py-20 border-b border-[#757575]">
             HiGrow.

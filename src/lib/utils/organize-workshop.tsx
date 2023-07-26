@@ -54,10 +54,12 @@ export const initialValues = {
   name: "",
   tagline: "",
   mode: "Online",
+  eventLocation: "",
   category: "Coding",
-  applicationClosingDate: "",
-  workshopStartingDate: "",
-  workshopEndingDate: "",
+  otherCategory: "",
+  applicationClosingDate: new Date(),
+  workshopStartingDate: new Date(),
+  workshopEndingDate: new Date(),
   contactEmail: "",
   redirectUrl: "",
   websiteLink: "",
@@ -73,7 +75,7 @@ export const initialValues = {
   timePerDay: "",
   timeFormat: "hours",
   describeEachDay: "",
-  isPaid: true,
+  isPaid: false,
   workshopAmount: "",
   bankName: "",
   bankEmail: "",
@@ -92,22 +94,24 @@ export const validationSchema = z
       .nonempty({ message: "Event tagline is required" })
       .min(10, { message: "Must be atleast 10 characters long." }),
     mode: z.string(),
+    eventLocation: z.optional(z.string()),
     category: z.string(),
+    otherCategory: z.optional(z.string()),
     applicationClosingDate: z
-      .string()
-      .refine((value) => new Date(value).toString() !== "Invalid Date", {
-        message: "Please select a valid date and time",
-      }),
+      .date({
+        required_error: "Please select a valid date.",
+      })
+      .min(new Date(), { message: "Date should be greater than today." }),
     workshopStartingDate: z
-      .string()
-      .refine((value) => new Date(value).toString() !== "Invalid Date", {
-        message: "Please select a valid date and time",
-      }),
+      .date({
+        required_error: "Please select a valid date.",
+      })
+      .min(new Date(), { message: "Date should be greater than today." }),
     workshopEndingDate: z
-      .string()
-      .refine((value) => new Date(value).toString() !== "Invalid Date", {
-        message: "Please select a valid date and time",
-      }),
+      .date({
+        required_error: "Please select a valid date.",
+      })
+      .min(new Date(), { message: "Date should be greater than today." }),
     contactEmail: z
       .string({ required_error: "Contact email is required." })
       .nonempty({ message: "Contact email is required." })
@@ -157,6 +161,22 @@ export const validationSchema = z
     bankIFSC: z.string(),
   })
   .superRefine((val, ctx) => {
+    if (val.mode === "Offline" && !val.eventLocation?.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Event Location is required.",
+        path: ["eventLocation"],
+      })
+    }
+
+    if (val.category === "Other" && !val.otherCategory?.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Category name is required.",
+        path: ["otherCategory"],
+      })
+    }
+
     if (
       !val.instructorInfo ||
       val.instructorInfo === "<p><br></p>" ||

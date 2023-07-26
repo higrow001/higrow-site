@@ -76,6 +76,8 @@ export default function MakeAnnoucement({
               type: "default",
               description: "You can close this popup now.",
             })
+            setTitle("")
+            setValue("")
           }}
           className="space-y-10"
         >

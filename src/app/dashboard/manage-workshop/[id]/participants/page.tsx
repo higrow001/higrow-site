@@ -13,11 +13,14 @@ import {
 } from "@/components/ui/table"
 import { Participant, PublicWorkshopData } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
+import { useAlert } from "@/states/alert"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { RealtimeChannel } from "@supabase/supabase-js"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function Participants({ params }: { params: { id: string } }) {
+  const { showAlert } = useAlert()
   const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState<
@@ -34,25 +37,35 @@ export default function Participants({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     getData()
-    const unsub = supabase
-      .channel("db_table_changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "workshops",
-          filter: `id=eq.${params.id}`,
-        },
-        (payload) => {
-          setData({
-            is_paid: data.is_paid,
-            participants: payload.new.participants,
-            requested_participants: payload.new.requested_participants,
-          })
-        }
-      )
-      .subscribe()
+    let unsub: RealtimeChannel
+    try {
+      unsub = supabase
+        .channel("db_table_changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "workshops",
+            filter: `id=eq.${params.id}`,
+          },
+          (payload) => {
+            setData({
+              is_paid: data.is_paid,
+              participants: payload.new.participants,
+              requested_participants: payload.new.requested_participants,
+            })
+          }
+        )
+        .subscribe()
+    } catch (error) {
+      showAlert({
+        title: "Realtime updates not available.",
+        description:
+          "You will not get the UI updates when you accept or decline an user request to join. Just refresh the page after clicking button to make sure it updated.",
+        type: "destructive",
+      })
+    }
     return () => {
       unsub.unsubscribe()
     }
@@ -87,16 +100,16 @@ export default function Participants({ params }: { params: { id: string } }) {
                       <TableCell className="space-x-2">
                         <Button
                           onClick={async () => {
-                            const req_parts =
-                              data.requested_participants.filter(
-                                (parti) => parti.email !== part.email
-                              )
                             const partis = data.participants
                             partis.push({
                               name: part.name,
                               email: part.email,
                               application_date: part.application_date,
                             })
+                            const req_parts =
+                              data.requested_participants.filter(
+                                (parti) => parti.email !== part.email
+                              )
                             const user = await getUser()
                             if (user) {
                               const part_shops = user.participated_workshops
@@ -112,7 +125,7 @@ export default function Participants({ params }: { params: { id: string } }) {
                               .from("workshops")
                               .update({
                                 requested_participants: req_parts,
-                                partcipants: partis,
+                                participants: partis,
                               })
                               .eq("id", params.id)
                           }}

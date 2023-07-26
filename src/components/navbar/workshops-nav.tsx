@@ -1,6 +1,6 @@
 "use client"
 import React, { startTransition } from "react"
-import { Search, SlidersHorizontal, X } from "lucide-react"
+import { Search, Sliders, X } from "lucide-react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import Link from "next/link"
@@ -76,7 +76,7 @@ export default function WorkshopNavbar() {
   }, [debouncedQuery])
 
   return (
-    <div className="wc-header">
+    <div className="wc-header bg-secondary">
       <div className="header-container">
         <div className="header-up">
           <div className="hu-logo text-3xl lg:text-4xl font-archivo">
@@ -105,13 +105,13 @@ export default function WorkshopNavbar() {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
-                className="bg-primary-lighter text-primary-foreground hover:bg-primary hover:text-primary-foreground border-background px-2 h-9 md:h-10 md:px-4 md:py-2 shrink-0 text-xs md:text-base"
+                className="px-2 h-9 rounded-full md:h-11 md:px-5 shrink-0 text-xs md:text-base"
                 variant={"outline"}
                 role="combobox"
                 aria-expanded={open}
               >
-                <SlidersHorizontal className="h-4 w-4 md:h-5 md:w-5 mr-3" />
-                Add Filter
+                FILTERS
+                <Sliders className="h-4 w-4 ml-2" />
               </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-[200px] p-0">
@@ -152,16 +152,15 @@ export default function WorkshopNavbar() {
           </div>
         </div>
         {selectedFilter.length > 0 && (
-          <div className="mt-10 space-y-4">
-            <h2 className="text-xl text-primary-foreground">
-              Category Filters
+          <div className="mt-14 space-y-4">
+            <h2 className="text-2xl text-primary-foreground">
+              Selected Categories
             </h2>
             <div className="flex items-center space-x-3 text-primary-foreground">
               {selectedFilter.map((category) => (
                 <Button
                   variant={"outline"}
-                  size={"sm"}
-                  className="rounded-full bg-primary-lighter border-background px-2 pl-4"
+                  className="rounded-full bg-secondary border-background px-4"
                   onClick={() => {
                     const updatedfilters = selectedFilter.filter(
                       (cat) => cat !== category
@@ -169,7 +168,7 @@ export default function WorkshopNavbar() {
                     setSelectedFilter(updatedfilters)
                   }}
                 >
-                  {category}
+                  {category.toUpperCase()}
                   <X className="ml-2 w-5 h-5" />
                 </Button>
               ))}

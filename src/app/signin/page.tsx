@@ -83,7 +83,7 @@ const SignIn = () => {
                 type="button"
                 variant="outline"
                 size="xl"
-                className="space-x-3 w-full md:text-lg rounded-lg"
+                className="space-x-3 w-full text-base md:text-lg rounded-lg"
                 onClick={async () => loginWithGoogle()}
               >
                 <FcGoogle className="md:text-3xl text-2xl shrink-0" />
@@ -136,7 +136,7 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col space-y-8 items-center w-full">
               <Button
-                className="md:text-lg font-archivo w-full px-6 rounded-xl"
+                className="text-base md:text-lg font-archivo w-full px-6 rounded-xl"
                 type="submit"
                 size="xl"
               >
