@@ -22,6 +22,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
       <Navbar />
       {data && (
         <section className="py-20 px-36 w-full ">
+          <div className="">   </div>
           <div className="bg-background border border-secondary">
             <header className="w-full space-y-1 py-8 px-12 border-b border-secondary">
               <h1 className="text-3xl font-bold font-archivo mb-1 text-[#333]">
