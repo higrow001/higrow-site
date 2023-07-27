@@ -847,7 +847,7 @@ export default function CreateWorkshop() {
                         type="number"
                         min={1}
                         className="px-4"
-                        placeholder="e.g. 4"
+                        placeholder="e.g. 2 (Days)"
                         {...field}
                       />
                     </FormControl>
@@ -860,16 +860,16 @@ export default function CreateWorkshop() {
                   control={form.control}
                   name="timeFormat"
                   render={({ field }) => (
-                    <FormItem className="w-full">
+                    <FormItem className="w-full ">
                       <FormLabel className="text-md md:text-xl">
-                        Duration per day format
+                        Duration format
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="text-base h-11">
+                          <SelectTrigger className="flex h-10 md:h-12 w-full outline-0 rounded-md shadow-sm border border-input border-black px-3 py-2 text-sm md:text-lg ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[12px] md:placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none focus:border-2 disabled:cursor-not-allowed disabled:opacity-50">
                             <SelectValue placeholder="Select the time format of workshop duration" />
                           </SelectTrigger>
                         </FormControl>
@@ -900,7 +900,7 @@ export default function CreateWorkshop() {
                           min={1}
                           className="px-4"
                           placeholder={
-                            timeFormatValue === "hours" ? "e.g. 2" : "e.g. 120"
+                            timeFormatValue === "hours" ? "e.g. 2 (hours)" : "e.g. 120 (minutes)"
                           }
                           {...field}
                         />
@@ -916,12 +916,11 @@ export default function CreateWorkshop() {
                 render={() => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      What you'll teach in each day
+                      What you'll teach?
                     </FormLabel>
                     <FormControl>
                       <ReactQuill
-                        theme="snow"
-                        placeholder="Describe in brief what you will teach in each day of this workshop. e.g. Day - 1 : We'll learn basics of designing by doing some projects, Day 2 - ..."
+                        placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
                         modules={{
                           toolbar: [
                             [{ header: [false] }],
@@ -936,10 +935,7 @@ export default function CreateWorkshop() {
                             [
                               { list: "ordered" },
                               { list: "bullet" },
-                              { indent: "-1" },
-                              { indent: "+1" },
-                            ],
-                            ["clean"],
+                            ]
                           ],
                         }}
                         value={describeEachDayValue}
