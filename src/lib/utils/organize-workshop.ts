@@ -73,7 +73,7 @@ export const initialValues = {
   workshopInfo: "",
   workingDays: "",
   timePerDay: "",
-  timeFormat: "hours",
+  timeFormat: "",
   describeEachDay: "",
   isPaid: false,
   workshopAmount: "",
@@ -139,8 +139,9 @@ export const validationSchema = z
       .nonempty({ message: "Working days is required" })
       .min(1, { message: "Working days should be a positive integer" })
       .transform((value) => Number(value)),
-    timeFormat: z.string({
-      required_error: "You need to select a time type.",
+    timeFormat: z.enum(["hours", "mins"], {
+      required_error: "Time format is required.",
+      invalid_type_error: "Please select a valid option.",
     }),
     timePerDay: z
       .string({ required_error: "Instructor Info is required" })

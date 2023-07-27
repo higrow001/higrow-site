@@ -73,58 +73,94 @@ export default async function AdminManage() {
                 </header>
                 <div className="flex">
                   <main className="basis-[70%] border-r border-secondary space-y-12 py-8 px-12">
-                    <div className="space-y-4">
-                      <h2 className="text-2xl text-secondary font-medium">
+                    <div className="space-y-5">
+                      <h2 className="text-3xl text-secondary font-medium">
                         About Instructor :-
                       </h2>
-                      <p>{document.instructor_info}</p>
+                      <div
+                        className="prose max-w-[90ch]"
+                        dangerouslySetInnerHTML={{
+                          __html: document.instructor_info,
+                        }}
+                      ></div>
                     </div>
-                    <div className="space-y-4">
-                      <h2 className="text-2xl text-secondary font-medium">
+                    <div className="space-y-5">
+                      <h2 className="text-3xl text-secondary font-medium">
                         About Workshop :-
                       </h2>
-                      <p>{document.workshop_info}</p>
+                      <div
+                        className="prose max-w-[90ch]"
+                        dangerouslySetInnerHTML={{
+                          __html: document.workshop_info,
+                        }}
+                      ></div>
                     </div>
-                    <div className="space-y-4">
-                      <h2 className="text-2xl text-secondary font-medium">
-                        About Instructor :-
+                    <div className="space-y-5">
+                      <h2 className="text-3xl text-secondary font-medium">
+                        What you'll learn :-
                       </h2>
-                      <p>{document.describe_each_day}</p>
+                      <div
+                        className="prose max-w-[90ch]"
+                        dangerouslySetInnerHTML={{
+                          __html: document.describe_each_day,
+                        }}
+                      ></div>
                     </div>
+                    {document.event_location && (
+                      <div className="space-y-5">
+                        <h2 className="text-3xl text-secondary font-medium">
+                          Offline Event Address :-
+                        </h2>
+                        <div
+                          className="prose max-w-[90ch]"
+                          dangerouslySetInnerHTML={{
+                            __html: document.event_location,
+                          }}
+                        ></div>
+                      </div>
+                    )}
                     <span className="flex space-x-2 items-center flex-wrap">
                       <span className="font-semibold text-xl">
                         Contact email -
                       </span>
                       <span className="text-xl">{document.contact_email}</span>
                     </span>
-                    <span className="flex space-x-2 items-center flex-wrap">
-                      <span className="font-semibold text-xl">Bank name -</span>
-                      <span className="text-xl">
-                        {document.bank_details.name}
-                      </span>
-                    </span>
-                    <span className="flex space-x-2 items-center flex-wrap">
-                      <span className="font-semibold text-xl">
-                        Bank email -
-                      </span>
-                      <span className="text-xl">
-                        {document.bank_details.email}
-                      </span>
-                    </span>
-                    <span className="flex space-x-2 items-center flex-wrap">
-                      <span className="font-semibold text-xl">
-                        Bank account number -
-                      </span>
-                      <span className="text-xl">
-                        {document.bank_details.account_number}
-                      </span>
-                    </span>
-                    <span className="flex space-x-2 items-center flex-wrap">
-                      <span className="font-semibold text-xl">Bank ifsc -</span>
-                      <span className="text-xl">
-                        {document.bank_details.IFSC}
-                      </span>
-                    </span>
+                    {document.bank_details && (
+                      <>
+                        <span className="flex space-x-2 items-center flex-wrap">
+                          <span className="font-semibold text-xl">
+                            Bank name -
+                          </span>
+                          <span className="text-xl">
+                            {document.bank_details.name ?? "NULL"}
+                          </span>
+                        </span>
+                        <span className="flex space-x-2 items-center flex-wrap">
+                          <span className="font-semibold text-xl">
+                            Bank email -
+                          </span>
+                          <span className="text-xl">
+                            {document.bank_details.email ?? "NULL"}
+                          </span>
+                        </span>
+                        <span className="flex space-x-2 items-center flex-wrap">
+                          <span className="font-semibold text-xl">
+                            Bank account number -
+                          </span>
+                          <span className="text-xl">
+                            {document.bank_details.account_number ?? "NULL"}
+                          </span>
+                        </span>
+                        <span className="flex space-x-2 items-center flex-wrap">
+                          <span className="font-semibold text-xl">
+                            Bank ifsc -
+                          </span>
+                          <span className="text-xl">
+                            {document.bank_details.IFSC ?? "NULL"}
+                          </span>
+                        </span>
+                      </>
+                    )}
                   </main>
                   <aside className="basis-[35%] h-full p-8 space-y-8">
                     <div className="space-y-6">
@@ -173,6 +209,14 @@ export default async function AdminManage() {
                         <span className="font-semibold">Category -</span>
                         <span>{document.category}</span>
                       </span>
+                      {document.other_category && (
+                        <span className="flex space-x-2 items-center">
+                          <span className="font-semibold">
+                            Custom Category -
+                          </span>
+                          <span>{document.other_category}</span>
+                        </span>
+                      )}
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold">Entry Amount -</span>
                         <span className="text-lg font-medium">
@@ -185,7 +229,7 @@ export default async function AdminManage() {
                         Contact organizer :-
                       </h3>
                       <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">
-                        {document.social_links.map(
+                        {document.social_links?.map(
                           (link: string) =>
                             link.length > 0 && (
                               <a
