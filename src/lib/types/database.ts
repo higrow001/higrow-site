@@ -72,12 +72,14 @@ export interface Database {
           created_at: string
           created_by: string
           describe_each_day: string
+          event_location: string | null
           id: string
           instructor_info: string
           instructor_name: string
           is_paid: boolean
           mode: string
           name: string
+          other_category: string | null
           participants: Json[] | null
           payment_records: Json | null
           redirect_url: string
@@ -102,12 +104,14 @@ export interface Database {
           created_at?: string
           created_by: string
           describe_each_day: string
+          event_location?: string | null
           id?: string
           instructor_info: string
           instructor_name: string
           is_paid: boolean
           mode: string
           name: string
+          other_category?: string | null
           participants?: Json[] | null
           payment_records?: Json | null
           redirect_url: string
@@ -132,12 +136,14 @@ export interface Database {
           created_at?: string
           created_by?: string
           describe_each_day?: string
+          event_location?: string | null
           id?: string
           instructor_info?: string
           instructor_name?: string
           is_paid?: boolean
           mode?: string
           name?: string
+          other_category?: string | null
           participants?: Json[] | null
           payment_records?: Json | null
           redirect_url?: string

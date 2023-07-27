@@ -66,6 +66,14 @@ export default function CreateWorkshop() {
     mode: "onSubmit",
   })
 
+  const {
+    isValid,
+    isValidating,
+    isDirty,
+    isSubmitting,
+    isLoading: ISLOADING,
+  } = form.formState
+
   const modeValue = useWatch({
     control: form.control,
     name: "mode",
@@ -212,11 +220,12 @@ export default function CreateWorkshop() {
           : null,
       })
       .select("id")
+      .single()
     const userData = await getUser()
-    if (userData && data.data) {
+    if (!!userData && !!data.data) {
       const shops = userData.organized_workshops
-      shops.push(data.data[0].id)
-      supabase
+      shops.push(data.data.id)
+      await supabase
         .from("users")
         .update({ organized_workshops: shops })
         .eq("id", userData.id)
@@ -230,7 +239,7 @@ export default function CreateWorkshop() {
         type: "default",
         action: {
           text: "Okay",
-          callback: () => router.replace("/dashboard/admin"),
+          callback: () => null,
         },
       })
   }
@@ -276,7 +285,8 @@ export default function CreateWorkshop() {
                   variant="secondary"
                   className="border border-secondary h-9 md:h-11 rounded-md md:px-8"
                   onClick={() => {
-                    if (!form.formState.isValid) {
+                    const result = validationSchema.safeParse(form.getValues())
+                    if (!result.success) {
                       showAutoCloseAlert({
                         title: "Error!",
                         description: "Please fill out the red fields.",
@@ -864,10 +874,7 @@ export default function CreateWorkshop() {
                       <FormLabel className="text-md md:text-xl">
                         Duration format
                       </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger className="flex h-10 md:h-12 w-full outline-0 rounded-md shadow-sm border border-input border-black px-3 py-2 text-sm md:text-lg ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[12px] md:placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none focus:border-2 disabled:cursor-not-allowed disabled:opacity-50">
                             <SelectValue placeholder="Select the time format of workshop duration" />
