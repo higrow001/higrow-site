@@ -53,6 +53,7 @@ const Navbar = () => {
           variant={"ghost"}
           size={"icon"}
           onClick={() => setExpanded(!expanded)}
+          aria-label="Menu"
         >
           {expanded ? <X /> : <Menu />}
         </Button>

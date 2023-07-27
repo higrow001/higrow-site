@@ -7,15 +7,15 @@ import Link from "next/link"
 async function EnrolledPage() {
   const workshops = await getParticipatedWorkshops()
   return (
-    <main className="basis-[80%]">
-      <h1 className="font-archivo font-medium text-[#333] text-4xl p-20 border-b border-[#333]">
+    <>
+      <h1 className="font-archivo font-medium text-[#333] text-2xl lg:text-4xl pt-4 pb-8 px-8 lg:p-20 border-b border-[#333] w-full">
         Welcome to HiGrow. Dashboard.
       </h1>
-      <div className="py-12 px-20">
+      <div className="py-12 px-8 lg:px-20">
         <div className="space-y-8">
           <div className="flex w-full justify-between items-center">
-            <h1 className="text-3xl font-archivo text-secondary">
-              Enrolled Opportunities
+            <h1 className="md:text-3xl text-xl font-archivo text-secondary">
+              Enrolled Workshops
             </h1>
             <Link href="/dashboard/all-workshops">
               <Button variant={"outline"}>See All</Button>
@@ -26,7 +26,7 @@ async function EnrolledPage() {
               workshops.map((workshop, index) => (
                 <div
                   key={index}
-                  className="flex w-full py-4 px-4 items-center border border-input bg-background rounded-md divide-x-2 divide-input"
+                  className="flex w-full py-4 px-4 items-center border border-input bg-background rounded-md divide-x-2 divide-input flex-wrap"
                 >
                   <span className="px-4">{`0${index + 1}.`}</span>
                   <h2 className="text-lg px-4 grow-[3] truncate">
@@ -52,7 +52,7 @@ async function EnrolledPage() {
           </div>
         </div>
       </div>
-    </main>
+    </>
   )
 }
 

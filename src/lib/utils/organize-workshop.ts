@@ -247,22 +247,11 @@ export const validationSchema = z
     }
 
     if (val.isPaid && val.workshopAmount <= 0) {
-      try {
-        const amount = Number(val.workshopAmount)
-        if (amount <= 0) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Enter amount greater than 0.",
-            path: ["workshopAmount"],
-          })
-        }
-      } catch (e) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Amount is not valid.",
-          path: ["workshopAmount"],
-        })
-      }
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Enter amount greater than 0.",
+        path: ["workshopAmount"],
+      })
     }
 
     if (val.isPaid && val.bankName.length < 2) {
