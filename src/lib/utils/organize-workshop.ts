@@ -16,7 +16,11 @@ export const categories = [
 ]
 
 export const steps = [
-  { title: "Basics", validationFields: ["name", "tagline"], id: "basics" },
+  {
+    title: "Basics",
+    validationFields: ["name", "tagline", "eventLocation", "otherCategory"],
+    id: "basics",
+  },
   {
     title: "Dates",
     validationFields: [
@@ -40,7 +44,10 @@ export const steps = [
     title: "Advanced",
     validationFields: [
       "workingDays",
-      "hoursPerDay",
+      "timePerDay",
+      "timeFormat",
+      "describeEachDay",
+      "workshopAmount",
       "backName",
       "bankEmail",
       "bankAccNo",

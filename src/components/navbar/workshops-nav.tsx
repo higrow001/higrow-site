@@ -159,6 +159,7 @@ export default function WorkshopNavbar() {
             <div className="flex items-center space-x-3 text-primary-foreground">
               {selectedFilter.map((category) => (
                 <Button
+                  key={category}
                   variant={"outline"}
                   className="rounded-full bg-secondary border-background px-4"
                   onClick={() => {
