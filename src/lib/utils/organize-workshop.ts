@@ -1,17 +1,21 @@
 import * as z from "zod"
 
 export const categories = [
-  "Coding",
-  "Design",
-  "Editing",
+  "Graphic Design",
+  "UI/UX",
+  "Web/App Dev",
+  "Video Editing",
+  "Animation",
+  "Motion/VFX",
+  "AI",
+  "Content Creation",
+  "Digital Marketing",
   "Marketing",
-  "Finance",
-  "Business",
+  "Stocks/Trading",
+  "Personal Finance",
   "Startup",
-  "E-Sports",
-  "Sports",
-  "Academics",
-  "Ai/Ml",
+  "Personal Development",
+  "Art & Craft",
   "Other",
 ]
 

@@ -97,7 +97,7 @@ export default function WorkshopNavbar() {
                   variant={"ghost"}
                   onClick={() => setSearchQuery("")}
                 >
-                  <X className="h-4 w-4 md:h-5 md:w-5 shrink-0 opacity-50" />
+                  <X className="h-3 w-3 md:h-4 md:w-4 shrink-0 opacity-50" />
                 </Button>
               )}
             </div>
@@ -105,12 +105,12 @@ export default function WorkshopNavbar() {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
-                className="px-2 h-9 rounded-full md:h-11 md:px-5 shrink-0 text-xs md:text-base"
+                className="px-2 h-9 rounded-full md:h-12 md:px-6 shrink-0 text-xs md:text-sm"
                 variant={"outline"}
                 role="combobox"
                 aria-expanded={open}
               >
-                FILTERS
+                Filters
                 <Sliders className="h-4 w-4 ml-2" />
               </Button>
             </PopoverTrigger>

@@ -44,7 +44,7 @@ export default function RequestButton({
   return (
     <Button
       disabled={isRequested || timeExpired || requestedSent || isAccepted}
-      className="w-full text-base"
+      className="w-full text-xs  md:text-base"
       size={"xl"}
       variant={"secondary"}
       onClick={async () => {
@@ -65,7 +65,7 @@ export default function RequestButton({
         ? "Already Requested"
         : timeExpired
         ? "Registration Closed"
-        : "Request Join For Free"}
+        : "Join Now"}
     </Button>
   )
 }

@@ -100,7 +100,7 @@ export default function MakeAnnoucement({
               theme="snow"
               modules={{
                 toolbar: [
-                  [{ header: [1, 2, false] }],
+                  [{ header: [false] }],
                   [
                     "bold",
                     "italic",
@@ -126,14 +126,15 @@ export default function MakeAnnoucement({
             />
           </div>
           <div className="flex space-x-4 items-center">
+           
+            <Button type="submit">Submit</Button>
             <Button
               onClick={() => setShowPreview(true)}
               type="button"
-              variant={"secondary"}
+              variant={"outline"}
             >
               Preview
             </Button>
-            <Button type="submit">Submit</Button>
           </div>
         </form>
         {showPreview && (

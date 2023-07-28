@@ -63,7 +63,7 @@ export default function PaymentButton({
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
       <Button
-        className="w-full text-base"
+        className="w-full text-xs md:text-base"
         size={"xl"}
         variant={"secondary"}
         disabled={isLoading || timeExpired || isParticipated}
