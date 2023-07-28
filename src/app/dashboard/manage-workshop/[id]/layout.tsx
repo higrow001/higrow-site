@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Button>
         </div>
         <div className="space-y-12">
-          <div className="flex justify-between gap-20 items-center px-20 border border-black py-3 rounded-md shadow-[4px_4px_0_#333] bg-background">
+          <div className="flex justify-between gap-5 items-center px-8 overflow-x-auto lg:px-16 border-t border-b md:border border-black py-3 md:rounded-md md:shadow-[4px_4px_0_#333] bg-[#fff] snap-x snap-mandatory">
             <Link
               href={`/dashboard/manage-workshop/${params.id}/announcements`}
               className="flex-grow"

@@ -17,16 +17,20 @@ const faqData = [
     answer: "HiGrow is platform where our aim is to help empowering minds worldwide to Learn, compete, and grow together by workshops and contests!",
   },
   {
-    question: "How can I join a workshop?",
-    answer: "Joining a workshop is a breeze! Just head to our workshops page and filter your preferred category. Browse through the available workshops, read the details, and if needed, contact the workshop host for more information. Once you find the perfect fit, click 'Join,' and you're all set to enjoy the workshop! It's that simple!",
+    question: " Is it free to host a workshop here?",
+    answer: "Absolutely! Hosting a workshop on HiGrow is completely free of charge.",
   },
   {
-    question: "Is this platform free for users?",
-    answer: "Yes, it's completely free for users to explore and learn new skills. However, if a workshop has a fee set by the organizer, you'll need to pay for that particular workshop. Enjoy learning without any platform charges!",
+    question: "How can I organize a workshop?",
+    answer: "To organize a workshop, head to the 'Organize' page, click on 'Workshops,' and provide all the necessary details, including comprehensive information and contact links. Once everything is complete, click 'Publish.' We'll review your workshop, and upon approval, it will be listed on our platform.",
   },
   {
-    question: "Can I contact the workshop provider?",
-    answer: "Absolutely! You can easily get in touch with the workshop organizers through the social links they provide on the workshop's page. Feel free to reach out to them for any extra details or inquiries. They'll be happy to assist you!",
+    question: "What are the fees?",
+    answer: "We charge a flat 10% fee from your workshop's profit, ensuring our success aligns with yours. Please note that payment service provider fees (ranging from 2.5% to 5%) are separate and not included in our deduction.",
+  },
+  {
+    question: "How do I get paid?",
+    answer: "We'll ask your bank details and will transfer your earnings directly to your bank account within a week after your workshop is complete!",
   },
   
 ]

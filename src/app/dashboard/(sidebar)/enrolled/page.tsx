@@ -17,37 +17,31 @@ async function EnrolledPage() {
             <h1 className="md:text-3xl text-xl font-archivo text-secondary">
               Enrolled Workshops
             </h1>
-            <Link href="/dashboard/all-workshops">
-              <Button variant={"outline"}>See All</Button>
-            </Link>
           </div>
           <div className="space-y-4">
             {workshops &&
               workshops.map((workshop, index) => (
-                <div
+                <Link
+                className="px-4 "
+                href={`/dashboard/workshop/${workshop.id}/announcements`}
+              >     <div
                   key={index}
-                  className="flex w-full py-4 px-4 items-center border border-input bg-background rounded-md divide-x-2 divide-input flex-wrap"
+                  className="md:flex flex-col md:flex-row w-full py-4 px-4 text-left items-center border border-input bg-background rounded-md  flex-wrap"
                 >
-                  <span className="px-4">{`0${index + 1}.`}</span>
-                  <h2 className="text-lg px-4 grow-[3] truncate">
-                    {workshop.name} by {workshop.instructor_name}
+                  <h2 className="text-md md:text-lg px-4 w-full mb-2 md:mb-0 md:w-[45%] md:border-r-2 grow-[3] truncate">
+                    {workshop.name}
                   </h2>
-                  <span className="px-4 shrink-0 tracking-widest">{`${formatDateInDDMMYYYY(
+                  <div className="text-sm md:text-base mb-3 md:mb-0  px-4 w-full md:w-[18%] md:border-r-2 md:text-center shrink-0 tracking-widest">{`${formatDateInDDMMYYYY(
                     workshop.workshop_starting_date
-                  )}`}</span>
-                  <span className="text-primary-lighter text-center shrink-0 grow-[2] font-semibold px-4">
+                  )}`}</div>
+                  <div className="text-primary-lighter text-sm md:text-base  md:text-center w-full shrink-0 md:w-[30%] grow-[2] font-semibold px-4">
                     Accepting applications
-                  </span>
-                  <Link
-                    className="px-4"
-                    href={`/dashboard/workshop/${workshop.id}/announcements`}
-                  >
-                    <Button variant={"outline"}>
-                      Details
-                      <ChevronRight className="text-secondary w-6 h-6 ml-2" />
-                    </Button>
-                  </Link>
+                  </div>
+                 
+                    <ChevronRight className="text-secondary hidden md:block w-5 h-5 mr-2" />
+                  
                 </div>
+                </Link>
               ))}
           </div>
         </div>

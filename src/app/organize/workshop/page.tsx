@@ -484,8 +484,8 @@ export default function CreateWorkshop() {
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={cn(
-                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                          className={cn (
+                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -525,7 +525,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -565,7 +565,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "max-w-[440px] w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                         >
