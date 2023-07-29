@@ -27,6 +27,7 @@ module.exports = {
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          lighter: "var(--secondary-lighter)",
           darker: "hsl(var(--secondary-darker))",
           foreground: "hsl(var(--secondary-foreground))",
         },

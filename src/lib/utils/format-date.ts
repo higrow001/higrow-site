@@ -1,5 +1,5 @@
 export function formatDateInDDMMYYYY(input: string, showTime = false) {
-  if (!showTime) return new Intl.DateTimeFormat().format(new Date(input))
+  if (!showTime) return new Intl.DateTimeFormat("en-in").format(new Date(input))
   return new Intl.DateTimeFormat("en-in", {
     timeStyle: "medium",
     dateStyle: "short",

@@ -1,7 +1,5 @@
 import { getParticipatedWorkshops } from "@/app/_actions/workshop"
-import { Button } from "@/components/ui/button"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
-import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 
 async function EnrolledPage() {
@@ -18,29 +16,32 @@ async function EnrolledPage() {
               Enrolled Workshops
             </h1>
           </div>
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
             {workshops &&
               workshops.map((workshop, index) => (
                 <Link
-                className="px-4 "
-                href={`/dashboard/workshop/${workshop.id}/announcements`}
-              >     <div
+                  className="lg:px-12 md:px-8 px-6 py-4 md:py-6 block bg-background rounded-lg border border-secondary"
+                  href={`/dashboard/workshop/${workshop.id}/announcements`}
                   key={index}
-                  className="md:flex flex-col md:flex-row w-full py-4 px-4 text-left items-center border border-input bg-background rounded-md  flex-wrap"
                 >
-                  <h2 className="text-md md:text-lg px-4 w-full mb-2 md:mb-0 md:w-[45%] md:border-r-2 grow-[3] truncate">
-                    {workshop.name}
-                  </h2>
-                  <div className="text-sm md:text-base mb-3 md:mb-0  px-4 w-full md:w-[18%] md:border-r-2 md:text-center shrink-0 tracking-widest">{`${formatDateInDDMMYYYY(
-                    workshop.workshop_starting_date
-                  )}`}</div>
-                  <div className="text-primary-lighter text-sm md:text-base  md:text-center w-full shrink-0 md:w-[30%] grow-[2] font-semibold px-4">
-                    Accepting applications
+                  <div className="flex flex-col justify-between space-y-8 h-full">
+                    <div className="space-y-2">
+                      <h2 className="md:text-2xl text-xl font-medium">
+                        {workshop.name}
+                      </h2>
+                      <span className="text-secondary text-sm md:text-base block">
+                        {formatDateInDDMMYYYY(workshop.workshop_starting_date) +
+                          " - " +
+                          formatDateInDDMMYYYY(workshop.workshop_ending_date)}
+                      </span>
+                      <span className="block text-primary md:text-lg font-semibold">
+                        Accepting applications
+                      </span>
+                    </div>
+                    <span className="block text-secondary-lighter md:text-lg font-semibold">
+                      No new Announcments
+                    </span>
                   </div>
-                 
-                    <ChevronRight className="text-secondary hidden md:block w-5 h-5 mr-2" />
-                  
-                </div>
                 </Link>
               ))}
           </div>

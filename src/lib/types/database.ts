@@ -86,6 +86,7 @@ export interface Database {
           requested_participants: Json[] | null
           social_links: string[]
           tagline: string
+          thumbnail_url: string | null
           time_format: string
           time_per_day: number
           working_days: number
@@ -118,6 +119,7 @@ export interface Database {
           requested_participants?: Json[] | null
           social_links: string[]
           tagline: string
+          thumbnail_url?: string | null
           time_format: string
           time_per_day: number
           working_days: number
@@ -150,6 +152,7 @@ export interface Database {
           requested_participants?: Json[] | null
           social_links?: string[]
           tagline?: string
+          thumbnail_url?: string | null
           time_format?: string
           time_per_day?: number
           working_days?: number

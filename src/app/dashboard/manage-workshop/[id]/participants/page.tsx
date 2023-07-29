@@ -82,22 +82,34 @@ export default function Participants({ params }: { params: { id: string } }) {
               <TableCaption>A list of participated users.</TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-40">Name</TableHead>
-                  <TableHead className="w-52">Apply date</TableHead>
-                  <TableHead className="w-60">Email</TableHead>
-                  {!data.is_paid && <TableHead>Accept/Decline</TableHead>}
+                  <TableHead className="w-40 whitespace-nowrap">Name</TableHead>
+                  <TableHead className="w-52 whitespace-nowrap">
+                    Apply date
+                  </TableHead>
+                  <TableHead className="w-60 whitespace-nowrap">
+                    Email
+                  </TableHead>
+                  {!data.is_paid && (
+                    <TableHead className="whitespace-nowrap">
+                      Accept/Decline
+                    </TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {!data.is_paid &&
                   data.requested_participants.map((part, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">{part.name}</TableCell>
-                      <TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">
+                        {part.name}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
                         {formatDateInDDMMYYYY(part.application_date)}
                       </TableCell>
-                      <TableCell>{part.email}</TableCell>
-                      <TableCell className="space-x-2">
+                      <TableCell className="whitespace-nowrap">
+                        {part.email}
+                      </TableCell>
+                      <TableCell className="space-x-2 whitespace-nowrap">
                         <Button
                           onClick={async () => {
                             const partis = data.participants
@@ -131,8 +143,10 @@ export default function Participants({ params }: { params: { id: string } }) {
                           }}
                           variant={"outline"}
                           size={"sm"}
+                          className="text-xs"
                         >
-                          <Check className="w-5 h-5 mr-2" /> Accept
+                          <Check className="md:w-5 nd:h-5 h-4 w-4 mr-2" />{" "}
+                          Accept
                         </Button>
                         <Button
                           onClick={async () => {
@@ -146,20 +160,29 @@ export default function Participants({ params }: { params: { id: string } }) {
                           }}
                           variant={"outline"}
                           size={"sm"}
+                          className="text-xs"
                         >
-                          <X className="w-5 h-5 mr-2" /> Decline
+                          <X className="md:w-5 nd:h-5 h-4 w-4 mr-2" /> Decline
                         </Button>
                       </TableCell>
                     </TableRow>
                   ))}
                 {data.participants.map((part, index) => (
                   <TableRow key={index}>
-                    <TableCell className="font-medium">{part.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-medium whitespace-nowrap">
+                      {part.name}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
                       {formatDateInDDMMYYYY(part.application_date)}
                     </TableCell>
-                    <TableCell>{part.email}</TableCell>
-                    {!data.is_paid && <TableCell>Accepted</TableCell>}
+                    <TableCell className="whitespace-nowrap">
+                      {part.email}
+                    </TableCell>
+                    {!data.is_paid && (
+                      <TableCell className="whitespace-nowrap">
+                        Accepted
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>

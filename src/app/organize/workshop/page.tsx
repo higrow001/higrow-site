@@ -143,7 +143,9 @@ export default function CreateWorkshop() {
   }, [])
 
   const submitData: any = async (values: z.infer<typeof validationSchema>) => {
+    if (fileInputState.showError) return
     setIsLoading(true)
+    setPostSubmit({ show: true, logMsg: "Creating Workshop..." })
     const user = await supabase.auth.getSession()
     const {
       eventLocation,
@@ -224,6 +226,25 @@ export default function CreateWorkshop() {
       .single()
     const userData = await getUser()
     if (!!userData && !!data.data) {
+      if (fileInputState.file) {
+        setPostSubmit({ show: true, logMsg: "Uploading thumbnail..." })
+        const imageInsert = await supabase.storage
+          .from("thumbnails")
+          .upload(`workshop/${data.data?.id}`, fileInputState.file!)
+        if (imageInsert.data) {
+          const {
+            data: { publicUrl: thumbnail_url },
+          } = supabase.storage
+            .from("thumbnails")
+            .getPublicUrl(`workshop/${data.data.id}`)
+          if (thumbnail_url)
+            await supabase
+              .from("workshops")
+              .update({ thumbnail_url })
+              .eq("id", data.data.id)
+        }
+      }
+
       const shops = userData.organized_workshops
       shops.push(data.data.id)
       await supabase
@@ -232,6 +253,8 @@ export default function CreateWorkshop() {
         .eq("id", userData.id)
     }
     setIsLoading(false)
+    setPostSubmit({ show: true, logMsg: "Workshop Created." })
+    setTimeout(() => setPostSubmit({ show: false, logMsg: "" }), 1000)
     if (!data.error)
       showAlert({
         title: "Success.",
@@ -240,31 +263,10 @@ export default function CreateWorkshop() {
         type: "default",
         action: {
           text: "Okay",
-          callback: () => null,
+          callback: () => router.push("/dashboard/admin"),
         },
       })
   }
-
-  useEffect(() => {
-    setTimeout(
-      () =>
-        setPostSubmit({
-          show: true,
-          logMsg: "Uploading thumbnail to server...",
-        }),
-      1000
-    )
-    setTimeout(
-      () => setPostSubmit({ show: true, logMsg: "Creating workshop..." }),
-      3000
-    )
-    setTimeout(
-      () =>
-        setPostSubmit({ show: true, logMsg: "Workshop created succesfully." }),
-      5000
-    )
-    setTimeout(() => setPostSubmit({ show: false, logMsg: "" }), 6000)
-  }, [])
 
   return (
     <Form {...form}>
@@ -522,8 +524,34 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
-
-            <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="category"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-md md:text-xl">Category</FormLabel>
+                  <FormControl>
+                    <div className="flex w-full flex-wrap gap-3">
+                      {categories.map((category) => (
+                        <Button
+                          key={category}
+                          onClick={() => form.setValue("category", category)}
+                          variant={
+                            categoryValue === category ? "default" : "outline"
+                          }
+                          className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                          type="button"
+                        >
+                          {category}
+                        </Button>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <div className="space-y-4">
               <h1 className="text-md md:text-xl">Category</h1>
               <div className="flex w-full flex-wrap gap-3">
                 {categories.map((category) => (
@@ -538,7 +566,7 @@ export default function CreateWorkshop() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
             {categoryValue === "Other" && (
               <FormField
                 control={form.control}
@@ -576,7 +604,7 @@ export default function CreateWorkshop() {
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={cn (
+                          className={cn(
                             "w-full pl-3 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
@@ -999,7 +1027,9 @@ export default function CreateWorkshop() {
                           min={1}
                           className="px-4"
                           placeholder={
-                            timeFormatValue === "hours" ? "e.g. 2 (hours)" : "e.g. 120 (minutes)"
+                            timeFormatValue === "hours"
+                              ? "e.g. 2 (hours)"
+                              : "e.g. 120 (minutes)"
                           }
                           {...field}
                         />
@@ -1031,10 +1061,7 @@ export default function CreateWorkshop() {
                               "blockquote",
                               "link",
                             ],
-                            [
-                              { list: "ordered" },
-                              { list: "bullet" },
-                            ]
+                            [{ list: "ordered" }, { list: "bullet" }],
                           ],
                         }}
                         value={describeEachDayValue}

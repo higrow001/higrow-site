@@ -1,6 +1,7 @@
 import "./card.scss"
 import { WorkshopDataType } from "@/lib/types"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
+import Image from "next/image"
 
 const Card = (
   props: Pick<
@@ -11,12 +12,21 @@ const Card = (
     | "workshop_starting_date"
     | "is_paid"
     | "workshop_amount"
+    | "thumbnail_url"
   >
 ) => {
   return (
     <div className="card">
       <div className="card-thumbnail">
-        <img src="https://img.freepik.com/free-vector/design-process-concept-landing-page_23-2148313670.jpg" />
+        <Image
+          src={
+            props.thumbnail_url ??
+            "https://img.freepik.com/free-vector/design-process-concept-landing-page_23-2148313670.jpg"
+          }
+          alt="Thumbnail image"
+          width={400}
+          height={280}
+        />
       </div>
       <div className="card-title">
         <h1>{props.name}</h1>

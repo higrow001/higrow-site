@@ -19,6 +19,7 @@ import {
 import { categories } from "@/lib/utils/organize-workshop"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useDebounce } from "@/lib/hooks/debounce"
+import { ScrollArea } from "../ui/scroll-area"
 
 const getExactNameOfCategory = (str: string) => {
   let resultStr = ""
@@ -105,13 +106,13 @@ export default function WorkshopNavbar() {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
-                className="px-2 h-9 rounded-full md:h-12 md:px-6 shrink-0 text-xs md:text-sm"
+                className="px-4 h-9 rounded-full md:h-12 md:px-6 shrink-0 text-xs sm:text-sm md:text-base"
                 variant={"outline"}
                 role="combobox"
                 aria-expanded={open}
               >
                 Filters
-                <Sliders className="h-4 w-4 ml-2" />
+                <Sliders className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ml-2" />
               </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-[200px] p-0">
@@ -119,24 +120,26 @@ export default function WorkshopNavbar() {
                 <CommandInput placeholder="Search category..." />
                 <CommandEmpty>No category found.</CommandEmpty>
                 <CommandGroup>
-                  {categories.map((category) => (
-                    <CommandItem
-                      key={category}
-                      onSelect={(currentValue) => {
-                        const capitalizedString =
-                          getExactNameOfCategory(currentValue)
+                  <ScrollArea className="w-full h-96">
+                    {categories.map((category) => (
+                      <CommandItem
+                        key={category}
+                        onSelect={(currentValue) => {
+                          const capitalizedString =
+                            getExactNameOfCategory(currentValue)
 
-                        if (!selectedFilter.includes(capitalizedString))
-                          setSelectedFilter([
-                            ...selectedFilter,
-                            capitalizedString,
-                          ])
-                        setOpen(false)
-                      }}
-                    >
-                      {category}
-                    </CommandItem>
-                  ))}
+                          if (!selectedFilter.includes(capitalizedString))
+                            setSelectedFilter([
+                              ...selectedFilter,
+                              capitalizedString,
+                            ])
+                          setOpen(false)
+                        }}
+                      >
+                        {category}
+                      </CommandItem>
+                    ))}
+                  </ScrollArea>
                 </CommandGroup>
               </Command>
             </PopoverContent>
