@@ -20,7 +20,17 @@ export const categories = [
 ]
 
 export const steps = [
-  { title: "Basics", validationFields: ["name", "tagline"], id: "basics" },
+  {
+    title: "Basics",
+    validationFields: [
+      "name",
+      "tagline",
+      "category",
+      "eventLocation",
+      "otherCategory",
+    ],
+    id: "basics",
+  },
   {
     title: "Dates",
     validationFields: [
@@ -44,7 +54,10 @@ export const steps = [
     title: "Advanced",
     validationFields: [
       "workingDays",
-      "hoursPerDay",
+      "timePerDay",
+      "timeFormat",
+      "describeEachDay",
+      "workshopAmount",
       "backName",
       "bankEmail",
       "bankAccNo",
@@ -59,7 +72,7 @@ export const initialValues = {
   tagline: "",
   mode: "Online",
   eventLocation: "",
-  category: "Coding",
+  category: "",
   otherCategory: "",
   applicationClosingDate: new Date(),
   workshopStartingDate: new Date(),
@@ -99,7 +112,7 @@ export const validationSchema = z
       .min(10, { message: "Must be atleast 10 characters long." }),
     mode: z.string(),
     eventLocation: z.optional(z.string()),
-    category: z.string(),
+    category: z.string().nonempty({ message: "Category is required" }),
     otherCategory: z.optional(z.string()),
     applicationClosingDate: z
       .date({

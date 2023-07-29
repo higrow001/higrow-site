@@ -1,9 +1,6 @@
 // card.scss
 
-
-
 .card {
-  min-width: calc(33.33% - 20px); /* 33% width with 20px margin between cards */
   border: 1px solid black;
   background-color: white;
   border-radius: 6px;
@@ -16,14 +13,14 @@
   flex-direction: column;
   margin: 10px;
   max-width: 400px;
-  margin-bottom: 120px;
 
   .card-thumbnail img {
     width: 100%;
-    height: 240px;
+    height: auto;
     object-fit: cover;
     border-radius: 6px 6px 0 0;
     border-bottom: 1px solid black;
+    aspect-ratio: 3/2;
   }
 
   .card-title {
@@ -31,7 +28,6 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-
 
     h1 {
       font-family: "Archivo", sans-serif;
@@ -44,7 +40,7 @@
       width: 90%;
       margin: auto;
       max-height: 64px; /* Set a maximum height for the title */
-  overflow: hidden;
+      overflow: hidden;
     }
 
     .instructor-name {
@@ -95,10 +91,10 @@
 
   .card-extra {
     display: flex;
-  justify-content: center; /* Center the start date and price horizontally */
-  align-items: center; /* Center the start date and price vertically */
-  margin-bottom: 0;
-  height: 65px;
+    justify-content: center; /* Center the start date and price horizontally */
+    align-items: center; /* Center the start date and price vertically */
+    margin-bottom: 0;
+    height: 65px;
 
     .start-date {
       flex: 1.5; /* The start date will take up 50% of the available space */
@@ -110,10 +106,10 @@
 
       p {
         font-size: 13px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: 0.59px;
-    margin: 0;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: 0.59px;
+        margin: 0;
       }
       span {
         font-size: 13px;
@@ -125,11 +121,10 @@
     }
     .price {
       flex: 1; /* The price will take up 50% of the available space */
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       p {
         font-size: 14px;
@@ -145,19 +140,4 @@
 
 .card:hover {
   box-shadow: 4px 4px 0 #333;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 1200px) {
-  .card {
-    width: calc(50% - 20px); /* 50% width with 20px margin between cards for tablets */
-    max-width: 400px;
-  }
-}
-
-@media (max-width: 767px) {
-  .card {
-    width: 100%; /* 100% width for mobiles */
-    max-width: 320px;
-  }
 }

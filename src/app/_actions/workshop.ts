@@ -31,11 +31,21 @@ export async function getUserOrganizedWorkshops() {
     const ids = userData.organized_workshops
     const { data } = await supabase
       .from("workshops")
-      .select("name, instructor_name, workshop_starting_date, id")
+      .select(
+        "name, workshop_starting_date, id, workshop_ending_date, application_closing_date, announcements"
+      )
       .in("id", ids)
       .order("created_at", { ascending: false })
     if (data) {
-      return data
+      return data as Pick<
+        WorkshopDataType,
+        | "id"
+        | "name"
+        | "application_closing_date"
+        | "workshop_starting_date"
+        | "workshop_ending_date"
+        | "announcements"
+      >[]
     }
   }
   return []
@@ -47,11 +57,21 @@ export async function getParticipatedWorkshops() {
     const ids = userData.participated_workshops
     const { data } = await supabase
       .from("workshops")
-      .select("name, instructor_name, workshop_starting_date, id")
+      .select(
+        "name, workshop_starting_date, id, workshop_ending_date, application_closing_date, announcements"
+      )
       .in("id", ids)
       .order("created_at", { ascending: false })
     if (data) {
-      return data
+      return data as Pick<
+        WorkshopDataType,
+        | "id"
+        | "name"
+        | "application_closing_date"
+        | "workshop_starting_date"
+        | "workshop_ending_date"
+        | "announcements"
+      >[]
     }
   }
   return []
@@ -126,10 +146,10 @@ export async function getWorkshops({ categories, search }: GetWorkshopProps) {
   }
 
   if (refinedSearch) {
-    const workshops = await baseQuery.textSearch("name", refinedSearch)
-    return workshops.data
+    const workshops = await baseQuery.ilike("name", `%${refinedSearch}%`)
+    return workshops.data as WorkshopDataType[]
   } else {
     const workshops = await baseQuery
-    return workshops.data
+    return workshops.data as WorkshopDataType[]
   }
 }

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -44,6 +45,8 @@ import * as z from "zod"
 import { getUser } from "@/app/_actions/workshop"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import Image from "next/image"
+import * as Dialog from "@radix-ui/react-dialog"
 
 const allLinks = (...links: string[]) => {
   const finalLinks: string[] = []
@@ -58,21 +61,19 @@ export default function CreateWorkshop() {
   const router = useRouter()
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
+  const [postSubmit, setPostSubmit] = useState({ show: false, logMsg: "" })
   const { showAutoCloseAlert, showAlert } = useAlert()
+  const [fileInputState, setFileInputState] = useState<{
+    showError: boolean
+    errorMsg: string
+    file: null | File
+  }>({ showError: false, errorMsg: "", file: null })
 
   const form = useForm({
     resolver: zodResolver(validationSchema),
     defaultValues: initialValues,
     mode: "onSubmit",
   })
-
-  const {
-    isValid,
-    isValidating,
-    isDirty,
-    isSubmitting,
-    isLoading: ISLOADING,
-  } = form.formState
 
   const modeValue = useWatch({
     control: form.control,
@@ -142,7 +143,9 @@ export default function CreateWorkshop() {
   }, [])
 
   const submitData: any = async (values: z.infer<typeof validationSchema>) => {
+    if (fileInputState.showError) return
     setIsLoading(true)
+    setPostSubmit({ show: true, logMsg: "Creating Workshop..." })
     const user = await supabase.auth.getSession()
     const {
       eventLocation,
@@ -223,6 +226,25 @@ export default function CreateWorkshop() {
       .single()
     const userData = await getUser()
     if (!!userData && !!data.data) {
+      if (fileInputState.file) {
+        setPostSubmit({ show: true, logMsg: "Uploading thumbnail..." })
+        const imageInsert = await supabase.storage
+          .from("thumbnails")
+          .upload(`workshop/${data.data?.id}`, fileInputState.file!)
+        if (imageInsert.data) {
+          const {
+            data: { publicUrl: thumbnail_url },
+          } = supabase.storage
+            .from("thumbnails")
+            .getPublicUrl(`workshop/${data.data.id}`)
+          if (thumbnail_url)
+            await supabase
+              .from("workshops")
+              .update({ thumbnail_url })
+              .eq("id", data.data.id)
+        }
+      }
+
       const shops = userData.organized_workshops
       shops.push(data.data.id)
       await supabase
@@ -231,6 +253,8 @@ export default function CreateWorkshop() {
         .eq("id", userData.id)
     }
     setIsLoading(false)
+    setPostSubmit({ show: true, logMsg: "Workshop Created." })
+    setTimeout(() => setPostSubmit({ show: false, logMsg: "" }), 1000)
     if (!data.error)
       showAlert({
         title: "Success.",
@@ -239,7 +263,7 @@ export default function CreateWorkshop() {
         type: "default",
         action: {
           text: "Okay",
-          callback: () => null,
+          callback: () => router.push("/dashboard/admin"),
         },
       })
   }
@@ -292,24 +316,21 @@ export default function CreateWorkshop() {
                         description: "Please fill out the red fields.",
                         type: "destructive",
                       })
+                      const firstErrorField = result.error.issues[0]
+                        .path[0] as string
+                      steps.forEach((step, index) => {
+                        if (
+                          step.validationFields.includes(firstErrorField) &&
+                          !fileInputState.showError
+                        ) {
+                          setTimeout(() => setActiveStep(index))
+                          return
+                        }
+                      })
                     }
+                    if (fileInputState.showError)
+                      setTimeout(() => setActiveStep(0))
                   }}
-                  // onClick={() => {
-                  //   try {
-                  //     const result = validationSchema.safeParse(
-                  //       form.getValues()
-                  //     )
-                  //     if (!result.success) {
-                  //       const firstErrorField = result.error.issues[0]
-                  //         .path[0] as string
-                  //       steps.forEach((step, index) => {
-                  //         if (step.validationFields.includes(firstErrorField)) {
-                  //           setActiveStep(index)
-                  //         }
-                  //       })
-                  //     }
-                  //   } catch (error) {}
-                  // }}
                 >
                   {isLoading ? (
                     <>
@@ -353,6 +374,79 @@ export default function CreateWorkshop() {
               activeStep === 0 ? "block" : "hidden"
             }`}
           >
+            <FormField
+              name="thumbnail"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel
+                    className={`text-md md:text-xl ${
+                      fileInputState.showError ? "text-destructive" : ""
+                    }`}
+                  >
+                    Thumbnail
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="picture"
+                      type="file"
+                      className="px-4 w-fit"
+                      placeholder="Web development bootcamp"
+                      accept="image/png, image/jpeg, image/webp"
+                      onChange={(e) => {
+                        if (
+                          e.target.files &&
+                          e.target.files.length > 0 &&
+                          e.target.files[0].size > 3 * 1024 * 1024
+                        ) {
+                          setFileInputState({
+                            showError: true,
+                            errorMsg: "Image should be smaller than 3MB",
+                            file: null,
+                          })
+                          return
+                        }
+                        if (e.target.files && e.target.files.length > 0) {
+                          setFileInputState({
+                            showError: false,
+                            errorMsg: "",
+                            file: e.target.files[0],
+                          })
+                          return
+                        }
+                        setFileInputState({
+                          showError: false,
+                          errorMsg: "",
+                          file: null,
+                        })
+                      }}
+                    />
+                  </FormControl>
+                  {fileInputState.showError && (
+                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
+                  )}
+                  <FormDescription>
+                    We will provide a default thumbnail image acording to
+                    selected category if you don't provide one yourself.
+                  </FormDescription>
+                  <FormDescription>
+                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
+                    height 600px) to make sure image don't get cut out.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            {fileInputState.file && (
+              <div>
+                <h1 className="text-md md:text-xl">Thumbnail Preview</h1>
+                <Image
+                  className="aspect-[3/2] w-96 object-cover"
+                  src={URL.createObjectURL(fileInputState.file)}
+                  alt="Preview thumbnail"
+                  width={400}
+                  height={280}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="name"
@@ -430,8 +524,34 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
-
-            <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="category"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-md md:text-xl">Category</FormLabel>
+                  <FormControl>
+                    <div className="flex w-full flex-wrap gap-3">
+                      {categories.map((category) => (
+                        <Button
+                          key={category}
+                          onClick={() => form.setValue("category", category)}
+                          variant={
+                            categoryValue === category ? "default" : "outline"
+                          }
+                          className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                          type="button"
+                        >
+                          {category}
+                        </Button>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <div className="space-y-4">
               <h1 className="text-md md:text-xl">Category</h1>
               <div className="flex w-full flex-wrap gap-3">
                 {categories.map((category) => (
@@ -446,7 +566,7 @@ export default function CreateWorkshop() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
             {categoryValue === "Other" && (
               <FormField
                 control={form.control}
@@ -484,7 +604,7 @@ export default function CreateWorkshop() {
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={cn (
+                          className={cn(
                             "w-full pl-3 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
@@ -907,7 +1027,9 @@ export default function CreateWorkshop() {
                           min={1}
                           className="px-4"
                           placeholder={
-                            timeFormatValue === "hours" ? "e.g. 2 (hours)" : "e.g. 120 (minutes)"
+                            timeFormatValue === "hours"
+                              ? "e.g. 2 (hours)"
+                              : "e.g. 120 (minutes)"
                           }
                           {...field}
                         />
@@ -939,10 +1061,7 @@ export default function CreateWorkshop() {
                               "blockquote",
                               "link",
                             ],
-                            [
-                              { list: "ordered" },
-                              { list: "bullet" },
-                            ]
+                            [{ list: "ordered" }, { list: "bullet" }],
                           ],
                         }}
                         value={describeEachDayValue}
@@ -1095,6 +1214,16 @@ export default function CreateWorkshop() {
           </>
         </form>
       </main>
+      <Dialog.Root open={postSubmit.show}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-background/50 backdrop-blur-sm" />
+          <Dialog.Content className="fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-50 flex justify-center items-center max-w-[90%] lg:max-w-4xl">
+            <h1 className="text-secondary-darker font-archivo font-bold text-xl md:text-2xl lg:text-4xl">
+              {postSubmit.logMsg}
+            </h1>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </Form>
   )
 }
