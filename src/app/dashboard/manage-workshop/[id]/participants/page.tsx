@@ -82,10 +82,10 @@ export default function Participants({ params }: { params: { id: string } }) {
               <TableCaption>A list of participated users.</TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-40">Name</TableHead>
-                  <TableHead className="w-52">Apply date</TableHead>
-                  <TableHead className="w-60">Email</TableHead>
-                  {!data.is_paid && <TableHead>Accept/Decline</TableHead>}
+                  <TableHead className="w-[25%]">Name</TableHead>
+                  <TableHead className="w-[20%]">Apply date</TableHead>
+                  <TableHead className="w-[30%]">Email</TableHead>
+                  {!data.is_paid && <TableHead className="w-[25%]">Accept/Decline</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -246,7 +246,7 @@ export default function CreateWorkshop() {
 
   return (
     <Form {...form}>
-      <main className="max-w-4xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
+      <main className="max-w-5xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
         <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
           <div className="flex justify-between md:items-center mb-16 md:mb-20 flex-col gap-y-2 md:flex-row">
             <Link
