@@ -48,10 +48,12 @@ import { format } from "date-fns"
 import Image from "next/image"
 import * as Dialog from "@radix-ui/react-dialog"
 
-const allLinks = (...links: string[]) => {
+type Link = string | undefined
+
+const allLinks = (...links: Link[]) => {
   const finalLinks: string[] = []
   links.forEach((link) => {
-    if (link.length > 0) finalLinks.push(link)
+    if (link && link.length > 0) finalLinks.push(link)
   })
   return finalLinks
 }
@@ -69,7 +71,7 @@ export default function CreateWorkshop() {
     file: null | File
   }>({ showError: false, errorMsg: "", file: null })
 
-  const form = useForm({
+  const form = useForm<any>({
     resolver: zodResolver(validationSchema),
     defaultValues: initialValues,
     mode: "onSubmit",
@@ -142,54 +144,28 @@ export default function CreateWorkshop() {
     checkSession()
   }, [])
 
-  const submitData: any = async (values: z.infer<typeof validationSchema>) => {
+  const submitData = async (values: z.infer<typeof validationSchema>) => {
     if (fileInputState.showError) return
     setIsLoading(true)
     setPostSubmit({ show: true, logMsg: "Creating Workshop..." })
     const user = await supabase.auth.getSession()
-    const {
-      eventLocation,
-      otherCategory,
-      bankName,
-      bankEmail,
-      bankAccNo,
-      bankIFSC,
-      contactEmail,
-      describeEachDay,
-      discordLink,
-      youtubeLink,
-      facebookLink,
-      instagramLink,
-      instructorInfo,
-      instructorName,
-      isPaid,
-      redirectUrl,
-      timeFormat,
-      timePerDay,
-      workingDays,
-      websiteLink,
-      whatsappLink,
-      workshopAmount,
-      workshopInfo,
-      workshopEndingDate,
-      workshopStartingDate,
-      applicationClosingDate,
-      ...publicFields
-    } = values
     const allSocialLinks = allLinks(
-      discordLink!,
-      youtubeLink!,
-      facebookLink!,
-      instagramLink!,
-      websiteLink!,
-      whatsappLink!
+      values.discordLink!,
+      values.youtubeLink!,
+      values.facebookLink!,
+      values.instagramLink!,
+      values.websiteLink!,
+      values.whatsappLink!
     )
     const data = await supabase
       .from("workshops")
       .insert({
-        ...publicFields,
-        event_location: eventLocation,
-        other_category: otherCategory,
+        name: values.name,
+        tagline: values.tagline,
+        mode: values.mode,
+        category: values.category,
+        event_location: values.eventLocation,
+        other_category: values.otherCategory,
         application_closing_date: new Date(
           values.applicationClosingDate
         ).toISOString(),
@@ -197,28 +173,27 @@ export default function CreateWorkshop() {
           values.workshopStartingDate
         ).toISOString(),
         workshop_ending_date: new Date(values.workshopEndingDate).toISOString(),
+        session_start_time: values.sessionStartingTime,
+        session_end_time: values.sessionEndingTime,
         participants: [],
         requested_participants: [],
-        contact_email: contactEmail,
-        redirect_url: redirectUrl,
-        describe_each_day: describeEachDay,
+        contact_email: values.contactEmail,
+        describe_each_day: values.describeEachDay,
         social_links: allSocialLinks,
-        instructor_info: instructorInfo,
-        instructor_name: instructorName,
-        workshop_amount: isPaid ? workshopAmount : null,
-        workshop_info: workshopInfo,
-        time_per_day: timePerDay,
-        time_format: timeFormat,
-        working_days: workingDays,
-        is_paid: isPaid,
+        instructor_info: values.instructorInfo,
+        instructor_name: values.instructorName,
+        workshop_amount: values.isPaid ? values.workshopAmount : null,
+        workshop_info: values.workshopInfo,
+        working_days: values.workingDays,
+        is_paid: values.isPaid,
         created_by: user.data.session!.user.id,
         announcements: [],
-        bank_details: isPaid
+        bank_details: values.isPaid
           ? {
-              name: bankName,
-              email: bankEmail,
-              IFSC: bankIFSC,
-              account_number: bankAccNo,
+              name: values.bankName,
+              email: values.bankEmail,
+              IFSC: values.bankIFSC,
+              account_number: values.bankAccNo,
             }
           : null,
       })
@@ -262,7 +237,7 @@ export default function CreateWorkshop() {
           "Workshop successfully created. Workshop details will be reviewed. Once the workshop is approved you can view or edit it from dashboard.",
         type: "default",
         action: {
-          text: "Okay",
+          text: "Dashboard",
           callback: () => router.push("/dashboard/admin"),
         },
       })
@@ -400,7 +375,8 @@ export default function CreateWorkshop() {
                         ) {
                           setFileInputState({
                             showError: true,
-                            errorMsg: "Image should be smaller than 3MB",
+                            errorMsg:
+                              "An image with a maximum size of 3MB is accepted.",
                             file: null,
                           })
                           return
@@ -605,14 +581,17 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
+                          size={"lg"}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            <span className="ml-3">
+                              {format(field.value, "PPP")}
+                            </span>
                           ) : (
-                            <span>Pick a date</span>
+                            <span className="ml-3">Pick a date</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -645,14 +624,17 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
+                          size={"lg"}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            <span className="ml-3">
+                              {format(field.value, "PPP")}
+                            </span>
                           ) : (
-                            <span>Pick a date</span>
+                            <span className="ml-3">Pick a date</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -685,14 +667,17 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
+                          size={"lg"}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            <span className="ml-3">
+                              {format(field.value, "PPP")}
+                            </span>
                           ) : (
-                            <span>Pick a date</span>
+                            <span className="ml-3">Pick a date</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -707,6 +692,44 @@ export default function CreateWorkshop() {
                       />
                     </PopoverContent>
                   </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sessionStartingTime"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-md md:text-xl">
+                    Workshop session starting time.
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      className="px-4 w-full max-w-md"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sessionEndingTime"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-md md:text-xl">
+                    Workshop session ending time.
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      className="px-4 w-full max-w-md"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -731,25 +754,6 @@ export default function CreateWorkshop() {
                       <Input
                         className="px-4"
                         placeholder="e.g. help@higrow.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="redirectUrl"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      Where people will be redirected to after joining?
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="px-4"
-                        placeholder="e.g. link of your whatsapp group invite"
                         {...field}
                       />
                     </FormControl>
@@ -985,60 +989,6 @@ export default function CreateWorkshop() {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row lg:items-center gap-2">
-                <FormField
-                  control={form.control}
-                  name="timeFormat"
-                  render={({ field }) => (
-                    <FormItem className="w-full ">
-                      <FormLabel className="text-md md:text-xl">
-                        Duration format
-                      </FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <FormControl>
-                          <SelectTrigger className="flex h-10 md:h-12 w-full outline-0 rounded-md shadow-sm border border-input border-black px-3 py-2 text-sm md:text-lg ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[12px] md:placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none focus:border-2 disabled:cursor-not-allowed disabled:opacity-50">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem className="text-base" value="hours">
-                            Hours
-                          </SelectItem>
-                          <SelectItem className="text-base" value="mins">
-                            Minutes
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="timePerDay"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel className="text-md md:text-xl flex space-x-1">
-                        <span>Duration per day</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min={1}
-                          className="px-4"
-                          placeholder={
-                            timeFormatValue === "hours"
-                              ? "e.g. 2 (hours)"
-                              : "e.g. 120 (minutes)"
-                          }
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <FormField
                 control={form.control}
                 name="describeEachDay"

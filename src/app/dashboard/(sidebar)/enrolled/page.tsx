@@ -1,21 +1,25 @@
+import { getNotifications } from "@/app/_actions/notification"
 import { getParticipatedWorkshops } from "@/app/_actions/workshop"
+import Notifications from "@/components/dashboard/notifications"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import Link from "next/link"
 
 async function EnrolledPage() {
   const workshops = await getParticipatedWorkshops()
+  const notifications = await getNotifications()
   return (
     <>
-      <h1 className="font-archivo font-medium text-[#333] text-2xl lg:text-4xl pt-4 pb-8 px-8 lg:p-20 border-b border-[#333] w-full">
-        Welcome to HiGrow. Dashboard.
-      </h1>
+      <div className="flex w-full justify-between items-center pt-4 pb-8 px-8 lg:p-20 border-b border-[#333]">
+        <h1 className="font-archivo font-medium text-[#333] text-2xl lg:text-4xl">
+          Welcome to HiGrow. Dashboard.
+        </h1>
+        <Notifications notifications={notifications} />
+      </div>
       <div className="py-12 px-8 lg:px-20">
         <div className="space-y-8">
-          <div className="flex w-full justify-between items-center">
-            <h1 className="md:text-3xl text-xl font-archivo text-secondary">
-              Enrolled Workshops
-            </h1>
-          </div>
+          <h1 className="md:text-3xl text-xl font-archivo text-secondary">
+            Enrolled Workshops
+          </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
             {workshops &&
               workshops.map((workshop, index) => (

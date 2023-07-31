@@ -1,30 +1,5 @@
 import { Database } from "./database"
 
-export interface PublicWorkshopData {
-  name: string
-  tagline: string
-  mode: string
-  category: string
-  application_closing_date: string
-  workshop_starting_date: string
-  workshop_ending_date: string
-  contact_email: string
-  redirect_url: string
-  social_links: string[]
-  instructor_info: string
-  instructor_name: string
-  workshop_info: string
-  working_days: number
-  time_format: string
-  time_per_day: number
-  describe_each_day: string
-  is_paid: boolean
-  workshop_amount: number | null
-  created_on: string
-  created_by: string
-  approved: boolean
-}
-
 export interface Announcement {
   title: string
   message: string
@@ -70,3 +45,22 @@ type OmittedWorkshopType = Omit<
 >
 
 export type WorkshopDataType = OmittedWorkshopType & ModifiedWorkshopType
+
+export interface NotificationData {
+  title: string
+  timestamp: string
+  type: string
+  workshop_id?: string
+  reference_field?: string
+  number_value?: number
+  redirect_path?: string
+}
+
+type DBNotification = Database["public"]["Tables"]["notifications"]["Row"]
+type OmittedNotification = Omit<DBNotification, "new" | "readed">
+interface ModifiedNotificationType {
+  new: NotificationData[]
+  readed: NotificationData[]
+}
+
+export type NotificationType = OmittedNotification & ModifiedNotificationType
