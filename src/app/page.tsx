@@ -98,7 +98,9 @@ export default function Home() {
                 joining workshops. <br />Explore different contests and
                 compete with the fellows to upscale your skills!
               </p>
-              <p> <Link href=""> Explore Now <span> → </span> </Link> </p>
+              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
+               <Link href="/workshops" className="text-[#007dfb] md:font-semibold text-[13px] md:text-[17px]"> Explore Now <span> → </span> </Link> 
+               </div>
             </div>
             <div className="htd-boxright">
               <h1>
@@ -109,7 +111,9 @@ export default function Home() {
                 interest. <br /> HiGrow gives you audience* so you don't
                 have to spend money on marketing!{" "}
               </p>
-              <p> <Link href=""> Organize Now <span> → </span> </Link> </p>
+              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
+               <Link href="/organize" className="text-[#007dfb] md:font-semibold text-[12px] md:text-[17px]"> Organize Now <span> → </span> </Link> 
+               </div>
             </div>
           </div>
           <div className="htd-bottom">
@@ -125,7 +129,7 @@ export default function Home() {
           <div className="workshop-card-container">
             <div className="he-top">
               <h1>Explore Workshops</h1>
-              <Link href="workshops" className="explore-button">
+              <Link href="/workshops" className="explore-button">
                 <button>See all</button>
               </Link>
             </div>

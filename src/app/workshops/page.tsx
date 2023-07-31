@@ -17,13 +17,13 @@ const Workshops = async ({ searchParams }: WorkshopsPageProps) => {
   return (
     <div className="workshops-container">
       <WorkshopNavbar />
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center py-16 gap-8 xl:gap-16 px-8 md:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center px-8 mt-16 gap-x-8 gap-y-16 xl:gap-16 sm:px-8 ">
         {workshops?.map((workshop, index) => (
           <Link
             aria-label={workshop.name}
             key={index}
             href={`/workshop/${workshop.id}`}
-            className="inline-block w-full max-w-[400px] h-full"
+            className="inline-block w-full max-w-[400px]"
           >
             <Card
               name={workshop.name}
@@ -32,6 +32,7 @@ const Workshops = async ({ searchParams }: WorkshopsPageProps) => {
               is_paid={workshop.is_paid}
               workshop_amount={workshop.workshop_amount}
               workshop_starting_date={workshop.workshop_starting_date}
+              thumbnail_url={workshop.thumbnail_url}
             />
           </Link>
         ))}

@@ -54,14 +54,14 @@ export default function SideLayout({
         {
           transform: `translateX(0)`,
         },
-        { duration: 300, fill: "forwards" }
+        { duration: 200, fill: "forwards", easing: "ease" }
       )
       backdropElement.animate(
         {
           opacity: 0,
           pointerEvents: "none",
         },
-        { duration: 300, fill: "forwards" }
+        { duration: 200, fill: "forwards" }
       )
     }
   }
@@ -79,14 +79,21 @@ export default function SideLayout({
           {
             transform: `translateX(${width}px)`,
           },
-          { duration: 300, fill: "forwards" }
+          {
+            duration: 400,
+            fill: "forwards",
+            easing: "ease",
+          }
         )
         backdropElement.animate(
           {
             opacity: 1,
             pointerEvents: "auto",
           },
-          { duration: 300, fill: "forwards" }
+          {
+            duration: 400,
+            fill: "forwards",
+          }
         )
       }
       if (
@@ -138,7 +145,11 @@ export default function SideLayout({
                     : 0
                 }px)`,
               },
-              { duration: 300, fill: "forwards" }
+              {
+                duration: 500,
+                fill: "forwards",
+                easing: "ease",
+              }
             )
             backdropElement.animate(
               {
@@ -148,7 +159,11 @@ export default function SideLayout({
                     ? "auto"
                     : "none",
               },
-              { duration: 300, fill: "forwards" }
+              {
+                duration: 500,
+                fill: "forwards",
+                easing: "ease",
+              }
             )
           }
         }
@@ -171,7 +186,7 @@ export default function SideLayout({
       ></div>
       <aside
         ref={sideNav}
-        className="lg:basis-[20%] max-lg:fixed max-lg:-left-[80%] lg:relative bg-secondary h-full flex flex-col justify-between text-white max-lg:max-w-[80%] w-full translate-x-0"
+        className="lg:basis-[30%] xl:basis-[25%] 2xl:basis-[20%] max-lg:fixed max-lg:-left-[80%] lg:relative bg-secondary h-full flex flex-col justify-between text-white max-lg:max-w-[80%] w-full translate-x-0"
       >
         <div className="flex flex-col">
           <h1 className="font-archivo font-black text-4xl px-12 py-20 border-b border-[#757575]">
@@ -219,7 +234,7 @@ export default function SideLayout({
           </button>
         </div>
       </aside>
-      <main className="lg:basis-[80%] max-lg:w-full">
+      <main className="lg:basis-[70%] xl:basis-[75%] 2xl:basis-[80%] max-lg:w-full overflow-y-auto">
         <div className="lg:hidden w-full p-8 flex items-center justify-between">
           <h1 className="text-3xl font-archivo font-black">HiGrow</h1>
           <Button
@@ -229,14 +244,18 @@ export default function SideLayout({
                   {
                     transform: `translateX(${sideNavElement.clientWidth}px)`,
                   },
-                  { duration: 300, fill: "forwards" }
+                  {
+                    duration: 400,
+                    fill: "forwards",
+                    easing: "ease",
+                  }
                 )
                 backdropElement.animate(
                   {
                     opacity: 1,
                     pointerEvents: "auto",
                   },
-                  { duration: 300, fill: "forwards" }
+                  { duration: 400, fill: "forwards" }
                 )
               }
             }}

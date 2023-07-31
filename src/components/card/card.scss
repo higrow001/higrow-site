@@ -3,7 +3,6 @@
 
 
 .card {
-  min-width: calc(33.33% - 20px); /* 33% width with 20px margin between cards */
   border: 1px solid black;
   background-color: white;
   border-radius: 6px;
@@ -24,6 +23,7 @@
     object-fit: cover;
     border-radius: 6px 6px 0 0;
     border-bottom: 1px solid black;
+    aspect-ratio: 3/2;
   }
 
   .card-title {
@@ -148,16 +148,14 @@
 }
 
 /* Mobile responsiveness */
-@media (max-width: 1200px) {
-  .card {
-    width: calc(50% - 20px); /* 50% width with 20px margin between cards for tablets */
-    max-width: 400px;
-  }
-}
 
 @media (max-width: 767px) {
   .card {
-    width: 100%; /* 100% width for mobiles */
-    max-width: 320px;
+    width: 100%; 
+  }
+}
+@media (max-width: 1200px) {
+  .card { 
+    width: 100%;
   }
 }
