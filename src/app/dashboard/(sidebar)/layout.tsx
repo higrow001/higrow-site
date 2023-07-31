@@ -266,7 +266,6 @@ export default function SideLayout({
             <Menu className="w-5 h-5" />
           </Button>
         </div>
-
         {children}
       </main>
     </div>
