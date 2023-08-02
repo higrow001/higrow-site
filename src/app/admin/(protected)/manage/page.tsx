@@ -1,18 +1,17 @@
-"use client"
-
 import React from "react"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import { Facebook, Instagram, Mail, Youtube } from "lucide-react"
 import { RiDiscordLine, RiWhatsappLine } from "react-icons/ri"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { WorkshopDataType } from "@/lib/types"
+import { formatDistanceStrict } from "date-fns"
+import AdminActionBtns from "@/components/client-buttons/admin-action-btns"
+import { getWorkshops } from "@/app/_actions/workshop"
+
+export const dynamic = "force-dynamic"
 
 export default async function AdminManage() {
-  const supabase = createClientComponentClient()
-  const req = await supabase.from("workshops").select("*").eq("approved", false)
-  const workshops = req.data as WorkshopDataType[]
+  const workshops = await getWorkshops({ approved: false })
   if (workshops?.length === 0)
     return <p>No workshops or contests to approve right now.</p>
 
@@ -35,29 +34,7 @@ export default async function AdminManage() {
                 >
                   Details
                 </DialogTrigger>
-                <Button
-                  onClick={async () =>
-                    await supabase
-                      .from("workshops")
-                      .delete()
-                      .eq("id", document.id)
-                  }
-                  variant={"secondary"}
-                  className="border-none mr-4 px-6"
-                >
-                  Decline
-                </Button>
-                <Button
-                  onClick={async () => {
-                    await supabase
-                      .from("workshops")
-                      .update({ approved: true })
-                      .eq("id", document.id)
-                  }}
-                  className="border-none px-8"
-                >
-                  Approve
-                </Button>
+                <AdminActionBtns workshop_title={document.name} workshop_id={document.id} user_id={document.created_by} />
               </div>
               <DialogContent className="max-w-7xl gap-0 border border-secondary p-0 max-h-[95%] overflow-y-auto">
                 <header className="w-full space-y-1 py-8 px-12 border-b border-secondary">
@@ -194,12 +171,29 @@ export default async function AdminManage() {
                         </span>
                       </span>
                       <span className="flex space-x-2 items-center">
-                        <span className="font-semibold">Duration -</span>
+                        <span className="font-semibold">Session starts on -</span>
                         <span>
-                          {document.time_format === "hours"
-                            ? `${document.time_per_day} hours X ${document.working_days} Days`
-                            : `${document.time_per_day} mins X ${document.working_days} Days`}
+                          {document.session_start_time}
                         </span>
+                      </span>
+                      <span className="flex space-x-2 items-center">
+                        <span className="font-semibold">Session ends on -</span>
+                        <span>
+                          {document.session_end_time}
+                        </span>
+                      </span>
+                      <span className="flex space-x-2 items-center">
+                        <span className="font-semibold">Duration -</span>
+                        {(() => {
+                          const commonDate = new Date("1970-01-01");
+                          const startTime = new Date(commonDate.toDateString() + " " + document?.session_start_time);
+                          const endTime = new Date(commonDate.toDateString() + " " + document?.session_end_time);
+                          return (
+                            <span>
+                              {formatDistanceStrict(endTime, startTime)} X {document.working_days} days
+                            </span>
+                          )
+                        })()}
                       </span>
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold">Happening -</span>

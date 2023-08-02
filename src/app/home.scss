@@ -1,5 +1,5 @@
 .home-container {
-  // background-image: url("https://uploads-ssl.webflow.com/61e90cfc43ba4a64cb42a077/61ee5404ef4206c95ee21a92_grain-bg.jpg");
+  background-image: url("https://uploads-ssl.webflow.com/61e90cfc43ba4a64cb42a077/61ee5404ef4206c95ee21a92_grain-bg.jpg");
 }
 .home-hero {
   display: flex;
@@ -24,7 +24,6 @@
 
       h1 {
         width: 70%;
-        font-family: "Archivo", sans-serif;
         letter-spacing: 0.02em;
         font-size: 24px;
         color: #333333;
@@ -32,7 +31,6 @@
       }
 
       p {
-        font-family: "Public Sans", sans-serif;
         width: 70%;
         font-weight: 400;
         font-size: 14px;
@@ -55,7 +53,6 @@
 
       h1 {
         width: 70%;
-        font-family: "Archivo", sans-serif;
         letter-spacing: 0.02em;
         font-size: 48px;
         color: #333333;
@@ -68,7 +65,6 @@
       }
 
       p {
-        font-family: "Public Sans", sans-serif;
         width: 70%;
         font-weight: 400;
         font-size: 16px;
@@ -87,7 +83,6 @@
         width: 170px;
         height: 62px;
         gap: 12px;
-        font-family: "Public Sans" sans-serif;
         font-style: normal;
         font-weight: 900;
         font-size: 14px;
@@ -123,7 +118,6 @@
 
       h1 {
         width: 70%;
-        font-family: "Archivo", sans-serif;
         letter-spacing: 0.02em;
         font-size: 24px;
         color: #333333;
@@ -131,7 +125,6 @@
       }
 
       p {
-        font-family: "Public Sans", sans-serif;
         width: 70%;
         font-weight: 400;
         font-size: 14px;
@@ -215,7 +208,6 @@
   align-items: center;
 
   .htd-title {
-    font-family: "Archivo", sans-serif;
     font-style: normal;
     font-weight: 800;
     font-size: 32px;
@@ -245,7 +237,6 @@
         line-height: 42px;
         letter-spacing: 0.02em;
         font-weight: 800;
-        font-family: "Archivo", sans-serif;
         span {
           color: #007dfb;
         }
@@ -256,7 +247,6 @@
         line-height: 28px;
         letter-spacing: 0.03em;
         color: #333333;
-        font-family: "Public Sans", sans-serif;
         margin-top: 28px;
       }
     }
@@ -278,7 +268,6 @@
         line-height: 42px;
         letter-spacing: 0.02em;
         font-weight: 800;
-        font-family: "Archivo", sans-serif;
         span {
           color: #007dfb;
         }
@@ -289,13 +278,11 @@
         line-height: 28px;
         letter-spacing: 0.03em;
         color: #333333;
-        font-family: "Public Sans", sans-serif;
         margin-top: 28px;
       }
     }
 
     .htd-bottom p {
-      font-family: "Public Sans", sans-serif;
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
@@ -319,7 +306,6 @@
       margin-bottom: 60px;
 
       h1 {
-        font-family: "Archivo", sans-serif;
         font-size: 34px;
         line-height: 30px;
         color: #333333;
@@ -336,7 +322,6 @@
         height: 44px;
         border: 1px solid #333333;
         border-radius: 4px;
-        font-family: "Public Sans", sans-serif;
         font-size: 14px;
         line-height: 24px;
         letter-spacing: 0.03em;
@@ -362,7 +347,6 @@
       margin-bottom: 60px;
 
       h1 {
-        font-family: "Archivo", sans-serif;
         font-size: 34px;
         line-height: 26px;
         color: #333333;
@@ -379,7 +363,6 @@
         height: 44px;
         border: 1px solid #333333;
         border-radius: 4px;
-        font-family: "Public Sans", sans-serif;
         font-size: 14px;
         line-height: 24px;
         letter-spacing: 0.03em;

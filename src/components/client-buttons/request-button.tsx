@@ -1,9 +1,10 @@
 "use client"
-import { requestWorkshop } from "@/app/_actions/workshop"
+import { requestJoinWorkshop } from "@/app/_actions/workshop"
 import { Button } from "../ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { useAlert } from "@/states/alert"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import LoadingSpinner from "../loading-spinner"
 
 export default function RequestButton({
   id,
@@ -24,6 +25,7 @@ export default function RequestButton({
   const [isRequested, setIsRequested] = useState(false)
   const [isAccepted, setIsAccepted] = useState(false)
   const [requestedSent, setRequesteSent] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const checkUpdates = async () => {
     const {
@@ -44,28 +46,32 @@ export default function RequestButton({
   return (
     <Button
       disabled={isRequested || timeExpired || requestedSent || isAccepted}
-      className="w-full text-xs  md:text-base"
+      className="w-full text-sm  md:text-base"
       size={"xl"}
       variant={"secondary"}
-      onClick={async () => {
-        await requestWorkshop(id)
-        setRequesteSent(true)
-        showAlert({
-          title: "Success",
-          type: "default",
-          description:
-            "Request sent to organizer. You'll be notified in dashboard if you get accepted.",
-          clickClose: { text: "Okay" },
+      onClick={() => {
+        startTransition(async () => {
+          await requestJoinWorkshop(id)
+          setRequesteSent(true)
+          showAlert({
+            title: "Success",
+            type: "default",
+            description:
+              "Request sent to organizer. You'll be notified in dashboard if you get accepted.",
+            clickClose: { text: "Okay" },
+          })
         })
       }}
     >
-      {isAccepted
+      {isPending ? (
+        <LoadingSpinner sizeStyle="w-5 h-5" />
+      ) : isAccepted
         ? "Already Joined"
         : isRequested
-        ? "Already Requested"
-        : timeExpired
-        ? "Registration Closed"
-        : "Join Now"}
+          ? "Already Requested"
+          : timeExpired
+            ? "Registration Closed"
+            : "Join Now"}
     </Button>
   )
 }

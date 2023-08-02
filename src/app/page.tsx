@@ -33,7 +33,7 @@ const faqData = [
   },
 ]
 export default async function Home() {
-  const latestWorkshops = await getWorkshops({ limit: 3 })
+  const latestWorkshops = await getWorkshops({ limit: 3, approved: true })
   return (
     <>
       <Navbar />
@@ -41,7 +41,7 @@ export default async function Home() {
         <div className="home-hero">
           <div className="hero-top">
             <div className="htop-left">
-              <h1> Our Mission </h1>
+              <h1 className="font-archivo">Our Mission </h1>
               <p>
                 {" "}
                 Empowering learners with an inclusive, interactive platform.
@@ -50,7 +50,7 @@ export default async function Home() {
               </p>
             </div>
             <div className="htop-center">
-              <h1>
+              <h1 className="font-archivo">
                 {" "}
                 <span> HiGrow </span> - Say Hi👋 to your growth📈
               </h1>
@@ -64,7 +64,7 @@ export default async function Home() {
               </Link>
             </div>
             <div className="htop-right">
-              <h1> Our Aim </h1>
+              <h1 className="font-archivo">Our Aim </h1>
               <p>
                 Redefining education by cultivating a diverse online
                 marketplace. Inspiring continuous learning, fostering
@@ -97,12 +97,12 @@ export default async function Home() {
         </div>
         <div className="hometodo-container">
           <div className="htd-title">
-            <h1>Things you can do 👇</h1>
+            <h1 className="font-archivo">Things you can do 👇</h1>
           </div>
           <div className="htd-boxes">
             <div className="htd-boxleft">
-              <h1>
-                <span> Explore </span>Oppurtunities
+              <h1 className="font-archivo">
+                <span>Explore </span>Oppurtunities
               </h1>
               <p>
                 Become even greater in your field or upscale your skills by
@@ -110,24 +110,22 @@ export default async function Home() {
                 Explore different contests and compete with the fellows to
                 upscale your skills!
               </p>
-  
               <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
-               <Link href="/workshops" className="text-[#007dfb] md:font-semibold text-[13px] md:text-[17px]"> Explore Now <span> → </span> </Link> 
-               </div>
+                <Link href="/workshops" className="text-[#007dfb] md:font-semibold text-[13px] md:text-[17px]"> Explore Now <span> → </span> </Link>
+              </div>
             </div>
             <div className="htd-boxright">
-              <h1>
+              <h1 className="font-archivo">
                 <span> Host </span>Oppurtunities
               </h1>
               <p>
                 Host any contest or workshop of any category according to your
                 interest. <br /> HiGrow gives you audience* so you don't have to
-                spend money on marketing!{" "}
+                spend money on marketing!
               </p>
-              
               <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
-               <Link href="/organize" className="text-[#007dfb] md:font-semibold text-[12px] md:text-[17px]"> Organize Now <span> → </span> </Link> 
-               </div>
+                <Link href="/organize" className="text-[#007dfb] md:font-semibold text-[12px] md:text-[17px]"> Organize Now <span> → </span> </Link>
+              </div>
             </div>
           </div>
           <div className="htd-bottom">
@@ -141,7 +139,7 @@ export default async function Home() {
           <div className="he-container">
             <div className="workshop-card-container">
               <div className="he-top">
-                <h1>Explore Workshops</h1>
+                <h1 className="font-archivo">Explore Workshops</h1>
                 <Link href="workshops" className="explore-button">
                   <button>See all</button>
                 </Link>

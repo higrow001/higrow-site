@@ -1,6 +1,7 @@
 import { getWorkshop } from "@/app/_actions/workshop"
 import { Button } from "@/components/ui/button"
-import { Link } from "lucide-react"
+import checkSession from "@/lib/utils/check-session"
+import { Link as LinkIcon, Mail } from "lucide-react"
 import { BiInfoCircle } from "react-icons/bi"
 import {
   RiDiscordLine,
@@ -12,10 +13,43 @@ import {
 } from "react-icons/ri"
 
 export default async function Socials({ params }: { params: { id: string } }) {
+  checkSession("/signin")
   const workshop = await getWorkshop(params.id)
   return (
     <>
       <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-5">
+        <div
+          className="space-y-6 block bg-background w-full py-6 px-10 border border-black rounded-md"
+        >
+          <div className="flex space-x-6 items-center">
+            <div className="p-4 bg-secondary text-white rounded-md">
+              <RiMailLine className="w-6 h-7" />
+            </div>
+            <div className="space-y-1 flex flex-col">
+              <span className="text-lg font-semibold">
+                Mail
+              </span>
+              <span>
+                {workshop?.instructor_name +
+                  "'s Mail"}
+              </span>
+            </div>
+          </div>
+          <a
+            className="inline-block w-full"
+            href={`mailto:${workshop?.contact_email}`}
+            target="_blank"
+          >
+            <Button
+              className="border border-secondary rounded px-8 w-full"
+              variant={"link"}
+              size={"lg"}
+            >
+              <Mail className="mr-2 w-4 h-4" />
+              {workshop?.contact_email}
+            </Button>
+          </a>
+        </div>
         {workshop?.social_links.map((link) => (
           <div
             key={link}
@@ -48,7 +82,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
                     return <RiDiscordLine className="w-7 h-7" />
                   if (link.includes("whatsapp.com") || link.includes("wa.me"))
                     return <RiWhatsappLine className="text-2xl" />
-                  return <RiMailLine className="w-7 h-7" />
+                  return <LinkIcon className="w-7 h-7" />
                 })()}
               </div>
               <div className="space-y-1 flex flex-col">
@@ -81,7 +115,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
                       return "Discord"
                     if (link.includes("whatsapp.com") || link.includes("wa.me"))
                       return "WhatsApp"
-                    return "Mail"
+                    return "Website"
                   })()}
                 </span>
                 <span>
@@ -118,7 +152,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
                         link.includes("wa.me")
                       )
                         return "WhatsApp"
-                      return "Mail"
+                      return "Website"
                     })()}
                 </span>
               </div>
@@ -133,7 +167,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
                 variant={"link"}
                 size={"lg"}
               >
-                <Link className="mr-2 w-4 h-4" />
+                <LinkIcon className="mr-2 w-4 h-4" />
                 {link}
               </Button>
             </a>
