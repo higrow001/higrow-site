@@ -4,15 +4,19 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useAdminAccess } from "@/states/admin"
 import { useRouter } from "next/navigation"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 function AdminPage() {
+  const supabase = createClientComponentClient()
   const { adminAccess, setAdminAccess } = useAdminAccess()
   const router = useRouter()
   if (adminAccess) router.replace("admin/manage")
   async function adminAuth(data: FormData) {
+    const { data: creds, error } = await supabase.from("admin_creds").select("*").single()
+    console.log(error)
     if (
-      "example@gmail.com" === data.get("email") &&
-      typeof data.get("password") === "string"
+      creds.email === data.get("email") &&
+      creds.password === data.get("password")
     ) {
       setAdminAccess(true)
       router.replace("/admin/manage")
