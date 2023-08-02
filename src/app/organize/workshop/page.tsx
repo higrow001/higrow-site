@@ -22,13 +22,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -42,7 +35,7 @@ import ReactQuill from "react-quill"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/lib/types/database"
 import * as z from "zod"
-import { getUser } from "@/app/_actions/workshop"
+import { getUser } from "@/app/_actions/user"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import Image from "next/image"
@@ -106,11 +99,6 @@ export default function CreateWorkshop() {
     control: form.control,
     name: "workshopInfo",
     defaultValue: "",
-  })
-  const timeFormatValue = useWatch({
-    control: form.control,
-    name: "timeFormat",
-    defaultValue: "hours",
   })
   const describeEachDayValue = useWatch({
     control: form.control,
@@ -190,11 +178,11 @@ export default function CreateWorkshop() {
         announcements: [],
         bank_details: values.isPaid
           ? {
-              name: values.bankName,
-              email: values.bankEmail,
-              IFSC: values.bankIFSC,
-              account_number: values.bankAccNo,
-            }
+            name: values.bankName,
+            email: values.bankEmail,
+            IFSC: values.bankIFSC,
+            account_number: values.bankAccNo,
+          }
           : null,
       })
       .select("id")
@@ -286,6 +274,7 @@ export default function CreateWorkshop() {
                   onClick={() => {
                     const result = validationSchema.safeParse(form.getValues())
                     if (!result.success) {
+                      console.log(result.error)
                       showAutoCloseAlert({
                         title: "Error!",
                         description: "Please fill out the red fields.",
@@ -322,11 +311,10 @@ export default function CreateWorkshop() {
           <div className="flex justify-between gap-5 items-center px-8 overflow-x-auto lg:px-16 border-t border-b md:border border-black py-3 md:rounded-md md:shadow-[4px_4px_0_#333] bg-[#fff] snap-x snap-mandatory">
             {steps.map((step, index) => (
               <button
-                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${
-                  index === activeStep
-                    ? "bg-[#333] text-neutral-200"
-                    : " text-[#757575]"
-                }`}
+                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${index === activeStep
+                  ? "bg-[#333] text-neutral-200"
+                  : " text-[#757575]"
+                  }`}
                 key={step.title}
                 id={step.id}
                 onClick={(e) => {
@@ -345,18 +333,16 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-              activeStep === 0 ? "block" : "hidden"
-            }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 0 ? "block" : "hidden"
+              }`}
           >
             <FormField
               name="thumbnail"
               render={() => (
                 <FormItem className="w-full">
                   <FormLabel
-                    className={`text-md md:text-xl ${
-                      fileInputState.showError ? "text-destructive" : ""
-                    }`}
+                    className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
+                      }`}
                   >
                     Thumbnail
                   </FormLabel>
@@ -563,9 +549,8 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: Second Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-              activeStep === 1 ? "block" : "hidden"
-            }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 1 ? "block" : "hidden"
+              }`}
           >
             <FormField
               control={form.control}
@@ -738,9 +723,8 @@ export default function CreateWorkshop() {
           {/*TODO: Third Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 2 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -763,9 +747,8 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${
-                activeStep === 2 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -964,9 +947,8 @@ export default function CreateWorkshop() {
           {/* TODO: Fifth Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 4 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -1026,9 +1008,8 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 4 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                }`}
             >
               <div className="space-y-4">
                 <h1 className="text-md md:text-xl font-semibold text-[#333]">
@@ -1059,9 +1040,8 @@ export default function CreateWorkshop() {
             {isPaidValue && (
               <>
                 <div
-                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${
-                    activeStep === 4 ? "block" : "hidden"
-                  }`}
+                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                    }`}
                 >
                   <Info className="w-20 h-20" />
                   <p className="text-sm md:text-base">
@@ -1074,9 +1054,8 @@ export default function CreateWorkshop() {
                   </p>
                 </div>
                 <div
-                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                    activeStep === 4 ? "block" : "hidden"
-                  }`}
+                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                    }`}
                 >
                   <FormField
                     control={form.control}

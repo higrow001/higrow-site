@@ -4,6 +4,8 @@ import Notifications from "@/components/dashboard/notifications"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import Link from "next/link"
 
+export const revalidate = 60
+
 async function EnrolledPage() {
   const workshops = await getParticipatedWorkshops()
   const notifications = await getNotifications()
@@ -21,7 +23,7 @@ async function EnrolledPage() {
             Enrolled Workshops
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-            {workshops &&
+            {!!workshops.length ?
               workshops.map((workshop, index) => (
                 <Link
                   className="lg:px-12 md:px-8 px-6 py-4 md:py-6 block bg-background rounded-lg border border-secondary"
@@ -42,12 +44,20 @@ async function EnrolledPage() {
                         Accepting applications
                       </span>
                     </div>
-                    <span className="block text-secondary-lighter md:text-lg font-semibold">
-                      No new Announcments
-                    </span>
+                    {workshop.announcements.length > 0 ? (
+                      <span className="block text-secondary md:text-lg font-semibold">
+                        {workshop.announcements.length} Announcement{workshop.announcements.length > 1 ? "s" : ""} Posted
+                      </span>
+                    ) : (
+                      <span className="block text-secondary-lighter md:text-lg font-semibold">
+                        No new Announcments
+                      </span>
+                    )}
                   </div>
                 </Link>
-              ))}
+              )) : (
+                <h2 className="md:text-xl text-base">Your participated workshops will appear here.</h2>
+              )}
           </div>
         </div>
       </div>

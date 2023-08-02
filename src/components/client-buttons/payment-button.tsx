@@ -1,10 +1,9 @@
 "use client"
-
 import { Button } from "../ui/button"
 import Script from "next/script"
 import { useAlert } from "@/states/alert"
 import { Loader2 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { joinWorkshop } from "@/app/_actions/workshop"
 import { Participant } from "@/lib/types"
@@ -35,6 +34,7 @@ export default function PaymentButton({
   const [displayName, setDisplayName] = useState("")
   const { showAlert } = useAlert()
   const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const applicationClosingDate = new Date(applicationDate)
   const currentDate = new Date()
   const timeExpired = applicationClosingDate < currentDate
@@ -63,7 +63,7 @@ export default function PaymentButton({
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
       <Button
-        className="w-full text-xs md:text-base"
+        className="w-full text-sm md:text-base"
         size={"xl"}
         variant={"secondary"}
         disabled={isLoading || timeExpired || isParticipated}
@@ -97,12 +97,21 @@ export default function PaymentButton({
               description: "Test Transaction",
               image:
                 "https://i.pinimg.com/originals/55/de/1c/55de1ca51a58ba79c63c1032d52aa4dd.jpg",
-              handler: async function (response: any) {
+              handler: function (response: any) {
                 setIsLoading(false)
-                await joinWorkshop(workshopId, {
-                  payment_id: response.razorpay_payment_id,
-                  order_id: response.razorpay_order_id,
-                  signature: response.razorpay_signature,
+                startTransition(async () => {
+                  await joinWorkshop(workshopId, {
+                    payment_id: response.razorpay_payment_id,
+                    order_id: response.razorpay_order_id,
+                    signature: response.razorpay_signature,
+                  })
+                  showAlert({
+                    title: "Success",
+                    type: "default",
+                    description:
+                      "You participated in this workshop. Now keep an eye on new announcements by organizer.",
+                    action: { text: "Okay", callback: () => router.push("/dashboard/enrolled") },
+                  })
                 })
               },
               prefill: {
@@ -156,7 +165,7 @@ export default function PaymentButton({
           }
         }}
       >
-        {isLoading ? (
+        {isLoading || isPending ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Please wait

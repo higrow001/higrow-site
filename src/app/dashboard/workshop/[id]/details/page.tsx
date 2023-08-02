@@ -1,6 +1,8 @@
 import { getWorkshop } from "@/app/_actions/workshop"
+import checkSession from "@/lib/utils/check-session"
 
 export default async function details({ params }: { params: { id: string } }) {
+  checkSession("/signin")
   const workshop = await getWorkshop(params.id)
   return (
     <>

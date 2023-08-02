@@ -37,20 +37,20 @@ export interface Database {
       notifications: {
         Row: {
           id: string
-          new: Json[]
-          readed: Json[]
+          workshop_new: Json[]
+          workshop_readed: Json[]
           user_id: string | null
         }
         Insert: {
           id?: string
-          new?: Json[]
-          readed?: Json[]
+          workshop_new?: Json[]
+          workshop_readed?: Json[]
           user_id?: string | null
         }
         Update: {
           id?: string
-          new?: Json[]
-          readed?: Json[]
+          workshop_new?: Json[]
+          workshop_readed?: Json[]
           user_id?: string | null
         }
         Relationships: [
