@@ -1,7 +1,3 @@
-// card.scss
-
-
-
 .card {
   border: 1px solid black;
   background-color: white;
@@ -13,9 +9,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  max-width: 400px;
-  margin-bottom: 120px;
+  width: 100%;
+  height: 100%;
 
   .card-thumbnail img {
     width: 100%;
@@ -31,7 +26,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-
+    flex-grow: 1;
 
     h1 {
       font-family: "Archivo", sans-serif;
@@ -40,23 +35,19 @@
       font-weight: 400;
       line-height: 32px;
       letter-spacing: 0.6px;
-      min-height: 70px;
+      flex-grow: 1;
       width: 90%;
-      margin: auto;
-      max-height: 64px; /* Set a maximum height for the title */
-  overflow: hidden;
+      margin: 0 auto;
     }
 
     .instructor-name {
       display: flex;
       justify-content: space-between;
       width: 90%;
-      margin: auto;
-      margin-bottom: 20px;
-      margin-top: 20px;
+      margin: 20px auto;
 
       p {
-        font-size: 11px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
@@ -78,27 +69,24 @@
 
   .card-tagline {
     border-bottom: 1px solid black;
+    flex-grow: 1;
+    padding: 20px;
     p {
       font-size: 13px;
       font-style: normal;
       font-weight: 400;
       line-height: 24px;
       letter-spacing: 0.39px;
-      width: 90%;
-      margin: auto;
-      margin-top: 25px;
-      margin-bottom: 25px;
-      height: 48px; /* Set a maximum height for the title */
       overflow: hidden;
     }
   }
 
   .card-extra {
     display: flex;
-  justify-content: center; /* Center the start date and price horizontally */
-  align-items: center; /* Center the start date and price vertically */
-  margin-bottom: 0;
-  height: 65px;
+    justify-content: center; /* Center the start date and price horizontally */
+    align-items: center; /* Center the start date and price vertically */
+    margin-bottom: 0;
+    height: 65px;
 
     .start-date {
       flex: 1.5; /* The start date will take up 50% of the available space */
@@ -110,10 +98,10 @@
 
       p {
         font-size: 13px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: 0.59px;
-    margin: 0;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: 0.59px;
+        margin: 0;
       }
       span {
         font-size: 13px;
@@ -125,11 +113,10 @@
     }
     .price {
       flex: 1; /* The price will take up 50% of the available space */
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       p {
         font-size: 14px;
@@ -151,11 +138,11 @@
 
 @media (max-width: 767px) {
   .card {
-    width: 100%; 
+    width: 100%;
   }
 }
 @media (max-width: 1200px) {
-  .card { 
+  .card {
     width: 100%;
   }
 }

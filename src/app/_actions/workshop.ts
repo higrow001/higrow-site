@@ -128,22 +128,27 @@ export async function getAnnouncements(workshop_id: string) {
   return workshop?.announcements ?? []
 }
 
-interface GetWorkshopProps {
-  [key: string]: string | undefined
+type GetWorkshopProps = {
+  [key: string]: string | number | undefined
 }
 
-export async function getWorkshops({ categories, search }: GetWorkshopProps) {
-  const everyCategory = categories?.split(".") ?? []
-  const refinedSearch = search?.replace("+", " ") ?? null
+export async function getWorkshops({
+  categories,
+  search,
+  limit,
+}: GetWorkshopProps) {
+  const everyCategory = categories?.toString().split(".") ?? []
+  const refinedSearch = search?.toString().replace("+", " ") ?? null
 
   let baseQuery = supabase
     .from("workshops")
     .select("*")
     .order("created_at", { ascending: false })
 
-  if (everyCategory.length > 0) {
+  if (limit) baseQuery = baseQuery.limit(Number(limit))
+
+  if (everyCategory.length > 0)
     baseQuery = baseQuery.in("category", everyCategory)
-  }
 
   if (refinedSearch) {
     const workshops = await baseQuery.ilike("name", `%${refinedSearch}%`)

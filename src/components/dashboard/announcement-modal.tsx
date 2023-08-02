@@ -36,7 +36,7 @@ export default function MakeAnnoucement({
           Make New Announcement
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[50rem] p-12 space-y-6 max-h-[95%] overflow-y-auto">
+      <DialogContent className="md:min-w-[50rem] p-12 space-y-6 max-h-[95%] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Make an announcment</DialogTitle>
           <DialogDescription>

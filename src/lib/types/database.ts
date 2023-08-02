@@ -34,6 +34,34 @@ export interface Database {
   }
   public: {
     Tables: {
+      notifications: {
+        Row: {
+          id: string
+          new: Json[]
+          readed: Json[]
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          new?: Json[]
+          readed?: Json[]
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          new?: Json[]
+          readed?: Json[]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       users: {
         Row: {
           display_name: string
@@ -82,13 +110,12 @@ export interface Database {
           other_category: string | null
           participants: Json[] | null
           payment_records: Json | null
-          redirect_url: string
           requested_participants: Json[] | null
+          session_end_time: string
+          session_start_time: string
           social_links: string[]
           tagline: string
           thumbnail_url: string | null
-          time_format: string
-          time_per_day: number
           working_days: number
           workshop_amount: number | null
           workshop_ending_date: string
@@ -115,13 +142,12 @@ export interface Database {
           other_category?: string | null
           participants?: Json[] | null
           payment_records?: Json | null
-          redirect_url: string
           requested_participants?: Json[] | null
+          session_end_time: string
+          session_start_time: string
           social_links: string[]
           tagline: string
           thumbnail_url?: string | null
-          time_format: string
-          time_per_day: number
           working_days: number
           workshop_amount?: number | null
           workshop_ending_date: string
@@ -148,13 +174,12 @@ export interface Database {
           other_category?: string | null
           participants?: Json[] | null
           payment_records?: Json | null
-          redirect_url?: string
           requested_participants?: Json[] | null
+          session_end_time?: string
+          session_start_time?: string
           social_links?: string[]
           tagline?: string
           thumbnail_url?: string | null
-          time_format?: string
-          time_per_day?: number
           working_days?: number
           workshop_amount?: number | null
           workshop_ending_date?: string

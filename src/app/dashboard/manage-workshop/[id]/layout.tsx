@@ -39,7 +39,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 })
               }
             }}
-            variant={"secondary"}
+            variant={"outline"}
+            size={"sm"}
           >
             <Copy className="w-5 h-5 mr-2" /> Share Public Link
           </Button>
@@ -51,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="flex-grow"
             >
               <Button
-                className="text-base w-full"
+                className="text-sm md:text-base w-full"
                 variant={
                   pathname.includes("announcements") ? "secondary" : "ghost"
                 }
@@ -65,13 +66,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="flex-grow"
             >
               <Button
-                className="w-full text-base"
+                className="w-full text-sm md:text-base"
                 variant={
                   pathname.includes("participants") ? "secondary" : "ghost"
                 }
                 size={"lg"}
               >
-                All Participants
+                 Participants
               </Button>
             </Link>
           </div>

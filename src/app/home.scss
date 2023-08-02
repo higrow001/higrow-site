@@ -1,5 +1,5 @@
 .home-container {
-  background-image: url("https://uploads-ssl.webflow.com/61e90cfc43ba4a64cb42a077/61ee5404ef4206c95ee21a92_grain-bg.jpg");
+  // background-image: url("https://uploads-ssl.webflow.com/61e90cfc43ba4a64cb42a077/61ee5404ef4206c95ee21a92_grain-bg.jpg");
 }
 .home-hero {
   display: flex;
@@ -304,25 +304,24 @@
 }
 
 .he-container {
-  height: 110vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-top: 150px;
-
   align-items: center;
+  padding: 10rem 0;
 
   .workshop-card-container {
     width: 90%;
     .he-top {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 60px;
 
       h1 {
         font-family: "Archivo", sans-serif;
         font-size: 34px;
-        line-height: 26px;
+        line-height: 30px;
         color: #333333;
         font-weight: 800;
       }
@@ -352,11 +351,6 @@
           color: white;
         }
       }
-    }
-
-    .he-bottom {
-      display: flex;
-      justify-content: space-between;
     }
   }
 
@@ -470,7 +464,7 @@ center {
 
         p {
           width: 80%;
-          font-size: 9px;
+          font-size: 12px;
           font-weight: 300;
           line-height: 16px;
           letter-spacing: 0.27px;
@@ -513,7 +507,7 @@ center {
 
         p {
           width: 100%;
-          font-size: 10px;
+          font-size: 12px;
           font-weight: 300;
           line-height: 20px;
           letter-spacing: 0.2px;
@@ -625,7 +619,7 @@ center {
         width: 100%;
         height: 210px;
         border-radius: 6px;
-        
+
         h1 {
           width: 80%;
           font-size: 18px;
@@ -645,11 +639,19 @@ center {
           margin-top: 20px;
         }
       }
-
-      
     }
-    .htd-bottom{
+    .htd-bottom {
       display: none;
+    }
+  }
+  .he-container {
+    padding: 5rem 0;
+
+    .workshop-card-container{
+      .he-top h1{
+        font-size: 24px;
+        line-height: 36px;
+      }
     }
   }
 }

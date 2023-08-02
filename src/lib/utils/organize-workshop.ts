@@ -37,12 +37,22 @@ export const steps = [
       "applicationClosingDate",
       "workshopStartingDate",
       "workshopEndingDate",
+      "sessionStartingTime",
+      "sessionEndingTime",
     ],
     id: "dates",
   },
   {
     title: "Links",
-    validationFields: ["contactEmail", "redirectUrl"],
+    validationFields: [
+      "contactEmail",
+      "websiteLink",
+      "facebookLink",
+      "discordLink",
+      "whatsappLink",
+      "instagramLink",
+      "youtubeLink",
+    ],
     id: "links",
   },
   {
@@ -54,8 +64,6 @@ export const steps = [
     title: "Advanced",
     validationFields: [
       "workingDays",
-      "timePerDay",
-      "timeFormat",
       "describeEachDay",
       "workshopAmount",
       "backName",
@@ -74,23 +82,22 @@ export const initialValues = {
   eventLocation: "",
   category: "",
   otherCategory: "",
-  applicationClosingDate: new Date(),
-  workshopStartingDate: new Date(),
-  workshopEndingDate: new Date(),
+  applicationClosingDate: "",
+  workshopStartingDate: "",
+  workshopEndingDate: "",
+  sessionStartingTime: "",
+  sessionEndingTime: "",
   contactEmail: "",
-  redirectUrl: "",
-  websiteLink: "",
-  facebookLink: "",
-  discordLink: "",
-  whatsappLink: "",
-  instagramLink: "",
-  youtubeLink: "",
+  websiteLink: undefined,
+  facebookLink: undefined,
+  discordLink: undefined,
+  whatsappLink: undefined,
+  instagramLink: undefined,
+  youtubeLink: undefined,
   instructorInfo: "",
   instructorName: "",
   workshopInfo: "",
   workingDays: "",
-  timePerDay: "",
-  timeFormat: "",
   describeEachDay: "",
   isPaid: false,
   workshopAmount: "",
@@ -117,31 +124,78 @@ export const validationSchema = z
     applicationClosingDate: z
       .date({
         required_error: "Please select a valid date.",
+        invalid_type_error: "Date is invalid. Please select a proper date.",
       })
       .min(new Date(), { message: "Date should be greater than today." }),
     workshopStartingDate: z
       .date({
         required_error: "Please select a valid date.",
+        invalid_type_error: "Date is invalid. Please select a proper date.",
       })
       .min(new Date(), { message: "Date should be greater than today." }),
     workshopEndingDate: z
       .date({
         required_error: "Please select a valid date.",
+        invalid_type_error: "Date is invalid. Please select a proper date.",
       })
       .min(new Date(), { message: "Date should be greater than today." }),
+    sessionStartingTime: z
+      .string({ required_error: "Session starting time is required." })
+      .nonempty({ message: "Session starting time is required." }),
+    sessionEndingTime: z
+      .string({ required_error: "Session starting time is required." })
+      .nonempty({ message: "Session starting time is required." }),
     contactEmail: z
       .string({ required_error: "Contact email is required." })
       .nonempty({ message: "Contact email is required." })
       .email("Invalid Contact Email"),
-    redirectUrl: z
-      .string({ required_error: "Required." })
-      .nonempty({ message: "Required." }),
-    websiteLink: z.optional(z.string()),
-    facebookLink: z.optional(z.string()),
-    discordLink: z.optional(z.string()),
-    whatsappLink: z.optional(z.string()),
-    instagramLink: z.optional(z.string()),
-    youtubeLink: z.optional(z.string()),
+    websiteLink: z.optional(
+      z
+        .string()
+        .url()
+        .startsWith("https://", { message: "Link should start with https" })
+        .optional()
+    ),
+    facebookLink: z.optional(
+      z
+        .string()
+        .url()
+        .includes("facebook.com", { message: "Enter a valid facebook link" })
+        .includes("fb.com", { message: "Enter a valid facebook link" })
+        .includes("fb.me", { message: "Enter a valid facebook link" })
+        .includes("fb.gg", { message: "Enter a valid facebook link" })
+        .includes("fb.watch", { message: "Enter a valid facebook link" })
+    ),
+    discordLink: z.optional(
+      z
+        .string()
+        .url()
+        .includes("discord.gg", { message: "Enter a valid discord link" })
+        .includes("discord.com", { message: "Enter a valid discord link" })
+        .includes("discord.new", { message: "Enter a valid discord link" })
+    ),
+    whatsappLink: z.optional(
+      z
+        .string()
+        .url()
+        .includes("whatsapp.com", { message: "Enter a valid whatsapp link" })
+        .includes("wa.me", { message: "Enter a valid whatsapp link" })
+    ),
+    instagramLink: z.optional(
+      z
+        .string()
+        .url()
+        .includes("instagram.com", { message: "Enter a valid instagram link" })
+        .includes("ig.me", { message: "Enter a valid instagram link" })
+        .includes("instagr.am", { message: "Enter a valid instagram link" })
+    ),
+    youtubeLink: z.optional(
+      z
+        .string()
+        .url()
+        .includes("youtube.com", { message: "Enter a valid youtube link" })
+        .includes("youtu.be", { message: "Enter a valid youtube link" })
+    ),
     workshopInfo: z
       .string({ required_error: "Workshop Info is required" })
       .nonempty({ message: "Workshop Info is required." }),
@@ -155,15 +209,6 @@ export const validationSchema = z
       .string({ required_error: "Working days is required" })
       .nonempty({ message: "Working days is required" })
       .min(1, { message: "Working days should be a positive integer" })
-      .transform((value) => Number(value)),
-    timeFormat: z.enum(["hours", "mins"], {
-      required_error: "Time format is required.",
-      invalid_type_error: "Please select a valid option.",
-    }),
-    timePerDay: z
-      .string({ required_error: "Instructor Info is required" })
-      .nonempty({ message: "Time Per Day is required" })
-      .min(1, { message: "Time Per Day should be a positive integer" })
       .transform((value) => Number(value)),
     describeEachDay: z
       .string({ required_error: "Description is required." })
@@ -228,14 +273,6 @@ export const validationSchema = z
         code: z.ZodIssueCode.custom,
         message: "Description is required.",
         path: ["describeEachDay"],
-      })
-    }
-
-    if (val.timePerDay <= 0.0001) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Time Per Day should be a positive integer.",
-        path: ["timePerDay"],
       })
     }
 
