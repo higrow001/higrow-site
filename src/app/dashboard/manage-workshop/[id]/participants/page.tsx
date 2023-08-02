@@ -29,15 +29,15 @@ export default async function Participants({ params }: { params: { id: string } 
           <TableCaption>A list of participated users.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-40 whitespace-nowrap">Name</TableHead>
-              <TableHead className="w-52 whitespace-nowrap">
+              <TableHead className="w-[25%] whitespace-nowrap">Name</TableHead>
+              <TableHead className="w-[20%] whitespace-nowrap">
                 Apply date
               </TableHead>
-              <TableHead className="w-60 whitespace-nowrap">
+              <TableHead className="w-[30%] whitespace-nowrap">
                 Email
               </TableHead>
               {!workshop.is_paid && (
-                <TableHead className="whitespace-nowrap">
+                <TableHead className="w-[25%] whitespace-nowrap">
                   Accept/Decline
                 </TableHead>
               )}

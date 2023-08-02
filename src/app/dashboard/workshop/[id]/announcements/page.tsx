@@ -16,7 +16,7 @@ export default async function announcements({
           {workshop.announcements.map((ann, index) => (
             <div
               key={index}
-              className="py-10 px-24 space-y-6 border-2 border-[#333] rounded-md shadow-[2px_2px_0_#333] bg-background"
+              className="py-10 px-24 space-y-6 border-2 border-[#333] rounded-md bg-background"
             >
               <div className="flex items-center justify-between w-full">
                 <h3 className="text-3xl font-semibold font-archivo">

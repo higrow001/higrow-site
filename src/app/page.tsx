@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/accordion"
 import { getWorkshops } from "./_actions/workshop"
 import Card from "@/components/card/card"
-import { createNotification } from "./_actions/notification"
 
 const faqData = [
   {
@@ -111,9 +110,9 @@ export default async function Home() {
                 Explore different contests and compete with the fellows to
                 upscale your skills!
               </p>
-              <p>
-                <Link href="/workshops">Explore Now <span> → </span></Link>
-              </p>
+              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
+                <Link href="/workshops" className="text-[#007dfb] md:font-semibold text-[13px] md:text-[17px]"> Explore Now <span> → </span> </Link>
+              </div>
             </div>
             <div className="htd-boxright">
               <h1 className="font-archivo">
@@ -124,11 +123,9 @@ export default async function Home() {
                 interest. <br /> HiGrow gives you audience* so you don't have to
                 spend money on marketing!
               </p>
-              <p>
-                <Link href="/organize">
-                  Organize Now <span> → </span>
-                </Link>
-              </p>
+              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
+                <Link href="/organize" className="text-[#007dfb] md:font-semibold text-[12px] md:text-[17px]"> Organize Now <span> → </span> </Link>
+              </div>
             </div>
           </div>
           <div className="htd-bottom">

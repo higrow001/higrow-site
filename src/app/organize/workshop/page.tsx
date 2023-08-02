@@ -233,25 +233,25 @@ export default function CreateWorkshop() {
 
   return (
     <Form {...form}>
-      <main className="max-w-4xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
+      <main className="max-w-5xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
         <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
-          <div className="flex justify-between md:items-center mb-16 md:mb-20 flex-col gap-y-2 md:flex-row">
+          <div className="flex w-[75%] md:w-[100%] m-[auto] justify-between md:items-center mb-10 md:mb-20 gap-y-2 flex-row">
             <Link
               href="/organize"
               className="flex space-x-1 items-center w-fit"
             >
-              <Button className="text-base" variant={"ghost"}>
+              <Button className="text-base md:text-md px-0 md:px-4" variant={"ghost"}>
                 <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                 <span>Go back</span>
               </Button>
             </Link>
-            <div className="flex space-x-3 md:space-x-6 items-center justify-end">
+            <div className=" flex space-x-3 md:space-x-6 items-center justify-end">
               {activeStep > 0 && (
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handlePreviousStep}
-                  className="bg-transparent border-secondary h-9 md:h-11 rounded-md md:px-8"
+                  className="bg-transparent border-secondary hidden md:block h-9 md:h-11 rounded-md md:px-8"
                 >
                   Previous
                 </Button>
@@ -261,7 +261,7 @@ export default function CreateWorkshop() {
                   type="button"
                   variant="outline"
                   onClick={handleNextStep}
-                  className="bg-transparent border-secondary h-9 md:h-11 rounded-md md:px-8"
+                  className="bg-transparent border-secondary hidden md:block h-9 md:h-11 rounded-md md:px-8"
                 >
                   Next
                 </Button>
@@ -270,7 +270,7 @@ export default function CreateWorkshop() {
                 <Button
                   type="submit"
                   variant="secondary"
-                  className="border border-secondary h-9 md:h-11 rounded-md md:px-8"
+                  className="border border-secondary h-10 text-[12px] px-6 md:h-11 rounded-md md:px-8"
                   onClick={() => {
                     const result = validationSchema.safeParse(form.getValues())
                     if (!result.success) {
@@ -556,7 +556,7 @@ export default function CreateWorkshop() {
               control={form.control}
               name="applicationClosingDate"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
                     Application Close
                   </FormLabel>
@@ -566,7 +566,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 h-12 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -599,7 +599,7 @@ export default function CreateWorkshop() {
               control={form.control}
               name="workshopStartingDate"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
                     Workshop starting
                   </FormLabel>
@@ -609,7 +609,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 h-12  text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -642,7 +642,7 @@ export default function CreateWorkshop() {
               control={form.control}
               name="workshopEndingDate"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
                     Workshop ending
                   </FormLabel>
@@ -652,7 +652,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 max-w-md text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 h-12  max-w-md text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -681,6 +681,7 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="sessionStartingTime"
@@ -692,7 +693,7 @@ export default function CreateWorkshop() {
                   <FormControl>
                     <Input
                       type="time"
-                      className="px-4 w-full max-w-md"
+                      className="px-4 h-12  w-full max-w-md"
                       {...field}
                     />
                   </FormControl>
@@ -711,7 +712,8 @@ export default function CreateWorkshop() {
                   <FormControl>
                     <Input
                       type="time"
-                      className="px-4 w-full max-w-md"
+                      className="px-4 h-12  w-full max-w-md"
+                      defaultValue="12:00"
                       {...field}
                     />
                   </FormControl>

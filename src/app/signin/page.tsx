@@ -68,6 +68,8 @@ const SignIn = () => {
   }
 
   return (
+    <div>
+       <Link className="nav-logo" href="/">HiGrow.</Link>{" "}
     <main className="flex justify-center min-h-full items-center bg-accent w-full py-10">
       <div className="md:px-20 px-8 py-20 mx-4 max-w-xl border shadow flex flex-col items-center space-y-20 rounded-lg w-full bg-background">
         <h1 className="text-2xl md:text-4xl font-archivo font-bold text-[#333333]">
@@ -160,6 +162,7 @@ const SignIn = () => {
         </Form>
       </div>
     </main>
+    </div>
   )
 }
 
