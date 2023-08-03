@@ -12,7 +12,7 @@ interface WorkshopsPageProps {
 
 const Workshops = async ({ searchParams }: WorkshopsPageProps) => {
   const { categories, search } = searchParams
-  const workshops = await getWorkshops({ categories, search })
+  const workshops = await getWorkshops({ categories, search, approved: true })
 
   return (
     <div className="workshops-container">

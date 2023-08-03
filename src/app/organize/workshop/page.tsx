@@ -22,13 +22,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -42,7 +35,7 @@ import ReactQuill from "react-quill"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/lib/types/database"
 import * as z from "zod"
-import { getUser } from "@/app/_actions/workshop"
+import { getUser } from "@/app/_actions/user"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import Image from "next/image"
@@ -185,11 +178,11 @@ export default function CreateWorkshop() {
         announcements: [],
         bank_details: values.isPaid
           ? {
-              name: values.bankName,
-              email: values.bankEmail,
-              IFSC: values.bankIFSC,
-              account_number: values.bankAccNo,
-            }
+            name: values.bankName,
+            email: values.bankEmail,
+            IFSC: values.bankIFSC,
+            account_number: values.bankAccNo,
+          }
           : null,
       })
       .select("id")
@@ -281,6 +274,7 @@ export default function CreateWorkshop() {
                   onClick={() => {
                     const result = validationSchema.safeParse(form.getValues())
                     if (!result.success) {
+                      console.log(result.error)
                       showAutoCloseAlert({
                         title: "Error!",
                         description: "Please fill out the red fields.",
@@ -317,11 +311,10 @@ export default function CreateWorkshop() {
           <div className="flex justify-between gap-5 items-center px-8 overflow-x-auto lg:px-16 border-t border-b md:border border-black py-3 md:rounded-md md:shadow-[4px_4px_0_#333] bg-[#fff] snap-x snap-mandatory">
             {steps.map((step, index) => (
               <button
-                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${
-                  index === activeStep
-                    ? "bg-[#333] text-neutral-200"
-                    : " text-[#757575]"
-                }`}
+                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${index === activeStep
+                  ? "bg-[#333] text-neutral-200"
+                  : " text-[#757575]"
+                  }`}
                 key={step.title}
                 id={step.id}
                 onClick={(e) => {
@@ -340,11 +333,82 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-              activeStep === 0 ? "block" : "hidden"
-            }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 0 ? "block" : "hidden"
+              }`}
           >
-           
+            <FormField
+              name="thumbnail"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel
+                    className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
+                      }`}
+                  >
+                    Thumbnail
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="picture"
+                      type="file"
+                      className="px-4 w-fit"
+                      placeholder="Web development bootcamp"
+                      accept="image/png, image/jpeg, image/webp"
+                      onChange={(e) => {
+                        if (
+                          e.target.files &&
+                          e.target.files.length > 0 &&
+                          e.target.files[0].size > 3 * 1024 * 1024
+                        ) {
+                          setFileInputState({
+                            showError: true,
+                            errorMsg:
+                              "An image with a maximum size of 3MB is accepted.",
+                            file: null,
+                          })
+                          return
+                        }
+                        if (e.target.files && e.target.files.length > 0) {
+                          setFileInputState({
+                            showError: false,
+                            errorMsg: "",
+                            file: e.target.files[0],
+                          })
+                          return
+                        }
+                        setFileInputState({
+                          showError: false,
+                          errorMsg: "",
+                          file: null,
+                        })
+                      }}
+                    />
+                  </FormControl>
+                  {fileInputState.showError && (
+                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
+                  )}
+                  <FormDescription>
+                    We will provide a default thumbnail image acording to
+                    selected category if you don't provide one yourself.
+                  </FormDescription>
+                  <FormDescription>
+                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
+                    height 600px) to make sure image don't get cut out.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            {fileInputState.file && (
+              <div>
+                <h1 className="text-md md:text-xl">Thumbnail Preview</h1>
+                <Image
+                  className="aspect-[3/2] w-96 object-cover"
+                  src={URL.createObjectURL(fileInputState.file)}
+                  alt="Preview thumbnail"
+                  width={400}
+                  height={280}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="name"
@@ -482,86 +546,11 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
-             <FormField
-              name="thumbnail"
-              render={() => (
-                <FormItem className="w-full">
-                  <FormLabel
-                    className={`text-md md:text-xl ${
-                      fileInputState.showError ? "text-destructive" : ""
-                    }`}
-                  >
-                    Thumbnail <span className="text-sm font-normal">(Optional*)</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      id="picture"
-                      type="file"
-                      className="px-4 w-fit cursor-pointer"
-                      placeholder="Web development bootcamp"
-                      accept="image/png, image/jpeg, image/webp"
-                      onChange={(e) => {
-                        if (
-                          e.target.files &&
-                          e.target.files.length > 0 &&
-                          e.target.files[0].size > 3 * 1024 * 1024
-                        ) {
-                          setFileInputState({
-                            showError: true,
-                            errorMsg:
-                              "An image with a maximum size of 3MB is accepted.",
-                            file: null,
-                          })
-                          return
-                        }
-                        if (e.target.files && e.target.files.length > 0) {
-                          setFileInputState({
-                            showError: false,
-                            errorMsg: "",
-                            file: e.target.files[0],
-                          })
-                          return
-                        }
-                        setFileInputState({
-                          showError: false,
-                          errorMsg: "",
-                          file: null,
-                        })
-                      }}
-                    />
-                  </FormControl>
-                  {fileInputState.showError && (
-                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
-                  )}
-                  <FormDescription className="text-xs pt-2">
-                    *We will provide a default thumbnail image acording to
-                    selected category if you don't provide one yourself.
-                  </FormDescription>
-                  <FormDescription className="text-xs pt-1">
-                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
-                    height 600px) to make sure image don't get cut out.
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            {fileInputState.file && (
-              <div>
-                <h1 className="text-md pb-2 md:text-xl">Thumbnail Preview</h1>
-                <Image
-                  className="aspect-[3/2] border border-black w-96 object-cover"
-                  src={URL.createObjectURL(fileInputState.file)}
-                  alt="Preview thumbnail"
-                  width={400}
-                  height={280}
-                />
-              </div>
-            )}
           </div>
           {/*TODO: Second Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-              activeStep === 1 ? "block" : "hidden"
-            }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 1 ? "block" : "hidden"
+              }`}
           >
             <FormField
               control={form.control}
@@ -569,7 +558,7 @@ export default function CreateWorkshop() {
               render={({ field }) => (
                 <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
-                  New Applications Close
+                    Application Close
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -606,7 +595,6 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
-            <div className="flex justify-between gap-8">
             <FormField
               control={form.control}
               name="workshopStartingDate"
@@ -693,8 +681,7 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
-            </div>
-           
+
             <FormField
               control={form.control}
               name="sessionStartingTime"
@@ -738,9 +725,8 @@ export default function CreateWorkshop() {
           {/*TODO: Third Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 2 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -763,9 +749,8 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${
-                activeStep === 2 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -964,9 +949,8 @@ export default function CreateWorkshop() {
           {/* TODO: Fifth Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 4 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                }`}
             >
               <FormField
                 control={form.control}
@@ -1026,9 +1010,8 @@ export default function CreateWorkshop() {
               />
             </div>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                activeStep === 4 ? "block" : "hidden"
-              }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                }`}
             >
               <div className="space-y-4">
                 <h1 className="text-md md:text-xl font-semibold text-[#333]">
@@ -1059,9 +1042,8 @@ export default function CreateWorkshop() {
             {isPaidValue && (
               <>
                 <div
-                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${
-                    activeStep === 4 ? "block" : "hidden"
-                  }`}
+                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                    }`}
                 >
                   <Info className="w-20 h-20" />
                   <p className="text-sm md:text-base">
@@ -1074,9 +1056,8 @@ export default function CreateWorkshop() {
                   </p>
                 </div>
                 <div
-                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-                    activeStep === 4 ? "block" : "hidden"
-                  }`}
+                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
+                    }`}
                 >
                   <FormField
                     control={form.control}

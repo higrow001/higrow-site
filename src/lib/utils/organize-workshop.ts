@@ -85,8 +85,8 @@ export const initialValues = {
   applicationClosingDate: "",
   workshopStartingDate: "",
   workshopEndingDate: "",
-  sessionStartingTime: "",
-  sessionEndingTime: "",
+  sessionStartingTime: "09:00",
+  sessionEndingTime: "10:00",
   contactEmail: "",
   websiteLink: undefined,
   facebookLink: undefined,
@@ -149,53 +149,12 @@ export const validationSchema = z
       .string({ required_error: "Contact email is required." })
       .nonempty({ message: "Contact email is required." })
       .email("Invalid Contact Email"),
-    websiteLink: z.optional(
-      z
-        .string()
-        .url()
-        .startsWith("https://", { message: "Link should start with https" })
-        .optional()
-    ),
-    facebookLink: z.optional(
-      z
-        .string()
-        .url()
-        .includes("facebook.com", { message: "Enter a valid facebook link" })
-        .includes("fb.com", { message: "Enter a valid facebook link" })
-        .includes("fb.me", { message: "Enter a valid facebook link" })
-        .includes("fb.gg", { message: "Enter a valid facebook link" })
-        .includes("fb.watch", { message: "Enter a valid facebook link" })
-    ),
-    discordLink: z.optional(
-      z
-        .string()
-        .url()
-        .includes("discord.gg", { message: "Enter a valid discord link" })
-        .includes("discord.com", { message: "Enter a valid discord link" })
-        .includes("discord.new", { message: "Enter a valid discord link" })
-    ),
-    whatsappLink: z.optional(
-      z
-        .string()
-        .url()
-        .includes("whatsapp.com", { message: "Enter a valid whatsapp link" })
-        .includes("wa.me", { message: "Enter a valid whatsapp link" })
-    ),
-    instagramLink: z.optional(
-      z
-        .string()
-        .url()
-        .includes("instagram.com", { message: "Enter a valid instagram link" })
-        .includes("ig.me", { message: "Enter a valid instagram link" })
-        .includes("instagr.am", { message: "Enter a valid instagram link" })
-    ),
-    youtubeLink: z.optional(
-      z
-        .string()
-        .url()
-        .includes("youtube.com", { message: "Enter a valid youtube link" })
-        .includes("youtu.be", { message: "Enter a valid youtube link" })
-    ),
+    websiteLink: z.optional(z.string()),
+    facebookLink: z.optional(z.string()),
+    discordLink: z.optional(z.string()),
+    whatsappLink: z.optional(z.string()),
+    instagramLink: z.optional(z.string()),
+    youtubeLink: z.optional(z.string()),
     workshopInfo: z
       .string({ required_error: "Workshop Info is required" })
       .nonempty({ message: "Workshop Info is required." }),
@@ -238,6 +197,86 @@ export const validationSchema = z
         message: "Category name is required.",
         path: ["otherCategory"],
       })
+    }
+
+    if (!!val.websiteLink?.length) {
+      if (!val.websiteLink.startsWith("https://")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Link should start with https.",
+          path: ["websiteLink"],
+        })
+      }
+    }
+
+    if (!!val.facebookLink?.length) {
+      if (
+        !val.facebookLink.includes("facebook.com") &&
+        !val.facebookLink.includes("fb.com") &&
+        !val.facebookLink.includes("fb.me") &&
+        !val.facebookLink.includes("fb.gg") &&
+        !val.facebookLink.includes("fb.watch")
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Enter a valid facebook link.",
+          path: ["facebookLink"],
+        })
+      }
+    }
+
+    if (!!val.discordLink?.length) {
+      if (
+        !val.discordLink.includes("discord.gg") &&
+        !val.discordLink.includes("discord.new") &&
+        !val.discordLink.includes("discord.com")
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Enter a valid discord link.",
+          path: ["facebookLink"],
+        })
+      }
+    }
+
+    if (!!val.whatsappLink?.length) {
+      if (
+        !val.whatsappLink.includes("whatsapp.com") &&
+        !val.whatsappLink.includes("wa.me")
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Enter a valid whatsapp link.",
+          path: ["whatsappLink"],
+        })
+      }
+    }
+
+    if (!!val.instagramLink?.length) {
+      if (
+        !val.instagramLink.includes("instagram.com") &&
+        !val.instagramLink.includes("ig.me") &&
+        !val.instagramLink.includes("instagr.am")
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Enter a valid instagram link.",
+          path: ["instagramLink"],
+        })
+      }
+    }
+
+    if (!!val.youtubeLink?.length) {
+      if (
+        !val.youtubeLink.includes("youtube.com") &&
+        !val.youtubeLink.includes("youtu.be")
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Enter a valid youtube link.",
+          path: ["youtubeLink"],
+        })
+      }
     }
 
     if (

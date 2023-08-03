@@ -47,20 +47,23 @@ type OmittedWorkshopType = Omit<
 export type WorkshopDataType = OmittedWorkshopType & ModifiedWorkshopType
 
 export interface NotificationData {
+  id: string
   title: string
   timestamp: string
-  type: string
-  workshop_id?: string
-  reference_field?: string
-  number_value?: number
-  redirect_path?: string
+  workshop_id: string
+  reference_field?: string | null
+  number_value?: number | null
+  redirect_path?: string | null
 }
 
 type DBNotification = Database["public"]["Tables"]["notifications"]["Row"]
-type OmittedNotification = Omit<DBNotification, "new" | "readed">
+type OmittedNotification = Omit<
+  DBNotification,
+  "workshop_new" | "workshop_readed"
+>
 interface ModifiedNotificationType {
-  new: NotificationData[]
-  readed: NotificationData[]
+  workshop_new: NotificationData[]
+  workshop_readed: NotificationData[]
 }
 
 export type NotificationType = OmittedNotification & ModifiedNotificationType
