@@ -41,13 +41,13 @@ export default function MakeAnnoucement({
           Make New Announcement
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[50rem] p-12 space-y-6 max-h-[95%] overflow-y-auto">
+      <DialogContent className="md:min-w-[50rem] p-6 md:p-12 space-y-6 md:max-h-[95%] overflow-y-auto">
         {isPending ? (
           <LoadingSpinner sizeStyle="w-12 h-12" />
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Make an announcment</DialogTitle>
+              <DialogTitle className="md:pt-0 pt-10">Make an announcment</DialogTitle>
               <DialogDescription>
                 You can use announcements to convey a message to selected
                 participants. You can also use links in your message to make your
@@ -99,7 +99,6 @@ export default function MakeAnnoucement({
                   theme="snow"
                   modules={{
                     toolbar: [
-                      [{ header: [false] }],
                       [
                         "bold",
                         "italic",
@@ -111,10 +110,7 @@ export default function MakeAnnoucement({
                       [
                         { list: "ordered" },
                         { list: "bullet" },
-                        { indent: "-1" },
-                        { indent: "+1" },
                       ],
-                      ["clean"],
                     ],
                   }}
                   value={value}

@@ -57,14 +57,13 @@ export const steps = [
   },
   {
     title: "Description",
-    validationFields: ["instructorInfo", "instructorName", "workshopInfo"],
+    validationFields: ["instructorInfo", "instructorName","describeEachDay",],
     id: "description",
   },
   {
     title: "Advanced",
     validationFields: [
-      "workingDays",
-      "describeEachDay",
+      
       "workshopAmount",
       "backName",
       "bankEmail",
@@ -85,8 +84,8 @@ export const initialValues = {
   applicationClosingDate: "",
   workshopStartingDate: "",
   workshopEndingDate: "",
-  sessionStartingTime: "09:00",
-  sessionEndingTime: "10:00",
+  sessionStartingTime: "20:00",
+  sessionEndingTime: "22:00",
   contactEmail: "",
   websiteLink: undefined,
   facebookLink: undefined,
@@ -96,8 +95,6 @@ export const initialValues = {
   youtubeLink: undefined,
   instructorInfo: "",
   instructorName: "",
-  workshopInfo: "",
-  workingDays: "",
   describeEachDay: "",
   isPaid: false,
   workshopAmount: "",
@@ -112,7 +109,7 @@ export const validationSchema = z
     name: z
       .string({ required_error: "Event title is required" })
       .nonempty({ message: "Event title is required" })
-      .min(3, { message: "Must be atleast 3 characters long." }),
+      .min(10, { message: "Must be atleast 10 characters long." }),
     tagline: z
       .string({ required_error: "Event tagline is required" })
       .nonempty({ message: "Event tagline is required" })
@@ -155,23 +152,17 @@ export const validationSchema = z
     whatsappLink: z.optional(z.string()),
     instagramLink: z.optional(z.string()),
     youtubeLink: z.optional(z.string()),
-    workshopInfo: z
-      .string({ required_error: "Workshop Info is required" })
-      .nonempty({ message: "Workshop Info is required." }),
     instructorInfo: z
       .string({ required_error: "Instructor Info is required" })
-      .nonempty({ message: "Instructor Info is required." }),
+      .nonempty({ message: "Instructor Info is required." })
+      .min(100, { message: "Must be atleast 100 characters long." }),
     instructorName: z
       .string({ required_error: "Instructor Name is required" })
       .nonempty({ message: "Instructor Name is required." }),
-    workingDays: z
-      .string({ required_error: "Working days is required" })
-      .nonempty({ message: "Working days is required" })
-      .min(1, { message: "Working days should be a positive integer" })
-      .transform((value) => Number(value)),
     describeEachDay: z
       .string({ required_error: "Description is required." })
-      .nonempty({ message: "Description is required." }),
+      .nonempty({ message: "Description is required." })
+      .min(100, { message: "Must be atleast 100 characters long." }),
     isPaid: z.boolean(),
     workshopAmount: z
       .string()
@@ -291,17 +282,7 @@ export const validationSchema = z
       })
     }
 
-    if (
-      !val.workshopInfo ||
-      val.workshopInfo === "<p><br></p>" ||
-      val.workshopInfo === "<p></p>"
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Workshop Info is required.",
-        path: ["workshopInfo"],
-      })
-    }
+   
 
     if (
       !val.describeEachDay ||
@@ -315,13 +296,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.workingDays <= 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Worksing days should be a positive integer.",
-        path: ["workingDays"],
-      })
-    }
+    
 
     if (val.isPaid && val.bankEmail.length === 0) {
       ctx.addIssue({

@@ -188,16 +188,14 @@ export default function SideLayout({
         className="lg:basis-[30%] xl:basis-[25%] 2xl:basis-[20%] max-lg:fixed max-lg:-left-[80%] lg:relative bg-secondary h-full flex flex-col justify-between text-white max-lg:max-w-[80%] w-full translate-x-0 z-20"
       >
         <div className="flex flex-col">
-          <h1 className="font-archivo font-black text-4xl px-12 py-20 border-b border-[#757575]">
-            HiGrow.
-          </h1>
-          <Link
+        <h1 className="font-archivo font-black text-4xl px-12 py-20 border-b border-[#757575]">
+        <Link
             href="/"
-            className="text-lg py-6 px-12 border-b border-[#757575] hover:bg-secondary-darker transition"
             onClick={hideSideNav}
-          >
-            Home
-          </Link>
+          >    HiGrow.
+         </Link>  </h1>
+         
+          
           <Link
             href="/dashboard/enrolled"
             className={`"text-lg py-6 px-12 border-b border-[#757575] transition ${pathname.includes("enrolled")

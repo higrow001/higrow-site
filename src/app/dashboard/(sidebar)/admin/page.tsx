@@ -22,7 +22,7 @@ async function Organized() {
           <h1 className="md:text-3xl text-xl font-archivo text-secondary">
             Organized Opportunities
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-x-8 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-8 gap-y-6">
             {!!workshops.length ?
               workshops.map((workshop, index) => (
                 <Link
@@ -30,8 +30,8 @@ async function Organized() {
                   href={`/dashboard/manage-workshop/${workshop.id}/announcements`}
                   key={index}
                 >
-                  <div className="flex flex-col justify-between space-y-8 h-full">
-                    <div className="space-y-2">
+                  <div className="flex flex-col justify-between space-y-12 h-full">
+                    <div className="space-y-4">
                       <h2 className="md:text-2xl text-xl font-medium">
                         {workshop.name}
                       </h2>
@@ -40,25 +40,22 @@ async function Organized() {
                           " - " +
                           formatDateInDDMMYYYY(workshop.workshop_ending_date)}
                       </span>
-                      <span className="block text-primary md:text-lg font-semibold">
-                        Accepting applications
-                      </span>
                     </div>
                     {workshop.is_paid ? workshop.participants.length > 0 ? (
-                      <span className="block text-secondary md:text-lg font-semibold">
-                        {workshop.participants.length} User{workshop.participants.length > 1 ? "s" : ""} partcipanted
+                      <span className="block text-secondary md:text-md">
+                        {workshop.participants.length} User{workshop.participants.length > 1 ? "s" : ""} participated
                       </span>
                     ) : (
-                      <span className="block text-secondary-lighter md:text-lg font-semibold">
+                      <span className="block text-secondary-lighter md:text-lg">
                         No participants
                       </span>
                     ) : workshop.requested_participants.length > 0 ? (
-                      <span className="block text-secondary md:text-lg font-semibold">
+                      <span className="block text-secondary md:text-md ">
                         {workshop.requested_participants.length} Pending request{workshop.requested_participants.length > 1 ? "s" : ""}.
                       </span>
                     ) : (
-                      <span className="block text-secondary-lighter md:text-lg font-semibold">
-                        No participant request to accept
+                      <span className="block text-secondary-lighter md:text-md ">
+                        No new participant 
                       </span>
                     )}
                   </div>
