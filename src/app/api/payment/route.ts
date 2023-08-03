@@ -1,4 +1,4 @@
-import { WorkshopDetails } from "@/components/workshop/payment-button"
+import { WorkshopDetails } from "@/components/client-buttons/payment-button"
 import { razorpay } from "@/lib/razorpay"
 import { NextResponse } from "next/server"
 

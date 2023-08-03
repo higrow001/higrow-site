@@ -5,7 +5,7 @@ import ReverseTimer from "@/components/workshop/reverse-timer"
 import { Button } from "@/components/ui/button"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import { Link as LinkIcon, Mail } from "lucide-react"
-import { Metadata, ResolvingMetadata } from "next"
+import { Metadata } from "next"
 import { BiInfoCircle } from "react-icons/bi"
 import { RiDiscordLine, RiFacebookFill, RiInstagramLine, RiWhatsappLine, RiYoutubeLine } from "react-icons/ri"
 import RequestButton from "@/components/client-buttons/request-button"
@@ -19,14 +19,10 @@ type Props = {
 }
 
 export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const id = params.id
-
-  const workshop = await getWorkshop(params.id)
-
-  const previousImages = (await parent)?.openGraph?.images || []
+  const workshop = await getWorkshop(id)
   if (workshop)
     return {
       title: `${workshop.name} - Workshop details`,
@@ -40,8 +36,7 @@ export async function generateMetadata(
             url: workshop.thumbnail_url ?? "https://dldyazrsbnbffwkfvpcs.supabase.co/storage/v1/object/public/thumbnails/defaults/ai/1.webp",
             width: 800,
             height: 600,
-          },
-          ...previousImages
+          }
         ],
         locale: 'en_US',
         type: 'website',
