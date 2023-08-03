@@ -333,82 +333,11 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 0 ? "block" : "hidden"
-              }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+              activeStep === 0 ? "block" : "hidden"
+            }`}
           >
-            <FormField
-              name="thumbnail"
-              render={() => (
-                <FormItem className="w-full">
-                  <FormLabel
-                    className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
-                      }`}
-                  >
-                    Thumbnail
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      id="picture"
-                      type="file"
-                      className="px-4 w-fit"
-                      placeholder="Web development bootcamp"
-                      accept="image/png, image/jpeg, image/webp"
-                      onChange={(e) => {
-                        if (
-                          e.target.files &&
-                          e.target.files.length > 0 &&
-                          e.target.files[0].size > 3 * 1024 * 1024
-                        ) {
-                          setFileInputState({
-                            showError: true,
-                            errorMsg:
-                              "An image with a maximum size of 3MB is accepted.",
-                            file: null,
-                          })
-                          return
-                        }
-                        if (e.target.files && e.target.files.length > 0) {
-                          setFileInputState({
-                            showError: false,
-                            errorMsg: "",
-                            file: e.target.files[0],
-                          })
-                          return
-                        }
-                        setFileInputState({
-                          showError: false,
-                          errorMsg: "",
-                          file: null,
-                        })
-                      }}
-                    />
-                  </FormControl>
-                  {fileInputState.showError && (
-                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
-                  )}
-                  <FormDescription>
-                    We will provide a default thumbnail image acording to
-                    selected category if you don't provide one yourself.
-                  </FormDescription>
-                  <FormDescription>
-                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
-                    height 600px) to make sure image don't get cut out.
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            {fileInputState.file && (
-              <div>
-                <h1 className="text-md md:text-xl">Thumbnail Preview</h1>
-                <Image
-                  className="aspect-[3/2] w-96 object-cover"
-                  src={URL.createObjectURL(fileInputState.file)}
-                  alt="Preview thumbnail"
-                  width={400}
-                  height={280}
-                />
-              </div>
-            )}
+           
             <FormField
               control={form.control}
               name="name"
@@ -546,19 +475,20 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
+          
           </div>
           {/*TODO: Second Tab */}
           <div
             className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 1 ? "block" : "hidden"
               }`}
           >
-            <FormField
+           <FormField
               control={form.control}
               name="applicationClosingDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
-                    Application Close
+                  New Applications Close
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -566,7 +496,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 h-12 text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 md:h-12 text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -595,6 +525,7 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
+            <div className="flex md:flex-row flex-col justify-between gap-8">
             <FormField
               control={form.control}
               name="workshopStartingDate"
@@ -609,7 +540,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 h-12  text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 md:h-12  text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -652,7 +583,7 @@ export default function CreateWorkshop() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 h-12  max-w-md text-left font-normal text-[12px] md:text-base",
+                            "w-full pl-3 md:h-12  max-w-md text-left font-normal text-[12px] md:text-base",
                             !field.value && "text-muted-foreground"
                           )}
                           size={"lg"}
@@ -681,7 +612,9 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
-
+            </div>
+           
+            <div className="flex md:flex-row flex-col justify-between gap-8">
             <FormField
               control={form.control}
               name="sessionStartingTime"
@@ -721,6 +654,7 @@ export default function CreateWorkshop() {
                 </FormItem>
               )}
             />
+            </div>
           </div>
           {/*TODO: Third Step */}
           <>
@@ -747,11 +681,25 @@ export default function CreateWorkshop() {
                   </FormItem>
                 )}
               />
+              
             </div>
+           
+
+           
+              <div className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+              }`}>
+                 <Info className="w-5 h-5" />
+                  <p className="text-sm md:text-base">
+                   Even though social links are optional, the more social links you do, the more trust users will place on you.
+                  </p>
+
+              </div>
+             
             <div
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
                 }`}
             >
+               
               <FormField
                 control={form.control}
                 name="websiteLink"
@@ -846,6 +794,46 @@ export default function CreateWorkshop() {
           </>
           {/*TODO: Fourth Step */}
           {activeStep === 3 && (
+            <>
+
+<div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
+            <FormField
+                control={form.control}
+                name="describeEachDay"
+                render={() => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      What you'll teach?
+                    </FormLabel>
+                    <FormControl>
+                      <ReactQuill
+                        placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
+                        modules={{
+                          toolbar: [
+                            [{ header: [false] }],
+                            [
+                              "bold",
+                              "italic",
+                              "underline",
+                              "strike",
+                              "blockquote",
+                              "link",
+                            ],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                          ],
+                        }}
+                        value={describeEachDayValue}
+                        onChange={(val) =>
+                          form.setValue("describeEachDay", val)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              </div>
             <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
               <FormField
                 control={form.control}
@@ -905,46 +893,10 @@ export default function CreateWorkshop() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="workshopInfo"
-                render={() => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      Tell us more about this Workshop
-                    </FormLabel>
-                    <FormControl>
-                      <ReactQuill
-                        theme="snow"
-                        modules={{
-                          toolbar: [
-                            [{ header: [false] }],
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",
-                              "blockquote",
-                              "link",
-                            ],
-                            [
-                              { list: "ordered" },
-                              { list: "bullet" },
-                              { indent: "-1" },
-                              { indent: "+1" },
-                            ],
-                            ["clean"],
-                          ],
-                        }}
-                        value={workshopInfoValue}
-                        onChange={(val) => form.setValue("workshopInfo", val)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
             </div>
+         
+            </>
           )}
           {/* TODO: Fifth Step */}
           <>
@@ -952,62 +904,81 @@ export default function CreateWorkshop() {
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
                 }`}
             >
-              <FormField
-                control={form.control}
-                name="workingDays"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      Workshop duration (in days)
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={1}
-                        className="px-4"
-                        placeholder="e.g. 2 (Days)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="describeEachDay"
-                render={() => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      What you'll teach?
-                    </FormLabel>
-                    <FormControl>
-                      <ReactQuill
-                        placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
-                        modules={{
-                          toolbar: [
-                            [{ header: [false] }],
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",
-                              "blockquote",
-                              "link",
-                            ],
-                            [{ list: "ordered" }, { list: "bullet" }],
-                          ],
-                        }}
-                        value={describeEachDayValue}
-                        onChange={(val) =>
-                          form.setValue("describeEachDay", val)
+               <FormField
+              name="thumbnail"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel
+                    className={`text-md md:text-xl ${
+                      fileInputState.showError ? "text-destructive" : ""
+                    }`}
+                  >
+                    Thumbnail <span className="text-sm font-normal">(Optional*)</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="picture"
+                      type="file"
+                      className="px-4 w-fit cursor-pointer"
+                      placeholder="Web development bootcamp"
+                      accept="image/png, image/jpeg, image/webp"
+                      onChange={(e) => {
+                        if (
+                          e.target.files &&
+                          e.target.files.length > 0 &&
+                          e.target.files[0].size > 3 * 1024 * 1024
+                        ) {
+                          setFileInputState({
+                            showError: true,
+                            errorMsg:
+                              "An image with a maximum size of 3MB is accepted.",
+                            file: null,
+                          })
+                          return
                         }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        if (e.target.files && e.target.files.length > 0) {
+                          setFileInputState({
+                            showError: false,
+                            errorMsg: "",
+                            file: e.target.files[0],
+                          })
+                          return
+                        }
+                        setFileInputState({
+                          showError: false,
+                          errorMsg: "",
+                          file: null,
+                        })
+                      }}
+                    />
+                  </FormControl>
+                  {fileInputState.showError && (
+                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
+                  )}
+                  <FormDescription className="text-xs pt-2">
+                    *We will provide a default thumbnail image acording to
+                    selected category if you don't provide one yourself.
+                  </FormDescription>
+                  <FormDescription className="text-xs pt-1">
+                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
+                    height 600px) to make sure image don't get cut out.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            {fileInputState.file && (
+              <div>
+                <h1 className="text-md pb-2 md:text-xl">Thumbnail Preview</h1>
+                <Image
+                  className="aspect-[3/2] border border-black w-96 object-cover"
+                  src={URL.createObjectURL(fileInputState.file)}
+                  alt="Preview thumbnail"
+                  width={400}
+                  height={280}
+                />
+              </div>
+            )}
+            
             </div>
             <div
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"

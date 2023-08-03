@@ -22,7 +22,7 @@ async function EnrolledPage() {
           <h1 className="md:text-3xl text-xl font-archivo text-secondary">
             Enrolled Workshops
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-x-8 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-8 gap-y-6">
             {!!workshops.length ?
               workshops.map((workshop, index) => (
                 <Link
@@ -30,7 +30,7 @@ async function EnrolledPage() {
                   href={`/dashboard/workshop/${workshop.id}/announcements`}
                   key={index}
                 >
-                  <div className="flex flex-col justify-between space-y-8 h-full">
+                  <div className="flex flex-col justify-between space-y-12 h-full">
                     <div className="space-y-2">
                       <h2 className="md:text-2xl text-xl font-medium">
                         {workshop.name}
@@ -40,16 +40,13 @@ async function EnrolledPage() {
                           " - " +
                           formatDateInDDMMYYYY(workshop.workshop_ending_date)}
                       </span>
-                      <span className="block text-primary md:text-lg font-semibold">
-                        Accepting applications
-                      </span>
                     </div>
                     {workshop.announcements.length > 0 ? (
-                      <span className="block text-secondary md:text-lg font-semibold">
+                      <span className="block text-secondary md:text-md font-semibold">
                         {workshop.announcements.length} Announcement{workshop.announcements.length > 1 ? "s" : ""} Posted
                       </span>
                     ) : (
-                      <span className="block text-secondary-lighter md:text-lg font-semibold">
+                      <span className="block text-secondary-lighter md:text-md">
                         No new Announcments
                       </span>
                     )}

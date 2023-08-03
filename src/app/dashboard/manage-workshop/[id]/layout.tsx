@@ -39,10 +39,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 })
               }
             }}
+            className="py-5"
             variant={"outline"}
             size={"sm"}
           >
-            <Copy className="w-5 h-5 mr-2" /> Share Public Link
+            <Copy className="w-5 h-5 mr-2" /> Copy Link
           </Button>
         </div>
         <div className="space-y-12">
