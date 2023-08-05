@@ -154,7 +154,7 @@ export async function createNotification(
       .eq("user_id", user_id)
 }
 
-export default async function markAllNotificationsRead() {
+export async function markAllNotificationsRead() {
   const {
     data: { session },
   } = await supabase.auth.getSession()
@@ -171,6 +171,27 @@ export default async function markAllNotificationsRead() {
     .update({
       workshop_new: newUnreadNotifications,
       workshop_readed: currentNotifications,
+    })
+    .eq("user_id", session!.user.id)
+  revalidatePath("/dashboard/admin")
+  revalidatePath("/dashboard/enrolled")
+}
+
+export async function deleteAllReadedNotifications() {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+  const {
+    workshop_readed: currentNotifications,
+    workshop_new: newUnreadNotifications,
+  } = await getNotifications()
+  if (!!!currentNotifications.length) return
+
+  await supabase
+    .from("notifications")
+    .update({
+      workshop_new: newUnreadNotifications,
+      workshop_readed: [],
     })
     .eq("user_id", session!.user.id)
   revalidatePath("/dashboard/admin")

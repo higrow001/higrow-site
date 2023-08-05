@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { categories } from "@/lib/utils/organize-workshop"
+import { categories } from "@/lib/organize-workshop"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useDebounce } from "@/lib/hooks/debounce"
 import { ScrollArea } from "../ui/scroll-area"

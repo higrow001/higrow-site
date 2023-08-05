@@ -27,7 +27,7 @@ export async function getUserOrganizedWorkshops() {
     const { data } = await supabase
       .from("workshops")
       .select(
-        "name, workshop_starting_date, id, workshop_ending_date, application_closing_date, participants, requested_participants, is_paid"
+        "name, workshop_starting_date, id, workshop_ending_date, application_closing_date, participants, requested_participants, is_paid, approved"
       )
       .in("id", ids)
       .order("created_at", { ascending: false })
@@ -42,6 +42,7 @@ export async function getUserOrganizedWorkshops() {
         | "participants"
         | "requested_participants"
         | "is_paid"
+        | "approved"
       >[]
     }
   }

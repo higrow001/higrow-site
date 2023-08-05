@@ -5,28 +5,24 @@ import ReverseTimer from "@/components/workshop/reverse-timer"
 import { Button } from "@/components/ui/button"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import { Link as LinkIcon, Mail } from "lucide-react"
-import { Metadata, ResolvingMetadata } from "next"
+import { Metadata } from "next"
 import { BiInfoCircle } from "react-icons/bi"
 import { RiDiscordLine, RiFacebookFill, RiInstagramLine, RiWhatsappLine, RiYoutubeLine } from "react-icons/ri"
 import RequestButton from "@/components/client-buttons/request-button"
-import { formatDistanceStrict } from "date-fns"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 type Props = {
   params: { id: string }
 }
 
 export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const id = params.id
-
-  const workshop = await getWorkshop(params.id)
-
-  const previousImages = (await parent)?.openGraph?.images || []
+  const workshop = await getWorkshop(id)
   if (workshop)
     return {
       title: `${workshop.name} - Workshop details`,
@@ -40,8 +36,7 @@ export async function generateMetadata(
             url: workshop.thumbnail_url ?? "https://dldyazrsbnbffwkfvpcs.supabase.co/storage/v1/object/public/thumbnails/defaults/ai/1.webp",
             width: 800,
             height: 600,
-          },
-          ...previousImages
+          }
         ],
         locale: 'en_US',
         type: 'website',
@@ -49,21 +44,23 @@ export async function generateMetadata(
     }
   return {
     title: "Workshop Not found",
-    description: "This workshop is removed or not approved by Higrow.",
+    description: "This workshop is removed or it didn't get approved by Higrow.",
     openGraph: {
       title: "Workshop Not found",
-      description: "This workshop is removed or not approved by Higrow."
+      description: "This workshop is removed or it didn't get approved by Higrow."
     },
   }
 }
 
 async function WorkshopPage({ params }: { params: { id: string } }) {
+  const data = await getWorkshop(params.id)
+  if (!data) notFound()
   const supabase = createServerComponentClient({ cookies })
   const { data: { session } } = await supabase.auth.getSession()
-  const data = await getWorkshop(params.id)
-  const commonDate = new Date("1970-01-01");
-  const startTime = new Date(commonDate.toDateString() + " " + data?.session_start_time);
-  const endTime = new Date(commonDate.toDateString() + " " + data?.session_end_time);
+  const commonDate = new Date("1970-01-01")
+  const startTime = new Date(commonDate.toDateString() + " " + data.session_start_time).toLocaleTimeString()
+  const endTime = new Date(commonDate.toDateString() + " " + data.session_end_time).toLocaleTimeString()
+
 
   return (
     <>
@@ -121,7 +118,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
               <div className="flex md:flex-row flex-col-reverse">
                 {data.approved ? <>
                   <main className="md:basis-[75%] border-r border-secondary space-y-16 py-12 px-8">
-                  <div className="space-y-5">
+                    <div className="space-y-5">
                       <h2 className="text-2xl md:text-3xl text-secondary font-medium">
                         What you'll learn :-
                       </h2>
@@ -141,7 +138,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         dangerouslySetInnerHTML={{ __html: data.instructor_info }}
                       ></div>
                     </div>
-                   
+
                     <div className="space-y-5">
                       <h3 className="text-2xl md:text-3xl text-secondary font-medium">
                         Contact organizer :-
@@ -252,8 +249,8 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         )}
                       </div>
                     </div>
-           
-                    
+
+
                     <div
                       className={`py-5 md:py-6 px-5 md:px-8 flex items-center md:space-x-6 text-secondary border border-black rounded-md bg-white`}
                     >
@@ -276,9 +273,21 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         </span>
                       </span>
                       <span className="flex space-x-2 items-center">
-                        <span className="font-semibold"> ⏱️ Duration -</span>
+                        <span className="font-semibold"> ⏱️ Ends on -</span>
                         <span>
-                          {formatDistanceStrict(endTime, startTime)} X {data.working_days} days
+                          {formatDateInDDMMYYYY(data.workshop_ending_date)}
+                        </span>
+                      </span>
+                      <span className="flex space-x-2 items-center">
+                        <span className="font-semibold"> ⏱️ Session starting time -</span>
+                        <span>
+                          {startTime}
+                        </span>
+                      </span>
+                      <span className="flex space-x-2 items-center">
+                        <span className="font-semibold"> ⏱️ Session ending time -</span>
+                        <span>
+                          {endTime}
                         </span>
                       </span>
                       <span className="flex space-x-2 items-center">
@@ -331,7 +340,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         ⭐ {data.tagline}{" "}
                       </span>
                     </div>
-                    
+
                   </aside>
                 </> : (
                   <div className="w-full p-8 justify-center max-w-4xl mx-auto">

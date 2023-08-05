@@ -41,21 +41,25 @@ async function Organized() {
                           formatDateInDDMMYYYY(workshop.workshop_ending_date)}
                       </span>
                     </div>
-                    {workshop.is_paid ? workshop.participants.length > 0 ? (
-                      <span className="block text-secondary md:text-md">
+                    {workshop.approved ? workshop.is_paid ? workshop.participants.length > 0 ? (
+                      <span className="block text-secondary">
                         {workshop.participants.length} User{workshop.participants.length > 1 ? "s" : ""} participated
                       </span>
                     ) : (
-                      <span className="block text-secondary-lighter md:text-lg">
+                      <span className="block text-secondary-lighter">
                         No participants
                       </span>
                     ) : workshop.requested_participants.length > 0 ? (
-                      <span className="block text-secondary md:text-md ">
+                      <span className="block text-secondary ">
                         {workshop.requested_participants.length} Pending request{workshop.requested_participants.length > 1 ? "s" : ""}.
                       </span>
                     ) : (
-                      <span className="block text-secondary-lighter md:text-md ">
-                        No new participant 
+                      <span className="block text-secondary-lighter ">
+                        No new participant
+                      </span>
+                    ) : (
+                      <span className="block text-secondary">
+                        Approve pending
                       </span>
                     )}
                   </div>
