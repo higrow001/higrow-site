@@ -7,7 +7,7 @@ export default async function details({ params }: { params: { id: string } }) {
   return (
     <>
       {workshop && (
-        <div className="p-12 space-y-16 border-2 border-[#333] rounded-md shadow-[2px_2px_0_#333] bg-background">
+        <div className="p-12 space-y-16 border-2 border-[#333] rounded-md bg-background">
           <div className="space-y-5">
             <h2 className="text-3xl text-secondary font-medium">
               About Instructor :-
@@ -18,13 +18,7 @@ export default async function details({ params }: { params: { id: string } }) {
             ></div>
           </div>
           <div className="space-y-5">
-            <h2 className="text-3xl text-secondary font-medium">
-              About Workshop :-
-            </h2>
-            <div
-              className="prose max-w-[90ch]"
-              dangerouslySetInnerHTML={{ __html: workshop.workshop_info }}
-            ></div>
+           
           </div>
           <div className="space-y-5">
             <h2 className="text-3xl text-secondary font-medium">
