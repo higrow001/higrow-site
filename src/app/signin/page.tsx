@@ -69,9 +69,9 @@ const SignIn = () => {
 
   return (
     <div>
-       <Link className="nav-logo" href="/">HiGrow.</Link>{" "}
+       {/* <Link className="nav-logo" href="/">HiGrow.</Link>{" "} */}
     <main className="flex justify-center min-h-full items-center bg-accent w-full py-10">
-      <div className="md:px-20 px-8 py-20 mx-4 max-w-xl border shadow flex flex-col items-center space-y-20 rounded-lg w-full bg-background">
+      <div className="md:px-20 px-8 py-16 md:py-20 md:mx-4 max-w-xl md:border border-t border-b border-black flex flex-col items-center space-y-20 md:rounded-md w-full bg-background">
         <h1 className="text-2xl md:text-4xl font-archivo font-bold text-[#333333]">
           Sign in for HiGrow
         </h1>
@@ -138,7 +138,7 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col space-y-8 items-center w-full">
               <Button
-                className="text-base md:text-lg font-archivo w-full px-6 rounded-xl"
+                className="text-base md:text-lg bg-[#333] w-full px-6 md:rounded-lg border border-black"
                 type="submit"
                 size="xl"
               >

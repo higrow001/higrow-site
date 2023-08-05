@@ -7,15 +7,22 @@ import { RiDiscordLine, RiWhatsappLine } from "react-icons/ri"
 import { formatDistanceStrict } from "date-fns"
 import AdminActionBtns from "@/components/client-buttons/admin-action-btns"
 import { getWorkshops } from "@/app/_actions/workshop"
+import Link from "next/link"
 
 export const dynamic = "force-dynamic"
 
 export default async function AdminManage() {
   const workshops = await getWorkshops({ approved: false })
   if (workshops?.length === 0)
-    return <p>No workshops or contests to approve right now.</p>
+    return(
+      <>
+      <Link href="/" className="text-[36px] font-semibold font-archivo pb-16 underline  text-[#333] " >Go To Home</Link>{" "}
+<p>No workshops or contests to approve right now.</p> </>
+    ) 
 
   return (
+    <>
+    <Link href="/" className="text-[36px] font-semibold font-archivo pb-16 underline  text-[#333] " >Go To Home</Link>{" "}
     <div className="flex flex-col max-w-7xl w-full my-20 mx-auto space-y-8">
       <h1 className="text-4xl font-semibold">Pending Workshops</h1>
       {workshops &&
@@ -244,6 +251,6 @@ export default async function AdminManage() {
             </Dialog>
           </React.Fragment>
         ))}
-    </div>
+    </div> </>
   )
 }

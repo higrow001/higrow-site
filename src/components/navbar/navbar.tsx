@@ -101,7 +101,7 @@ const Navbar = () => {
           <Link href="/workshops">Workshops</Link>
           <Link href="/contests">Contests</Link>
           <Link href="/faqs">FAQs</Link>
-          <Link href="/mailto:higrow25@gmail.com">Contact</Link>
+          <Link href="mailto:higrow25@gmail.com">Contact</Link>
         </div>
       </div>
     </div>

@@ -55,9 +55,8 @@ export default async function Home() {
                 <span> HiGrow </span> - Say Hi👋 to your growth📈
               </h1>
               <p>
-                Participate in exciting workshops, contests and grow your
-                knowledge in your field. Wanna listen something amazing? Even
-                you can also organize your own workshop or contest
+                Participate in exciting workshops, Learn skills and grow your
+                knowledge with us!
               </p>
               <Link href="/workshops" className="htopc-button">
                 <button>Explore Now</button>
@@ -75,7 +74,7 @@ export default async function Home() {
 
           <div className="hero-bottom">
             <div className="hbottom-left">
-              <Link className="hbottom-links" href="#">
+              <Link className="hbottom-links" href="mailto:higrow25@gmail.com">
                 <button>
                   Give Us Feedback <span> → </span>{" "}
                 </button>
@@ -89,8 +88,8 @@ export default async function Home() {
               </p>
             </div>
             <div className="hbottom-right">
-              <Link className="hbottom-links" href="#">
-                <button>Give Us Suggestions</button>
+              <Link className="hbottom-links" href="mailto:higrow25@gmail.com">
+                <button> Give Us Suggestions</button>
               </Link>
             </div>
           </div>
@@ -141,10 +140,10 @@ export default async function Home() {
               <div className="he-top">
                 <h1 className="font-archivo">Explore Workshops</h1>
                 <Link href="workshops" className="explore-button">
-                  <button>See all</button>
+                  <button className="px-0">See all</button>
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16 xl:gap-16 w-full justify-items-center justify-between">
+              <div className="grid grid-cols-1 md:grid-cols-2 px-8 md:px-0 xl:grid-cols-3 gap-x-8 gap-y-16 xl:gap-16 w-full justify-items-center justify-between">
                 {latestWorkshops.map((workshop) => (
                   <Link
                     aria-label={workshop.name}

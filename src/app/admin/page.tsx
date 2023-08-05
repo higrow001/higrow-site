@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useAdminAccess } from "@/states/admin"
 import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import Link from "next/link"
 
 function AdminPage() {
   const supabase = createClientComponentClient()
@@ -23,7 +24,8 @@ function AdminPage() {
     }
   }
   return (
-    <main className="flex justify-center min-h-full items-center bg-accent">
+    <main className="flex justify-center flex-col min-h-full items-center bg-accent">
+      <Link href="/" className="text-[36px] font-semibold font-archivo pb-16 underline  text-[#333] " >Go To Home</Link>{" "}
       <div className="p-20 max-w-xl border shadow flex flex-col items-center space-y-20 rounded-lg w-full signup-card bg-background">
         <h1 className="text-4xl font-archivo font-bold text-[#333333]">
           Sign in for Admin

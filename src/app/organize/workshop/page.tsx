@@ -911,7 +911,7 @@ export default function CreateWorkshop() {
                       <Input
                         id="picture"
                         type="file"
-                        className="px-4 w-fit cursor-pointer"
+                        className="px-4 w-full cursor-pointer"
                         placeholder="Web development bootcamp"
                         accept="image/png, image/jpeg, image/webp"
                         onChange={(e) => {
