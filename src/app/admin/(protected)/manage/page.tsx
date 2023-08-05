@@ -62,15 +62,7 @@ export default async function AdminManage() {
                       ></div>
                     </div>
                     <div className="space-y-5">
-                      <h2 className="text-3xl text-secondary font-medium">
-                        About Workshop :-
-                      </h2>
-                      <div
-                        className="prose max-w-[90ch]"
-                        dangerouslySetInnerHTML={{
-                          __html: document.workshop_info,
-                        }}
-                      ></div>
+                      
                     </div>
                     <div className="space-y-5">
                       <h2 className="text-3xl text-secondary font-medium">
@@ -182,19 +174,8 @@ export default async function AdminManage() {
                           {document.session_end_time}
                         </span>
                       </span>
-                      <span className="flex space-x-2 items-center">
-                        <span className="font-semibold">Duration -</span>
-                        {(() => {
-                          const commonDate = new Date("1970-01-01");
-                          const startTime = new Date(commonDate.toDateString() + " " + document?.session_start_time);
-                          const endTime = new Date(commonDate.toDateString() + " " + document?.session_end_time);
-                          return (
-                            <span>
-                              {formatDistanceStrict(endTime, startTime)} X {document.working_days} days
-                            </span>
-                          )
-                        })()}
-                      </span>
+                      
+                      
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold">Happening -</span>
                         <span>{document.mode}</span>

@@ -115,7 +115,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                   By {data.instructor_name}
                 </span>
               </header>
-              <div className="flex md:flex-row flex-col-reverse">
+              <div className="flex md:flex-row flex-col">
                 {data.approved ? <>
                   <main className="md:basis-[75%] border-r border-secondary space-y-16 py-12 px-8">
                     <div className="space-y-5">
@@ -269,27 +269,17 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold"> ⏱️ Starts from -</span>
                         <span>
-                          {formatDateInDDMMYYYY(data.workshop_starting_date)}
+                          {formatDateInDDMMYYYY(data.workshop_starting_date)} - {formatDateInDDMMYYYY(data.workshop_ending_date)}
                         </span>
                       </span>
+               
                       <span className="flex space-x-2 items-center">
-                        <span className="font-semibold"> ⏱️ Ends on -</span>
+                        <span className="font-semibold"> ⏱️ Timming -</span>
                         <span>
-                          {formatDateInDDMMYYYY(data.workshop_ending_date)}
+                          {startTime} - {endTime}
                         </span>
                       </span>
-                      <span className="flex space-x-2 items-center">
-                        <span className="font-semibold"> ⏱️ Session starting time -</span>
-                        <span>
-                          {startTime}
-                        </span>
-                      </span>
-                      <span className="flex space-x-2 items-center">
-                        <span className="font-semibold"> ⏱️ Session ending time -</span>
-                        <span>
-                          {endTime}
-                        </span>
-                      </span>
+                  
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold">📍 Happening -</span>
                         <span>{data.mode}</span>
