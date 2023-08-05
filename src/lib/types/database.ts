@@ -116,10 +116,8 @@ export interface Database {
           social_links: string[]
           tagline: string
           thumbnail_url: string | null
-          working_days: number
           workshop_amount: number | null
           workshop_ending_date: string
-          workshop_info: string
           workshop_starting_date: string
         }
         Insert: {
@@ -148,10 +146,8 @@ export interface Database {
           social_links: string[]
           tagline: string
           thumbnail_url?: string | null
-          working_days: number
           workshop_amount?: number | null
           workshop_ending_date: string
-          workshop_info: string
           workshop_starting_date: string
         }
         Update: {
@@ -180,10 +176,8 @@ export interface Database {
           social_links?: string[]
           tagline?: string
           thumbnail_url?: string | null
-          working_days?: number
           workshop_amount?: number | null
           workshop_ending_date?: string
-          workshop_info?: string
           workshop_starting_date?: string
         }
         Relationships: [

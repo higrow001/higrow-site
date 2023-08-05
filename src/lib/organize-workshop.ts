@@ -57,13 +57,12 @@ export const steps = [
   },
   {
     title: "Description",
-    validationFields: ["instructorInfo", "instructorName","describeEachDay",],
+    validationFields: ["instructorInfo", "instructorName", "describeEachDay"],
     id: "description",
   },
   {
     title: "Advanced",
     validationFields: [
-      
       "workshopAmount",
       "backName",
       "bankEmail",
@@ -282,8 +281,6 @@ export const validationSchema = z
       })
     }
 
-   
-
     if (
       !val.describeEachDay ||
       val.describeEachDay === "<p><br></p>" ||
@@ -295,8 +292,6 @@ export const validationSchema = z
         path: ["describeEachDay"],
       })
     }
-
-    
 
     if (val.isPaid && val.bankEmail.length === 0) {
       ctx.addIssue({

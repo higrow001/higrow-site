@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { Bell, Check, Loader2 } from "lucide-react"
 import { ScrollArea } from "../ui/scroll-area"
 import { NotificationData, NotificationType } from "@/lib/types"
-import markAllNotificationsRead from "@/app/_actions/notification"
+import { markAllNotificationsRead, deleteAllReadedNotifications } from "@/app/_actions/notification"
 import { formatDistanceToNow } from "date-fns"
 import Link from "next/link"
 
@@ -15,7 +15,8 @@ export default function Notifications({
   notifications: NotificationType
 }) {
   const [open, setOpen] = useState(false)
-  let [isPending, startTransition] = useTransition()
+  let [readPending, startReadTransition] = useTransition()
+  let [deletePending, startDeleteTransition] = useTransition()
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -33,13 +34,14 @@ export default function Notifications({
       </PopoverTrigger>
       <PopoverContent align="end" className="w-[250px] md:w-[350px] p-0">
         <Button
-          className="w-full bg-secondary rounded-b-none rounded-t-md hover:bg-secondary-lighter"
+          className="w-full bg-secondary rounded-b-none rounded-t-md"
           size={"lg"}
-          onClick={() => startTransition(async () => {
+          variant={"secondary"}
+          onClick={() => startReadTransition(async () => {
             await markAllNotificationsRead()
           })}
         >
-          {isPending ? (
+          {readPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Loading...
@@ -92,14 +94,17 @@ export default function Notifications({
               <p className="text-sm md:text-base m-4">No notification to see right now.</p>
             )}
         </ScrollArea>
-        <Button className="w-full bg-muted md:hover:bg-muted-darker text-black rounded-b-md rounded-t-none">
-          View all
+        <Button onClick={() => startDeleteTransition(async () => {
+          await deleteAllReadedNotifications()
+        })} className="w-full bg-muted md:hover:bg-muted-darker text-black rounded-b-md rounded-t-none">
+          {deletePending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Deleting...
+            </>
+          ) : "Delete all readed"}
         </Button>
       </PopoverContent>
     </Popover>
   )
-}
-
-function NotificationCell(notification?: NotificationData) {
-  return null
 }

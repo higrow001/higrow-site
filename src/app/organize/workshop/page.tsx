@@ -8,7 +8,7 @@ import {
   categories,
   initialValues,
   validationSchema,
-} from "@/lib/utils/organize-workshop"
+} from "@/lib/organize-workshop"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -63,6 +63,7 @@ export default function CreateWorkshop() {
     errorMsg: string
     file: null | File
   }>({ showError: false, errorMsg: "", file: null })
+  const timeZoneDiff = new Date().getTimezoneOffset()
 
   const form = useForm<any>({
     resolver: zodResolver(validationSchema),
@@ -93,11 +94,6 @@ export default function CreateWorkshop() {
   const instructorInfoValue = useWatch({
     control: form.control,
     name: "instructorInfo",
-    defaultValue: "",
-  })
-  const workshopInfoValue = useWatch({
-    control: form.control,
-    name: "workshopInfo",
     defaultValue: "",
   })
   const describeEachDayValue = useWatch({
@@ -161,8 +157,8 @@ export default function CreateWorkshop() {
           values.workshopStartingDate
         ).toISOString(),
         workshop_ending_date: new Date(values.workshopEndingDate).toISOString(),
-        session_start_time: values.sessionStartingTime,
-        session_end_time: values.sessionEndingTime,
+        session_start_time: values.sessionStartingTime + new Date().toString().slice(new Date().toString().indexOf("GMT") + 3, new Date().toString().indexOf("GMT") + 8),
+        session_end_time: values.sessionEndingTime + new Date().toString().slice(new Date().toString().indexOf("GMT") + 3, new Date().toString().indexOf("GMT") + 8),
         participants: [],
         requested_participants: [],
         contact_email: values.contactEmail,
@@ -171,8 +167,6 @@ export default function CreateWorkshop() {
         instructor_info: values.instructorInfo,
         instructor_name: values.instructorName,
         workshop_amount: values.isPaid ? values.workshopAmount : null,
-        workshop_info: values.workshopInfo,
-        working_days: values.workingDays,
         is_paid: values.isPaid,
         created_by: user.data.session!.user.id,
         announcements: [],
@@ -333,11 +327,10 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
-              activeStep === 0 ? "block" : "hidden"
-            }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 0 ? "block" : "hidden"
+              }`}
           >
-           
+
             <FormField
               control={form.control}
               name="name"
@@ -376,7 +369,7 @@ export default function CreateWorkshop() {
               <h1 className="text-md md:text-xl">Mode</h1>
               <div className="flex space-x-3 items-center">
                 <Button
-                  variant={modeValue === "Online" ? "default" : "outline"}
+                  variant={modeValue === "Online" ? "secondary" : "outline"}
                   className={` font-base md:font-semibold border rounded-full md:h-11 md:px-8`}
                   onClick={() => form.setValue("mode", "Online")}
                   type="button"
@@ -384,7 +377,7 @@ export default function CreateWorkshop() {
                   Online
                 </Button>
                 <Button
-                  variant={modeValue === "Offline" ? "default" : "outline"}
+                  variant={modeValue === "Offline" ? "secondary" : "outline"}
                   className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                   onClick={() => form.setValue("mode", "Offline")}
                   type="button"
@@ -428,7 +421,7 @@ export default function CreateWorkshop() {
                           key={category}
                           onClick={() => form.setValue("category", category)}
                           variant={
-                            categoryValue === category ? "default" : "outline"
+                            categoryValue === category ? "secondary" : "outline"
                           }
                           className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                           type="button"
@@ -475,20 +468,20 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
-          
+
           </div>
           {/*TODO: Second Tab */}
           <div
             className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 1 ? "block" : "hidden"
               }`}
           >
-           <FormField
+            <FormField
               control={form.control}
               name="applicationClosingDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-[100%]">
                   <FormLabel className="text-md md:text-xl">
-                  New Applications Close
+                    New Applications Close
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -526,134 +519,134 @@ export default function CreateWorkshop() {
               )}
             />
             <div className="flex md:flex-row flex-col justify-between gap-8">
-            <FormField
-              control={form.control}
-              name="workshopStartingDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col w-[100%]">
-                  <FormLabel className="text-md md:text-xl">
-                    Workshop starting
-                  </FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 md:h-12  text-left font-normal text-[12px] md:text-base",
-                            !field.value && "text-muted-foreground"
-                          )}
-                          size={"lg"}
-                        >
-                          {field.value ? (
-                            <span className="ml-3">
-                              {format(field.value, "PPP")}
-                            </span>
-                          ) : (
-                            <span className="ml-3">Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        onSelect={field.onChange}
-                        disabled={(date) => date <= new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="workshopEndingDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col w-[100%]">
-                  <FormLabel className="text-md md:text-xl">
-                    Workshop ending
-                  </FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 md:h-12  max-w-md text-left font-normal text-[12px] md:text-base",
-                            !field.value && "text-muted-foreground"
-                          )}
-                          size={"lg"}
-                        >
-                          {field.value ? (
-                            <span className="ml-3">
-                              {format(field.value, "PPP")}
-                            </span>
-                          ) : (
-                            <span className="ml-3">Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        onSelect={field.onChange}
-                        disabled={(date) => date <= new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="workshopStartingDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-[100%]">
+                    <FormLabel className="text-md md:text-xl">
+                      Workshop starting
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 md:h-12  text-left font-normal text-[12px] md:text-base",
+                              !field.value && "text-muted-foreground"
+                            )}
+                            size={"lg"}
+                          >
+                            {field.value ? (
+                              <span className="ml-3">
+                                {format(field.value, "PPP")}
+                              </span>
+                            ) : (
+                              <span className="ml-3">Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          onSelect={field.onChange}
+                          disabled={(date) => date <= new Date()}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="workshopEndingDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-[100%]">
+                    <FormLabel className="text-md md:text-xl">
+                      Workshop ending
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 md:h-12  max-w-md text-left font-normal text-[12px] md:text-base",
+                              !field.value && "text-muted-foreground"
+                            )}
+                            size={"lg"}
+                          >
+                            {field.value ? (
+                              <span className="ml-3">
+                                {format(field.value, "PPP")}
+                              </span>
+                            ) : (
+                              <span className="ml-3">Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          onSelect={field.onChange}
+                          disabled={(date) => date <= new Date()}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-           
+
             <div className="flex md:flex-row flex-col justify-between gap-8">
-            <FormField
-              control={form.control}
-              name="sessionStartingTime"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-md md:text-xl">
-                    Workshop session starting time.
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="time"
-                      className="px-4 h-12  w-full max-w-md"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="sessionEndingTime"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-md md:text-xl">
-                    Workshop session ending time.
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="time"
-                      className="px-4 h-12  w-full max-w-md"
-                      defaultValue="12:00"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="sessionStartingTime"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      Workshop session starting time.
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="px-4 h-12  w-full max-w-md"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="sessionEndingTime"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-md md:text-xl">
+                      Workshop session ending time.
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="px-4 h-12  w-full max-w-md"
+                        defaultValue="12:00"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
           {/*TODO: Third Step */}
@@ -681,25 +674,25 @@ export default function CreateWorkshop() {
                   </FormItem>
                 )}
               />
-              
+
             </div>
-           
 
-           
-              <div className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
+
+
+            <div className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
               }`}>
-                 <Info className="w-5 h-5" />
-                  <p className="text-sm md:text-base">
-                   Even though social links are optional, the more social links you do, the more trust users will place on you.
-                  </p>
+              <Info className="w-5 h-5" />
+              <p className="text-sm md:text-base">
+                Even though social links are optional, the more social links you do, the more trust users will place on you.
+              </p>
 
-              </div>
-             
+            </div>
+
             <div
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
                 }`}
             >
-               
+
               <FormField
                 control={form.control}
                 name="websiteLink"
@@ -796,106 +789,106 @@ export default function CreateWorkshop() {
           {activeStep === 3 && (
             <>
 
-<div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
-            <FormField
-                control={form.control}
-                name="describeEachDay"
-                render={() => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      What you'll teach?
-                    </FormLabel>
-                    <FormControl>
-                      <ReactQuill
-                        placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
-                        modules={{
-                          toolbar: [
-                            [{ header: [false] }],
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",
-                              "blockquote",
-                              "link",
+              <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
+                <FormField
+                  control={form.control}
+                  name="describeEachDay"
+                  render={() => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-md md:text-xl">
+                        What you'll teach?
+                      </FormLabel>
+                      <FormControl>
+                        <ReactQuill
+                          placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
+                          modules={{
+                            toolbar: [
+                              [{ header: [false] }],
+                              [
+                                "bold",
+                                "italic",
+                                "underline",
+                                "strike",
+                                "blockquote",
+                                "link",
+                              ],
+                              [{ list: "ordered" }, { list: "bullet" }],
                             ],
-                            [{ list: "ordered" }, { list: "bullet" }],
-                          ],
-                        }}
-                        value={describeEachDayValue}
-                        onChange={(val) =>
-                          form.setValue("describeEachDay", val)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
+                          }}
+                          value={describeEachDayValue}
+                          onChange={(val) =>
+                            form.setValue("describeEachDay", val)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
               </div>
-            <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
-              <FormField
-                control={form.control}
-                name="instructorName"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      Name of Instructor
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="px-4"
-                        placeholder="e.g. Puneet Kathuria"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="instructorInfo"
-                render={() => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-md md:text-xl">
-                      Tell us more about Instructor
-                    </FormLabel>
-                    <FormControl>
-                      <ReactQuill
-                        theme="snow"
-                        modules={{
-                          toolbar: [
-                            [{ header: [false] }],
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",
-                              "blockquote",
-                              "link",
+              <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
+                <FormField
+                  control={form.control}
+                  name="instructorName"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-md md:text-xl">
+                        Name of Instructor
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="px-4"
+                          placeholder="e.g. Puneet Kathuria"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="instructorInfo"
+                  render={() => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-md md:text-xl">
+                        Tell us more about Instructor
+                      </FormLabel>
+                      <FormControl>
+                        <ReactQuill
+                          theme="snow"
+                          modules={{
+                            toolbar: [
+                              [{ header: [false] }],
+                              [
+                                "bold",
+                                "italic",
+                                "underline",
+                                "strike",
+                                "blockquote",
+                                "link",
+                              ],
+                              [
+                                { list: "ordered" },
+                                { list: "bullet" },
+                                { indent: "-1" },
+                                { indent: "+1" },
+                              ],
+                              ["clean"],
                             ],
-                            [
-                              { list: "ordered" },
-                              { list: "bullet" },
-                              { indent: "-1" },
-                              { indent: "+1" },
-                            ],
-                            ["clean"],
-                          ],
-                        }}
-                        value={instructorInfoValue}
-                        onChange={(val) => form.setValue("instructorInfo", val)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-            </div>
-         
+                          }}
+                          value={instructorInfoValue}
+                          onChange={(val) => form.setValue("instructorInfo", val)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+              </div>
+
             </>
           )}
           {/* TODO: Fifth Step */}
@@ -904,81 +897,80 @@ export default function CreateWorkshop() {
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
                 }`}
             >
-               <FormField
-              name="thumbnail"
-              render={() => (
-                <FormItem className="w-full">
-                  <FormLabel
-                    className={`text-md md:text-xl ${
-                      fileInputState.showError ? "text-destructive" : ""
-                    }`}
-                  >
-                    Thumbnail <span className="text-sm font-normal">(Optional*)</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      id="picture"
-                      type="file"
-                      className="px-4 w-fit cursor-pointer"
-                      placeholder="Web development bootcamp"
-                      accept="image/png, image/jpeg, image/webp"
-                      onChange={(e) => {
-                        if (
-                          e.target.files &&
-                          e.target.files.length > 0 &&
-                          e.target.files[0].size > 3 * 1024 * 1024
-                        ) {
-                          setFileInputState({
-                            showError: true,
-                            errorMsg:
-                              "An image with a maximum size of 3MB is accepted.",
-                            file: null,
-                          })
-                          return
-                        }
-                        if (e.target.files && e.target.files.length > 0) {
+              <FormField
+                name="thumbnail"
+                render={() => (
+                  <FormItem className="w-full">
+                    <FormLabel
+                      className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
+                        }`}
+                    >
+                      Thumbnail <span className="text-sm font-normal">(Optional*)</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        id="picture"
+                        type="file"
+                        className="px-4 w-fit cursor-pointer"
+                        placeholder="Web development bootcamp"
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={(e) => {
+                          if (
+                            e.target.files &&
+                            e.target.files.length > 0 &&
+                            e.target.files[0].size > 3 * 1024 * 1024
+                          ) {
+                            setFileInputState({
+                              showError: true,
+                              errorMsg:
+                                "An image with a maximum size of 3MB is accepted.",
+                              file: null,
+                            })
+                            return
+                          }
+                          if (e.target.files && e.target.files.length > 0) {
+                            setFileInputState({
+                              showError: false,
+                              errorMsg: "",
+                              file: e.target.files[0],
+                            })
+                            return
+                          }
                           setFileInputState({
                             showError: false,
                             errorMsg: "",
-                            file: e.target.files[0],
+                            file: null,
                           })
-                          return
-                        }
-                        setFileInputState({
-                          showError: false,
-                          errorMsg: "",
-                          file: null,
-                        })
-                      }}
-                    />
-                  </FormControl>
-                  {fileInputState.showError && (
-                    <FormMessage>{fileInputState.errorMsg}</FormMessage>
-                  )}
-                  <FormDescription className="text-xs pt-2">
-                    *We will provide a default thumbnail image acording to
-                    selected category if you don't provide one yourself.
-                  </FormDescription>
-                  <FormDescription className="text-xs pt-1">
-                    Keep image aspect ratio to 3/2 (for e.g. width 900px and
-                    height 600px) to make sure image don't get cut out.
-                  </FormDescription>
-                </FormItem>
+                        }}
+                      />
+                    </FormControl>
+                    {fileInputState.showError && (
+                      <FormMessage>{fileInputState.errorMsg}</FormMessage>
+                    )}
+                    <FormDescription className="text-xs pt-2">
+                      *We will provide a default thumbnail image acording to
+                      selected category if you don't provide one yourself.
+                    </FormDescription>
+                    <FormDescription className="text-xs pt-1">
+                      Keep image aspect ratio to 3/2 (for e.g. width 900px and
+                      height 600px) to make sure image don't get cut out.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+              {fileInputState.file && (
+                <div>
+                  <h1 className="text-md pb-2 md:text-xl">Thumbnail Preview</h1>
+                  <Image
+                    className="aspect-[3/2] border border-black w-96 object-cover"
+                    src={URL.createObjectURL(fileInputState.file)}
+                    alt="Preview thumbnail"
+                    width={400}
+                    height={280}
+                  />
+                </div>
               )}
-            />
-            {fileInputState.file && (
-              <div>
-                <h1 className="text-md pb-2 md:text-xl">Thumbnail Preview</h1>
-                <Image
-                  className="aspect-[3/2] border border-black w-96 object-cover"
-                  src={URL.createObjectURL(fileInputState.file)}
-                  alt="Preview thumbnail"
-                  width={400}
-                  height={280}
-                />
-              </div>
-            )}
-            
+
             </div>
             <div
               className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
@@ -990,7 +982,7 @@ export default function CreateWorkshop() {
                 </h1>
                 <div className="flex space-x-4 items-center">
                   <Button
-                    variant={isPaidValue ? "default" : "outline"}
+                    variant={isPaidValue ? "secondary" : "outline"}
                     className={`border font-semibold rounded-full`}
                     type="button"
                     size="lg"
@@ -999,7 +991,7 @@ export default function CreateWorkshop() {
                     Yes
                   </Button>
                   <Button
-                    variant={!isPaidValue ? "default" : "outline"}
+                    variant={!isPaidValue ? "secondary" : "outline"}
                     className={`border font-semibold rounded-full`}
                     type="button"
                     size="lg"

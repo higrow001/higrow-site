@@ -43,13 +43,12 @@ const Navbar = () => {
   return (
     <div className="navbar-container font-archivo">
       <div
-        className={`nav-logo transition-none ${
-          expanded ? "bg-black !text-white" : ""
-        }`}
+        className={`nav-logo transition-none ${expanded ? "bg-black !text-white" : ""
+          }`}
       >
-        <Link href="/">HiGrow.</Link>{" "}
+        <Link href="/">HiGrow.</Link>
         <Button
-          className="lg:hidden hover:bg-transparent hover:text-primary-foreground"
+          className="lg:hidden"
           variant={"ghost"}
           size={"icon"}
           onClick={() => setExpanded(!expanded)}
@@ -66,13 +65,11 @@ const Navbar = () => {
       </div>
       <div className="nav-buttons hidden lg:flex">
         <Link className="organize-button" href="/organize">
-          {" "}
-          <button> Organize</button>{" "}
+          <button> Organize</button>
         </Link>
         {showSignup ? (
           <Link className="signup-button" href="/signup">
-            {" "}
-            <button> Sign up</button>{" "}
+            <button> Sign up</button>
           </Link>
         ) : (
           <Link className="signup-button" href="/dashboard/enrolled">
@@ -82,9 +79,8 @@ const Navbar = () => {
       </div>
       <div
         ref={mobileNavRef}
-        className={`flex flex-col lg:hidden w-full text-lg justify-start bg-black text-primary-foreground overflow-hidden transition-all ${
-          expanded ? "animate-nav-show" : "animate-nav-hide"
-        }`}
+        className={`flex flex-col lg:hidden w-full justify-start bg-black text-primary-foreground overflow-hidden transition-all ${expanded ? "animate-nav-show" : "animate-nav-hide"
+          }`}
         style={heightStyle}
       >
         <div className="py-6 space-y-4 flex flex-col border-y border-background px-8">
