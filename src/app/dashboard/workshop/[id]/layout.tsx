@@ -15,13 +15,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Navbar />
       <main className="max-w-5xl w-full py-24 mx-auto">
-        <div className="flex justify-between items-center mb-20">
+        <div className="flex justify-between items-center mb-20 px-4 md:px-0">
           <Link
             href="/dashboard/enrolled"
             className="flex space-x-1 items-center"
           >
-            <Button className="text-base" variant={"ghost"}>
-              <ChevronLeft className="w-6 h-6 mr-2" />
+            <Button className="text-base px-0 md:px-4" variant={"ghost"}>
+              <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 mr-2" />
               <span>Dashboard</span>
             </Button>
           </Link>
@@ -42,9 +42,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 })
               }
             }}
-            variant={"secondary"}
+            className="py-5"
+            variant={"outline"}
+            size={"sm"}
           >
-            <Copy className="w-5 h-5 mr-2" /> Share Public Link
+            <Copy className="w-4 h-4 md:w-5 md:h-5 mr-2" /> Copy Link
           </Button>
         </div>
         <div className="space-y-12">
@@ -84,7 +86,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 variant={pathname.includes("socials") ? "secondary" : "ghost"}
                 size={"lg"}
               >
-                Contact Organizer
+                Contact
               </Button>
             </Link>
           </div>

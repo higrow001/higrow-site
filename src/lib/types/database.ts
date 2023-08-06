@@ -99,7 +99,7 @@ export interface Database {
           contact_email: string
           created_at: string
           created_by: string
-          describe_each_day: string
+          workshop_info: string
           event_location: string | null
           id: string
           instructor_info: string
@@ -129,7 +129,7 @@ export interface Database {
           contact_email: string
           created_at?: string
           created_by: string
-          describe_each_day: string
+          workshop_info: string
           event_location?: string | null
           id?: string
           instructor_info: string
@@ -159,7 +159,7 @@ export interface Database {
           contact_email?: string
           created_at?: string
           created_by?: string
-          describe_each_day?: string
+          workshop_info?: string
           event_location?: string | null
           id?: string
           instructor_info?: string

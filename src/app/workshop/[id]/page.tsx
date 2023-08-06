@@ -125,7 +125,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                       <div
                         className="prose max-w-[90ch]"
                         dangerouslySetInnerHTML={{
-                          __html: data.describe_each_day,
+                          __html: data.workshop_info,
                         }}
                       ></div>
                     </div>

@@ -2,6 +2,7 @@ import "./globals.scss"
 import { Public_Sans, Archivo } from "next/font/google"
 import { Metadata } from "next"
 import AppAlert from "@/components/custom-alert"
+import { Analytics } from '@vercel/analytics/react';
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="font-sans">
         <AppAlert />
         {children}
+        <Analytics />
       </body>
     </html>
   )

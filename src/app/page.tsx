@@ -134,7 +134,7 @@ export default async function Home() {
             </p>
           </div>
         </div>
-        {latestWorkshops.length > 0 && (
+        {/* {latestWorkshops.length > 0 && (
           <div className="he-container">
             <div className="workshop-card-container">
               <div className="he-top">
@@ -165,7 +165,7 @@ export default async function Home() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
         <div className="bottom-space"></div>
         <center>
           {" "}

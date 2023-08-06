@@ -16,17 +16,14 @@ export default async function announcements({
           {workshop.announcements.map((ann, index) => (
             <div
               key={index}
-              className="py-10 px-24 space-y-6 border-2 border-[#333] rounded-md bg-background"
+              className="py-6 px-8 md:py-10 md:px-16 space-y-6 border-t border-b md:border-2 border-[#333] md:rounded-md bg-background"
             >
               <div className="flex items-center justify-between w-full">
-                <h3 className="text-3xl font-semibold font-archivo">
-                  {ann.title}
-                </h3>
-                <div className="flex space-x-4 items-center">
-                  <span className="font-medium">
-                    {formatDateInDDMMYYYY(ann.timestamp, true)}
-                  </span>
-                </div>
+              <h3 className="text-xl md:text-3xl font-semibold font-archivo">
+              {ann.title} <span className="text-xs ml-3 md:ml-6 tracking-wider md:text-base font-light">
+                {formatDateInDDMMYYYY(ann.timestamp, false)}
+              </span>
+            </h3>
               </div>
               <div
                 className="prose"

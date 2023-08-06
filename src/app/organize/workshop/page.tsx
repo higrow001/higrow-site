@@ -162,7 +162,7 @@ export default function CreateWorkshop() {
         participants: [],
         requested_participants: [],
         contact_email: values.contactEmail,
-        describe_each_day: values.describeEachDay,
+        workshop_info: values.describeEachDay,
         social_links: allSocialLinks,
         instructor_info: values.instructorInfo,
         instructor_name: values.instructorName,
