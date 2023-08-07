@@ -78,7 +78,7 @@ export default async function AdminManage() {
                       <div
                         className="prose max-w-[90ch]"
                         dangerouslySetInnerHTML={{
-                          __html: document.describe_each_day,
+                          __html: document.workshop_info,
                         }}
                       ></div>
                     </div>

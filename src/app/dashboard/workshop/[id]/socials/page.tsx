@@ -19,7 +19,7 @@ export default async function Socials({ params }: { params: { id: string } }) {
     <>
       <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-5">
         <div
-          className="space-y-6 block bg-background w-full py-6 px-10 border border-black rounded-md"
+          className="space-y-6 block bg-background w-full py-6 px-10 border-t border-b md:border border-black md:rounded-md"
         >
           <div className="flex space-x-6 items-center">
             <div className="p-4 bg-secondary text-white rounded-md">
@@ -175,10 +175,10 @@ export default async function Socials({ params }: { params: { id: string } }) {
         ))}
       </div>
       <div
-        className={`py-6 px-8 flex items-center space-x-6 text-secondary border border-black rounded-md bg-white`}
+        className={`py-6 px-8 flex items-center space-x-6 text-secondary border-t border-b md:border border-black md:rounded-md bg-white`}
       >
-        <BiInfoCircle className="w-6 h-6" />
-        <p className="text text-[#333] tracking-wide leading-6">
+        <BiInfoCircle className="w-10 h-10 md:w-6 md:h-6" />
+        <p className="md:text-base text-sm text text-[#333] tracking-wide leading-6">
           If there’ll be any problem in contacting the organizer or if they’re
           not responding then please make sure to contact us.
         </p>

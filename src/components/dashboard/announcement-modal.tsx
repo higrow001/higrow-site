@@ -37,11 +37,11 @@ export default function MakeAnnoucement({
   return (
     <Dialog>
       <DialogTrigger className="w-full">
-        <Button className="w-full" variant={"secondary"} size={"xl"}>
+        <Button className="w-full rounded-none md:rounded-md" variant={"secondary"} size={"xl"}>
           Make New Announcement
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:min-w-[50rem] p-6 md:p-12 space-y-6 md:max-h-[95%] overflow-y-auto">
+      <DialogContent className="overflow-scroll md:min-w-[50rem] p-6 md:p-12 space-y-6 min-h[100%] md:max-h-[95%] md:overflow-y-auto">
         {isPending ? (
           <LoadingSpinner sizeStyle="w-12 h-12" />
         ) : (
