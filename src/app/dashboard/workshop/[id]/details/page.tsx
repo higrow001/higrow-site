@@ -18,7 +18,7 @@ export default async function details({ params }: { params: { id: string } }) {
             ></div>
           </div>
           <div className="space-y-5">
-           
+
           </div>
           <div className="space-y-5">
             <h2 className="text-3xl text-secondary font-medium">
@@ -26,7 +26,7 @@ export default async function details({ params }: { params: { id: string } }) {
             </h2>
             <div
               className="prose max-w-[90ch]"
-              dangerouslySetInnerHTML={{ __html: workshop.describe_each_day }}
+              dangerouslySetInnerHTML={{ __html: workshop.workshop_info }}
             ></div>
           </div>
         </div>

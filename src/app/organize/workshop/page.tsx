@@ -162,7 +162,7 @@ export default function CreateWorkshop() {
         participants: [],
         requested_participants: [],
         contact_email: values.contactEmail,
-        describe_each_day: values.describeEachDay,
+        workshop_info: values.describeEachDay,
         social_links: allSocialLinks,
         instructor_info: values.instructorInfo,
         instructor_name: values.instructorName,
@@ -212,7 +212,7 @@ export default function CreateWorkshop() {
     setIsLoading(false)
     setPostSubmit({ show: true, logMsg: "Workshop Created." })
     setTimeout(() => setPostSubmit({ show: false, logMsg: "" }), 1000)
-    if (!data.error)
+    if (!data.error && !!userData)
       showAlert({
         title: "Success.",
         description:
@@ -223,6 +223,12 @@ export default function CreateWorkshop() {
           callback: () => router.push("/dashboard/admin"),
         },
       })
+    else showAutoCloseAlert({
+      title: "Failed.",
+      description:
+        "Some problem occured. Please try again after some time.",
+      type: "destructive",
+    })
   }
 
   return (

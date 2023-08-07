@@ -92,13 +92,13 @@ export default function WorkshopNavbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              {debouncedQuery && (
+              {searchQuery && (
                 <Button
                   size={"icon"}
                   variant={"ghost"}
                   onClick={() => setSearchQuery("")}
                 >
-                  <X className="h-3 w-3 md:h-4 md:w-4 shrink-0 opacity-50" />
+                  <X className="h-5 w-5 shrink-0 opacity-50" />
                 </Button>
               )}
             </div>
@@ -151,7 +151,18 @@ export default function WorkshopNavbar() {
             <Input
               className="flex h-11 w-full rounded-md bg-transparent py-3 text-base focus-visible:outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
               placeholder="Search for Workshops"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <Button
+                size={"icon"}
+                variant={"ghost"}
+                onClick={() => setSearchQuery("")}
+              >
+                <X className="h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            )}
           </div>
         </div>
         {selectedFilter.length > 0 && (

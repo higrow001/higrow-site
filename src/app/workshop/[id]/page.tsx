@@ -125,7 +125,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                       <div
                         className="prose max-w-[90ch]"
                         dangerouslySetInnerHTML={{
-                          __html: data.describe_each_day,
+                          __html: data.workshop_info,
                         }}
                       ></div>
                     </div>
@@ -272,14 +272,14 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                           {formatDateInDDMMYYYY(data.workshop_starting_date)} - {formatDateInDDMMYYYY(data.workshop_ending_date)}
                         </span>
                       </span>
-               
+
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold"> ⏱️ Timming -</span>
                         <span>
                           {startTime} - {endTime}
                         </span>
                       </span>
-                  
+
                       <span className="flex space-x-2 items-center">
                         <span className="font-semibold">📍 Happening -</span>
                         <span>{data.mode}</span>
