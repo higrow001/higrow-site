@@ -8,7 +8,7 @@ export default function notFound() {
       <p className="text-base md:text-xl text-secondary text-center font-medium lg:w-[50ch]">We searched everywhere but couldn't find what you're looking for.
         Let's find a better place for you to go.</p>
       <Link href="/">
-        <Button className="px-6 " size={"xl"}>Back to Home</Button>
+        <Button className="px-6" size={"xl"}>Back to Home</Button>
       </Link>
     </main>
   )

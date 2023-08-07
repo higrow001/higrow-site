@@ -2,6 +2,8 @@ import { getWorkshop } from "@/app/_actions/workshop"
 import checkSession from "@/lib/utils/check-session"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 
+export const dynamic = "force-dynamic"
+
 export default async function announcements({
   params,
 }: {
