@@ -63,7 +63,6 @@ export default function CreateWorkshop() {
     errorMsg: string
     file: null | File
   }>({ showError: false, errorMsg: "", file: null })
-  const timeZoneDiff = new Date().getTimezoneOffset()
 
   const form = useForm<any>({
     resolver: zodResolver(validationSchema),
@@ -157,8 +156,22 @@ export default function CreateWorkshop() {
           values.workshopStartingDate
         ).toISOString(),
         workshop_ending_date: new Date(values.workshopEndingDate).toISOString(),
-        session_start_time: values.sessionStartingTime + new Date().toString().slice(new Date().toString().indexOf("GMT") + 3, new Date().toString().indexOf("GMT") + 8),
-        session_end_time: values.sessionEndingTime + new Date().toString().slice(new Date().toString().indexOf("GMT") + 3, new Date().toString().indexOf("GMT") + 8),
+        session_start_time:
+          values.sessionStartingTime +
+          new Date()
+            .toString()
+            .slice(
+              new Date().toString().indexOf("GMT") + 3,
+              new Date().toString().indexOf("GMT") + 8
+            ),
+        session_end_time:
+          values.sessionEndingTime +
+          new Date()
+            .toString()
+            .slice(
+              new Date().toString().indexOf("GMT") + 3,
+              new Date().toString().indexOf("GMT") + 8
+            ),
         participants: [],
         requested_participants: [],
         contact_email: values.contactEmail,
@@ -172,11 +185,11 @@ export default function CreateWorkshop() {
         announcements: [],
         bank_details: values.isPaid
           ? {
-            name: values.bankName,
-            email: values.bankEmail,
-            IFSC: values.bankIFSC,
-            account_number: values.bankAccNo,
-          }
+              name: values.bankName,
+              email: values.bankEmail,
+              IFSC: values.bankIFSC,
+              account_number: values.bankAccNo,
+            }
           : null,
       })
       .select("id")
@@ -223,12 +236,12 @@ export default function CreateWorkshop() {
           callback: () => router.push("/dashboard/admin"),
         },
       })
-    else showAutoCloseAlert({
-      title: "Failed.",
-      description:
-        "Some problem occured. Please try again after some time.",
-      type: "destructive",
-    })
+    else
+      showAutoCloseAlert({
+        title: "Failed.",
+        description: "Some problem occured. Please try again after some time.",
+        type: "destructive",
+      })
   }
 
   return (
@@ -240,7 +253,10 @@ export default function CreateWorkshop() {
               href="/organize"
               className="flex space-x-1 items-center w-fit"
             >
-              <Button className="text-base md:text-md px-0 md:px-4" variant={"ghost"}>
+              <Button
+                className="text-base md:text-md px-0 md:px-4"
+                variant={"ghost"}
+              >
                 <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                 <span>Go back</span>
               </Button>
@@ -274,7 +290,6 @@ export default function CreateWorkshop() {
                   onClick={() => {
                     const result = validationSchema.safeParse(form.getValues())
                     if (!result.success) {
-                      console.log(result.error)
                       showAutoCloseAlert({
                         title: "Error!",
                         description: "Please fill out the red fields.",
@@ -311,10 +326,11 @@ export default function CreateWorkshop() {
           <div className="flex justify-between gap-5 items-center px-8 overflow-x-auto lg:px-16 border-t border-b md:border border-black py-3 md:rounded-md md:shadow-[4px_4px_0_#333] bg-[#fff] snap-x snap-mandatory">
             {steps.map((step, index) => (
               <button
-                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${index === activeStep
-                  ? "bg-[#333] text-neutral-200"
-                  : " text-[#757575]"
-                  }`}
+                className={`lg:text-lg py-3 px-5 flex-grow rounded-lg snap-center ${
+                  index === activeStep
+                    ? "bg-[#333] text-neutral-200"
+                    : " text-[#757575]"
+                }`}
                 key={step.title}
                 id={step.id}
                 onClick={(e) => {
@@ -333,10 +349,10 @@ export default function CreateWorkshop() {
           </div>
           {/*TODO: First Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 0 ? "block" : "hidden"
-              }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+              activeStep === 0 ? "block" : "hidden"
+            }`}
           >
-
             <FormField
               control={form.control}
               name="name"
@@ -474,12 +490,12 @@ export default function CreateWorkshop() {
                 )}
               />
             )}
-
           </div>
           {/*TODO: Second Tab */}
           <div
-            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 1 ? "block" : "hidden"
-              }`}
+            className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+              activeStep === 1 ? "block" : "hidden"
+            }`}
           >
             <FormField
               control={form.control}
@@ -658,8 +674,9 @@ export default function CreateWorkshop() {
           {/*TODO: Third Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
-                }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+                activeStep === 2 ? "block" : "hidden"
+              }`}
             >
               <FormField
                 control={form.control}
@@ -680,25 +697,25 @@ export default function CreateWorkshop() {
                   </FormItem>
                 )}
               />
-
-            </div>
-
-
-
-            <div className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
-              }`}>
-              <Info className="w-5 h-5" />
-              <p className="text-sm md:text-base">
-                Even though social links are optional, the more social links you do, the more trust users will place on you.
-              </p>
-
             </div>
 
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
-                }`}
+              className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${
+                activeStep === 2 ? "block" : "hidden"
+              }`}
             >
+              <Info className="w-5 h-5" />
+              <p className="text-sm md:text-base">
+                Even though social links are optional, the more social links you
+                do, the more trust users will place on you.
+              </p>
+            </div>
 
+            <div
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14border-t border-b md:border border-black bg-white ${
+                activeStep === 2 ? "block" : "hidden"
+              }`}
+            >
               <FormField
                 control={form.control}
                 name="websiteLink"
@@ -794,7 +811,6 @@ export default function CreateWorkshop() {
           {/*TODO: Fourth Step */}
           {activeStep === 3 && (
             <>
-
               <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
                 <FormField
                   control={form.control}
@@ -831,7 +847,6 @@ export default function CreateWorkshop() {
                     </FormItem>
                   )}
                 />
-
               </div>
               <div className="py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 bg-[#fff] border-t border-b md:border border-black">
                 <FormField
@@ -885,33 +900,36 @@ export default function CreateWorkshop() {
                             ],
                           }}
                           value={instructorInfoValue}
-                          onChange={(val) => form.setValue("instructorInfo", val)}
+                          onChange={(val) =>
+                            form.setValue("instructorInfo", val)
+                          }
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
               </div>
-
             </>
           )}
           {/* TODO: Fifth Step */}
           <>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
-                }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+                activeStep === 4 ? "block" : "hidden"
+              }`}
             >
               <FormField
                 name="thumbnail"
                 render={() => (
                   <FormItem className="w-full">
                     <FormLabel
-                      className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
-                        }`}
+                      className={`text-md md:text-xl ${
+                        fileInputState.showError ? "text-destructive" : ""
+                      }`}
                     >
-                      Thumbnail <span className="text-sm font-normal">(Optional*)</span>
+                      Thumbnail{" "}
+                      <span className="text-sm font-normal">(Optional*)</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -976,11 +994,11 @@ export default function CreateWorkshop() {
                   />
                 </div>
               )}
-
             </div>
             <div
-              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
-                }`}
+              className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+                activeStep === 4 ? "block" : "hidden"
+              }`}
             >
               <div className="space-y-4">
                 <h1 className="text-md md:text-xl font-semibold text-[#333]">
@@ -1011,8 +1029,9 @@ export default function CreateWorkshop() {
             {isPaidValue && (
               <>
                 <div
-                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
-                    }`}
+                  className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${
+                    activeStep === 4 ? "block" : "hidden"
+                  }`}
                 >
                   <Info className="w-20 h-20" />
                   <p className="text-sm md:text-base">
@@ -1025,8 +1044,9 @@ export default function CreateWorkshop() {
                   </p>
                 </div>
                 <div
-                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${activeStep === 4 ? "block" : "hidden"
-                    }`}
+                  className={`py-16 px-6 sm:px-10 space-y-10 lg:space-y-14 border-t border-b md:border border-black bg-white ${
+                    activeStep === 4 ? "block" : "hidden"
+                  }`}
                 >
                   <FormField
                     control={form.control}

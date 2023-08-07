@@ -296,3 +296,40 @@ export async function acceptParticipantRequest(
   )
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/participants`)
 }
+
+export async function addWorkshopToWishlist(workshop_id: string) {
+  const userData = await getUser()
+  if (userData) {
+    const wishlist_workshops = userData.wishlist_workshops
+    wishlist_workshops.push(workshop_id)
+    await supabase
+      .from("users")
+      .update({ wishlist_workshops })
+      .eq("id", userData.id)
+  }
+}
+
+export async function getWishlistedWorkshops() {
+  const userData = await getUser()
+  if (userData) {
+    const ids = userData.wishlist_workshops
+    const { data } = await supabase
+      .from("workshops")
+      .select(
+        "name, workshop_starting_date, id, workshop_ending_date, application_closing_date"
+      )
+      .in("id", ids)
+      .order("created_at", { ascending: false })
+    if (data) {
+      return data as Pick<
+        WorkshopDataType,
+        | "id"
+        | "name"
+        | "application_closing_date"
+        | "workshop_starting_date"
+        | "workshop_ending_date"
+      >[]
+    }
+  }
+  return []
+}
