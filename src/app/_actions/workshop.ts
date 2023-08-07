@@ -80,7 +80,7 @@ export async function requestJoinWorkshop(workshop_id: string) {
   const userData = await getUser()
   if (workshopData && userData) {
     const shopsReqs = workshopData.requested_participants
-    shopsReqs.push({
+    shopsReqs.unshift({
       name: userData.display_name,
       email: userData.email,
       application_date: new Date().toISOString(),
