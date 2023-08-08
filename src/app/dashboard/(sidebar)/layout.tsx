@@ -218,13 +218,12 @@ export default function SideLayout({
           >
             Organized
           </Link>
-        
         </div>
         <div className="flex flex-col">
-        <Link
+          <Link
             href="/dashboard/wishlist"
             className={`"text-lg py-6 px-12 border-t  border-[#757575] transition ${
-              pathname.includes("admin")
+              pathname.includes("wishlist")
                 ? "bg-secondary-darker"
                 : "hover:bg-secondary-darker"
             }`}
@@ -245,7 +244,10 @@ export default function SideLayout({
       </aside>
       <main className="lg:basis-[70%] xl:basis-[75%] 2xl:basis-[80%] max-lg:w-full overflow-y-auto">
         <div className="lg:hidden w-full p-8 flex items-center justify-between">
-          <h1 className="text-3xl font-archivo font-black"> <Link href="/"> HiGrow </Link>   </h1>
+          <h1 className="text-3xl font-archivo font-black">
+            {" "}
+            <Link href="/"> HiGrow </Link>{" "}
+          </h1>
           <Button
             onClick={() => {
               if (sideNavElement && backdropElement) {

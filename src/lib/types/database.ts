@@ -103,6 +103,8 @@ export interface Database {
           created_at: string
           created_by: string
           workshop_info: string
+          host_here: boolean
+          ext_event_link: string | null
           event_location: string | null
           id: string
           instructor_info: string
@@ -133,6 +135,8 @@ export interface Database {
           created_at?: string
           created_by: string
           workshop_info: string
+          host_here: boolean
+          ext_event_link?: string | null
           event_location?: string | null
           id?: string
           instructor_info: string
@@ -163,6 +167,8 @@ export interface Database {
           created_at?: string
           created_by?: string
           workshop_info?: string
+          host_here?: boolean
+          ext_event_link?: string | null
           event_location?: string | null
           id?: string
           instructor_info?: string
