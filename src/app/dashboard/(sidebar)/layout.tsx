@@ -231,7 +231,7 @@ export default function SideLayout({
       </aside>
       <main className="lg:basis-[70%] xl:basis-[75%] 2xl:basis-[80%] max-lg:w-full overflow-y-auto">
         <div className="lg:hidden w-full p-8 flex items-center justify-between">
-          <h1 className="text-3xl font-archivo font-black">HiGrow</h1>
+          <h1 className="text-3xl font-archivo font-black"> <Link href="/"> HiGrow </Link>   </h1>
           <Button
             onClick={() => {
               if (sideNavElement && backdropElement) {

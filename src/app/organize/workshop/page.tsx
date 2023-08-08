@@ -229,37 +229,18 @@ export default function CreateWorkshop() {
     <Form {...form}>
       <main className="max-w-5xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
         <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
-          <div className="flex w-[75%] md:w-[100%] m-[auto] justify-between md:items-center mb-10 md:mb-20 gap-y-2 flex-row">
+          <div className="flex w-[85%] md:w-[100%] m-[auto] justify-between md:items-center mb-10 md:mb-20 gap-y-2 flex-row">
             <Link
               href="/organize"
               className="flex space-x-1 items-center w-fit"
             >
               <Button className="text-base md:text-md px-0 md:px-4" variant={"ghost"}>
-                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 mr-1 md:mr-2" />
                 <span>Go back</span>
               </Button>
             </Link>
             <div className=" flex space-x-3 md:space-x-6 items-center justify-end">
-              {activeStep > 0 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handlePreviousStep}
-                  className="bg-transparent border-secondary hidden md:block h-9 md:h-11 rounded-md md:px-8"
-                >
-                  Previous
-                </Button>
-              )}
-              {activeStep < steps.length - 1 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleNextStep}
-                  className="bg-transparent border-secondary hidden md:block h-9 md:h-11 rounded-md md:px-8"
-                >
-                  Next
-                </Button>
-              )}
+              
               {activeStep === 4 && (
                 <Button
                   type="submit"
@@ -681,8 +662,8 @@ export default function CreateWorkshop() {
 
             <div className={`p-6 flex items-center space-x-8 text-[#5f5f5f] border-t border-b md:border border-black bg-white ${activeStep === 2 ? "block" : "hidden"
               }`}>
-              <Info className="w-5 h-5" />
-              <p className="text-sm md:text-base">
+              <Info className="w-8 h-8 md:w-5 md:h-5" />
+              <p className="text-xs md:text-base">
                 Even though social links are optional, the more social links you do, the more trust users will place on you.
               </p>
 
@@ -699,7 +680,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Website
+                      Website <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -714,7 +695,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Facebook
+                      Facebook <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -729,7 +710,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Discord
+                      Discord <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -744,7 +725,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Whatsapp
+                      Whatsapp <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -759,7 +740,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Instagram
+                      Instagram <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -774,7 +755,7 @@ export default function CreateWorkshop() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="text-md md:text-xl">
-                      Youtube
+                      Youtube <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input className="px-4" {...field} />
@@ -803,7 +784,6 @@ export default function CreateWorkshop() {
                           placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
                           modules={{
                             toolbar: [
-                              [{ header: [false] }],
                               [
                                 "bold",
                                 "italic",
@@ -860,7 +840,6 @@ export default function CreateWorkshop() {
                           theme="snow"
                           modules={{
                             toolbar: [
-                              [{ header: [false] }],
                               [
                                 "bold",
                                 "italic",
@@ -905,7 +884,7 @@ export default function CreateWorkshop() {
                       className={`text-md md:text-xl ${fileInputState.showError ? "text-destructive" : ""
                         }`}
                     >
-                      Thumbnail <span className="text-sm font-normal">(Optional*)</span>
+                      Thumbnail <span className="italic text-xs md:text-sm">(Optional)</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -1107,6 +1086,28 @@ export default function CreateWorkshop() {
             )}
           </>
         </form>
+        <div className="flex justify-between px-6 md:px-0 gap-8">
+        {activeStep > 0 && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handlePreviousStep}
+                  className="border text-black hover:text-white bg-transparent border-secondary block w-full h-9 md:h-12 rounded-md md:px-8"
+                >
+                  Previous
+                </Button>
+              )}
+              {activeStep < steps.length - 1 && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleNextStep}
+                  className=" border-secondary w-full block h-9 md:h-12 rounded-md md:px-8"
+                >
+                  Next
+                </Button>
+              )}
+              </div>
       </main>
       <Dialog.Root open={postSubmit.show}>
         <Dialog.Portal>

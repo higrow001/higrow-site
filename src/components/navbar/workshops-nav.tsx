@@ -85,9 +85,9 @@ export default function WorkshopNavbar() {
           </div>
           <div className="xl:max-w-3xl w-full hidden lg:block">
             <div className="hu-search flex items-center border ml-4 border-black px-5 bg-background rounded-sm">
-              <Search className="h-4 w-4 md:h-5 md:w-5 shrink-0 opacity-50" />
+              <Search className="h-3 w-3 md:h-4 md:w-4 shrink-0 opacity-50" />
               <Input
-                className="flex w-full rounded-sm  bg-transparent py-3 text-base focus-visible:outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                className="flex w-full rounded-sm md:h-12 px-4 bg-transparent py-3 text-base focus-visible:outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
                 placeholder="Search for Workshops"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -111,7 +111,7 @@ export default function WorkshopNavbar() {
                 role="combobox"
                 aria-expanded={open}
               >
-                Filters
+                Category
                 <Sliders className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ml-2" />
               </Button>
             </PopoverTrigger>

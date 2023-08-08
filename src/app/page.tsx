@@ -41,12 +41,11 @@ export default async function Home() {
         <div className="home-hero">
           <div className="hero-top">
             <div className="htop-left">
-              <h1 className="font-archivo">Our Mission </h1>
+            <h1 className="font-archivo">We're on a mission! </h1>
               <p>
-                {" "}
-                Empowering learners with an inclusive, interactive platform.
-                Enabling personal growth through workshops, friendly contests,
-                and abundant resources, accessible worldwide.{" "}
+                Cultivating online
+                marketplace learning,
+                creativity and connecting enthusiasts globally.
               </p>
             </div>
             <div className="htop-center">
@@ -63,11 +62,9 @@ export default async function Home() {
               </Link>
             </div>
             <div className="htop-right">
-              <h1 className="font-archivo">Our Aim </h1>
+              <h1 className="font-archivo"> What you can do? </h1>
               <p>
-                Redefining education by cultivating a diverse online
-                marketplace. Inspiring continuous learning, fostering
-                creativity, and connecting enthusiasts globally.
+              Become even greater in your field or upscale your skills by joining workshops. Even you can create one!
               </p>
             </div>
           </div>
@@ -89,52 +86,13 @@ export default async function Home() {
             </div>
             <div className="hbottom-right">
               <Link className="hbottom-links" href="mailto:higrow25@gmail.com">
-                <button> Give Us Suggestions</button>
+                <button> Contact Us</button>
               </Link>
             </div>
           </div>
         </div>
-        <div className="hometodo-container">
-          <div className="htd-title">
-            <h1 className="font-archivo">Things you can do 👇</h1>
-          </div>
-          <div className="htd-boxes">
-            <div className="htd-boxleft">
-              <h1 className="font-archivo">
-                <span>Explore </span>Oppurtunities
-              </h1>
-              <p>
-                Become even greater in your field or upscale your skills by
-                joining workshops. <br />
-                Explore different contests and compete with the fellows to
-                upscale your skills!
-              </p>
-              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
-                <Link href="/workshops" className="text-[#007dfb] md:font-semibold text-[13px] md:text-[17px]"> Explore Now <span> → </span> </Link>
-              </div>
-            </div>
-            <div className="htd-boxright">
-              <h1 className="font-archivo">
-                <span> Host </span>Oppurtunities
-              </h1>
-              <p>
-                Host any contest or workshop of any category according to your
-                interest. <br /> HiGrow gives you audience* so you don't have to
-                spend money on marketing!
-              </p>
-              <div className="pt-[10px] md:pt-[20px] w-[80%] md:w-[70%] ">
-                <Link href="/organize" className="text-[#007dfb] md:font-semibold text-[12px] md:text-[17px]"> Organize Now <span> → </span> </Link>
-              </div>
-            </div>
-          </div>
-          <div className="htd-bottom">
-            <p>
-              *At this early stage we don't have so much audience but feel free
-              to become a starting part of a big story ;)
-            </p>
-          </div>
-        </div>
-        {/* {latestWorkshops.length > 0 && (
+        
+        {latestWorkshops.length > 0 && (
           <div className="he-container">
             <div className="workshop-card-container">
               <div className="he-top">
@@ -165,7 +123,7 @@ export default async function Home() {
               </div>
             </div>
           </div>
-        )} */}
+        )}
         <div className="bottom-space"></div>
         <center>
           {" "}
