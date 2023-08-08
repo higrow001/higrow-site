@@ -18,7 +18,7 @@ export default async function details({ params }: { params: { id: string } }) {
             ></div>
           </div>
           <div className="space-y-5">
-           
+
           </div>
           <div className="space-y-5">
             <h2 className="text-3xl text-secondary font-medium">

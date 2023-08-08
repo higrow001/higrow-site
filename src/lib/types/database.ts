@@ -69,6 +69,7 @@ export interface Database {
           id: string
           organized_workshops: string[]
           participated_workshops: string[]
+          wishlist_workshops: string[]
           photo_url: string | null
         }
         Insert: {
@@ -77,6 +78,7 @@ export interface Database {
           id: string
           organized_workshops?: string[]
           participated_workshops?: string[]
+          wishlist_workshops?: string[]
           photo_url?: string | null
         }
         Update: {
@@ -85,6 +87,7 @@ export interface Database {
           id?: string
           organized_workshops?: string[]
           participated_workshops?: string[]
+          wishlist_workshops?: string[]
           photo_url?: string | null
         }
         Relationships: []
