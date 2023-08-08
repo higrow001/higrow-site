@@ -26,6 +26,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { useAlert } from "@/states/alert"
@@ -875,8 +880,60 @@ export default function CreateWorkshop() {
                     name="describeEachDay"
                     render={() => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-md md:text-xl">
-                          What you'll teach?
+                        <FormLabel className="text-md space-x-2 md:text-xl flex items-center">
+                          <span>What you'll teach?</span>
+                          <HoverCard>
+                            <HoverCardTrigger>
+                              <Info className="h-5 w-5 text-secondary" />
+                            </HoverCardTrigger>
+                            <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-lg w-full text-sm">
+                              <h4 className="text-lg font-medium">
+                                For example
+                              </h4>
+                              <p>
+                                This workshop is designed to provide a
+                                comprehensive introduction to coding and web
+                                development, enabling participants to create
+                                their own basic web applications by the end of
+                                the program.
+                              </p>
+                              <ul>
+                                <li>
+                                  <strong>Day 1:</strong> Introduction to Coding
+                                  Fundamentals
+                                </li>
+                                <p>
+                                  On the first day, you'll teach the
+                                  participants the foundational concepts of
+                                  coding, including variables, data types, and
+                                  basic control structures. Students will get
+                                  hands-on experience writing their first lines
+                                  of code.
+                                </p>
+                                <li>
+                                  <strong>Day 2:</strong> Web Development Basics
+                                </li>
+                                <p>
+                                  Day two will focus on web development
+                                  essentials. You'll cover HTML structure, CSS
+                                  styling, and how to create simple web pages.
+                                  Students will work on a mini-project to build
+                                  and style their own web page.
+                                </p>
+                                <li>
+                                  <strong>Day 3:</strong> JavaScript and
+                                  Interactivity
+                                </li>
+                                <p>
+                                  Introduce participants to JavaScript and its
+                                  role in creating interactive web content.
+                                  Teach them about functions, events, and basic
+                                  DOM manipulation. Students will create dynamic
+                                  elements on their web pages.
+                                </p>
+                              </ul>
+                            </HoverCardContent>
+                          </HoverCard>
                         </FormLabel>
                         <FormControl>
                           <ReactQuill
