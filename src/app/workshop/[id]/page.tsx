@@ -80,10 +80,9 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Navbar />
       {data && (
         <div>
-          <div className="w-full flex justify-between px-8 items-center fixed bottom-0 bg-white border border-black h-20 md:hidden">
+          <div className="w-full flex justify-between px-8 items-center fixed z-10 bottom-0 bg-white border border-black h-20 md:hidden">
             <div>
               {data.is_paid ? (
                 <p className="text-lg text-[#333] font-semibold">
@@ -122,13 +121,13 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                     className="w-full text-xs md:text-base"
                     variant={"secondary"}
                   >
-                    Signin to participate
+                    Join Now
                   </Button>
                 </Link>
               )}
             </div>
           </div>
-          <section className="md:py-20 md:px-36 py-16 w-full ">
+          <section className="md:pb-20 md:pt-[80px]  md:px-20 pb-16 pt-[0px] w-full ">
             <div className="bg-background border border-secondary">
               <header className="w-full space-y-1 py-8 px-8 border-b border-secondary">
                 <h1 className="text-2xl md:text-3xl font-bold font-archivo mb-[2px]  md:mb-1 text-[#333]">
@@ -373,7 +372,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                               className="w-full text-xs md:text-base"
                               variant={"secondary"}
                             >
-                              Signin to participate
+                              Join Now
                             </Button>
                           </Link>
                         )}

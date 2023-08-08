@@ -2,6 +2,7 @@ import "./organize.scss"
 import Image from "next/image"
 import Illustration from "../../assests/illustration.webp"
 import Link from "next/link"
+import Navbar from "@/components/navbar/navbar"
 import {
   Accordion,
   AccordionContent,
@@ -35,6 +36,9 @@ const faqData = [
 
 export default function Organize() {
   return (
+    <>
+    <Navbar />
+
     <div className="organize-container">
       <div className="organize-categories">
         <div className="oc-left">
@@ -118,5 +122,6 @@ export default function Organize() {
         </div>{" "}
       </center>
     </div>
+    </>
   )
 }

@@ -40,6 +40,7 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import Image from "next/image"
 import * as Dialog from "@radix-ui/react-dialog"
+import Navbar from "@/components/navbar/navbar"
 
 type Link = string | undefined
 
@@ -245,10 +246,11 @@ export default function CreateWorkshop() {
   }
 
   return (
+    <>
     <Form {...form}>
-      <main className="max-w-5xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
+      <main className=" max-w-5xl md:px-4 w-full py-12 md:py-24 space-y-8 mx-auto">
         <form onSubmit={form.handleSubmit(submitData)} className="space-y-6">
-          <div className="flex w-[85%] md:w-[100%] m-[auto] justify-between md:items-center mb-10 md:mb-20 gap-y-2 flex-row">
+          <div className=" flex w-[85%] md:w-[100%] m-[auto] justify-between md:items-center mb-10 md:mb-20 gap-y-2 flex-row">
             <Link
               href="/organize"
               className="flex space-x-1 items-center w-fit"
@@ -798,7 +800,6 @@ export default function CreateWorkshop() {
                       </FormLabel>
                       <FormControl>
                         <ReactQuill
-                          placeholder="Describe in brief what you will teach in each your workshop e.g. In this workshop, we'll understand the basics of web development from scratch which includes HTML, CSS, JS..."
                           modules={{
                             toolbar: [
                               [
@@ -1006,14 +1007,10 @@ export default function CreateWorkshop() {
                     activeStep === 4 ? "block" : "hidden"
                   }`}
                 >
-                  <Info className="w-20 h-20" />
-                  <p className="text-sm md:text-base">
+                  <Info className=" w-10 h-10 md:w-6 md:h-6" />
+                  <p className="text-xs md:text-base">
                     Fill in the details of the account to which you would want
-                    the collected amount to be transferred by us once the
-                    registrations are closed. The organizers have to fill in the
-                    bank account details in the Payout Form while enabling the
-                    payment or before the registration deadline to avoid any
-                    payment transfer issues.
+                    the collected amount to be transferred by us once your workshop will end successfully.
                   </p>
                 </div>
                 <div
@@ -1034,6 +1031,7 @@ export default function CreateWorkshop() {
                             type="number"
                             min={0}
                             className="px-4"
+                            placeholder="e.g. 199"
                             {...field}
                           />
                         </FormControl>
@@ -1127,6 +1125,45 @@ export default function CreateWorkshop() {
                   Next
                 </Button>
               )}
+               {activeStep === 4 && (
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  className="border-secondary w-full block h-9 md:h-12 rounded-md md:px-8"
+                  onClick={() => {
+                    const result = validationSchema.safeParse(form.getValues())
+                    if (!result.success) {
+                      showAutoCloseAlert({
+                        title: "Error!",
+                        description: "Please fill out the red fields.",
+                        type: "destructive",
+                      })
+                      const firstErrorField = result.error.issues[0]
+                        .path[0] as string
+                      steps.forEach((step, index) => {
+                        if (
+                          step.validationFields.includes(firstErrorField) &&
+                          !fileInputState.showError
+                        ) {
+                          setTimeout(() => setActiveStep(index))
+                          return
+                        }
+                      })
+                    }
+                    if (fileInputState.showError)
+                      setTimeout(() => setActiveStep(0))
+                  }}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Publish"
+                  )}
+                </Button>
+              )}
               </div>
       </main>
       <Dialog.Root open={postSubmit.show}>
@@ -1140,5 +1177,6 @@ export default function CreateWorkshop() {
         </Dialog.Portal>
       </Dialog.Root>
     </Form>
+    </>
   )
 }

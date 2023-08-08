@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Navbar />
+
       <main className="max-w-5xl w-full py-24 mx-auto">
         <div className="flex justify-between items-center mb-20 px-4 md:px-0">
           <Link href="/dashboard/admin" className="flex space-x-1 items-center">

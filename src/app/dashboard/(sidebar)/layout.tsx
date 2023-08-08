@@ -218,9 +218,12 @@ export default function SideLayout({
           >
             Organized
           </Link>
-          <Link
+        
+        </div>
+        <div className="flex flex-col">
+        <Link
             href="/dashboard/wishlist"
-            className={`"text-lg py-6 px-12 border-b border-[#757575] transition ${
+            className={`"text-lg py-6 px-12 border-t  border-[#757575] transition ${
               pathname.includes("admin")
                 ? "bg-secondary-darker"
                 : "hover:bg-secondary-darker"
@@ -229,8 +232,6 @@ export default function SideLayout({
           >
             Wishlist
           </Link>
-        </div>
-        <div className="flex flex-col">
           <button
             className="text-lg py-6 px-12 border-t text-start border-[#757575] hover:bg-[#2c2c2c] transition"
             onClick={async () => {

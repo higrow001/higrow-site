@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion"
 import { getWorkshops } from "./_actions/workshop"
 import Card from "@/components/card/card"
+import Footer from "@/components/footer/footer"
 
 const faqData = [
   {
@@ -44,7 +45,7 @@ export default async function Home() {
             <h1 className="font-archivo">We're on a mission! </h1>
               <p>
                 Cultivating online
-                marketplace learning,
+                marketplace for learning,
                 creativity and connecting enthusiasts globally.
               </p>
             </div>
@@ -157,6 +158,7 @@ export default async function Home() {
           </div>{" "}
         </center>
       </div>
+      <Footer />
     </>
   )
 }

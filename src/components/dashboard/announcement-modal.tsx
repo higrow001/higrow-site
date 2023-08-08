@@ -123,26 +123,10 @@ export default function MakeAnnoucement({
               <div className="flex space-x-4 items-center">
 
                 <Button type="submit">Submit</Button>
-                <Button
-                  onClick={() => setShowPreview(true)}
-                  type="button"
-                  variant={"outline"}
-                >
-                  Preview
-                </Button>
+             
               </div>
             </form>
-            {showPreview && (
-              <>
-                <h3 className="text-xl">Preview in below box</h3>
-                <div className="prose border rounded-md w-full border-secondary p-4">
-                  <div className="not-prose">
-                    <h1 className="text-3xl font-semibold">{title}</h1>
-                  </div>
-                  <div dangerouslySetInnerHTML={{ __html: value }}></div>
-                </div>
-              </>
-            )}
+            
           </>
         )}
       </DialogContent>

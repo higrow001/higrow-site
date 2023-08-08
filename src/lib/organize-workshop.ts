@@ -7,7 +7,7 @@ export const categories = [
   "Video Editing",
   "Animation",
   "Motion/VFX",
-  "AI",
+  "AI/Web3",
   "Content Creation",
   "Digital Marketing",
   "Marketing",

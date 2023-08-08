@@ -59,7 +59,6 @@ const Navbar = () => {
       </div>
       <div className="nav-links hidden lg:flex">
         <Link href="/workshops">Workshops</Link>
-        <Link href="/contests">Contests</Link>
         <Link href="/faqs">FAQs</Link>
         <Link href="mailto:higrow25@gmail.com">Contact</Link>
       </div>
@@ -99,7 +98,6 @@ const Navbar = () => {
         </div>
         <div className="py-6 space-y-4 flex flex-col px-8">
           <Link href="/workshops">Workshops</Link>
-          <Link href="/contests">Contests</Link>
           <Link href="/faqs">FAQs</Link>
           <Link href="mailto:higrow25@gmail.com">Contact</Link>
         </div>
