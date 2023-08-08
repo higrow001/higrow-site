@@ -46,6 +46,7 @@ export const steps = [
     title: "Links",
     validationFields: [
       "contactEmail",
+      "extHostLink",
       "websiteLink",
       "facebookLink",
       "discordLink",
@@ -86,6 +87,8 @@ export const initialValues = {
   sessionStartingTime: "20:00",
   sessionEndingTime: "22:00",
   contactEmail: "",
+  hostHere: true,
+  extHostLink: "",
   websiteLink: undefined,
   facebookLink: undefined,
   discordLink: undefined,
@@ -145,6 +148,8 @@ export const validationSchema = z
       .string({ required_error: "Contact email is required." })
       .nonempty({ message: "Contact email is required." })
       .email("Invalid Contact Email"),
+    hostHere: z.boolean(),
+    extHostLink: z.string(),
     websiteLink: z.optional(z.string()),
     facebookLink: z.optional(z.string()),
     discordLink: z.optional(z.string()),
@@ -186,6 +191,14 @@ export const validationSchema = z
         code: z.ZodIssueCode.custom,
         message: "Category name is required.",
         path: ["otherCategory"],
+      })
+    }
+
+    if (!val.hostHere && val.extHostLink.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Enter valid url to redirect to another website.",
+        path: ["extHostLink"],
       })
     }
 
@@ -293,7 +306,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.bankEmail.length === 0) {
+    if (val.isPaid && val.hostHere && val.bankEmail.length === 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Enter valid email.",
@@ -317,7 +330,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.bankName.length < 2) {
+    if (val.isPaid && val.hostHere && val.bankName.length < 2) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Name must atleast 2 characters long.",
@@ -325,7 +338,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.bankName.length === 0) {
+    if (val.isPaid && val.hostHere && val.bankName.length === 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Name is required.",
@@ -333,7 +346,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.bankAccNo.length === 0) {
+    if (val.isPaid && val.hostHere && val.bankAccNo.length === 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `Enter valid account number.`,
@@ -341,7 +354,7 @@ export const validationSchema = z
       })
     }
 
-    if (val.isPaid && val.bankIFSC.length !== 11) {
+    if (val.isPaid && val.hostHere && val.bankIFSC.length !== 11) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `Enter valid IFSC code.`,

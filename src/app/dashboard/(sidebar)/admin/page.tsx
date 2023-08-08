@@ -23,11 +23,15 @@ async function Organized() {
             Organized Opportunities
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-8 gap-y-6">
-            {!!workshops.length ?
+            {!!workshops.length ? (
               workshops.map((workshop, index) => (
                 <Link
                   className="lg:px-8 md:px-6 px-4 py-4 md:py-6 block bg-background rounded-[4px] border border-secondary hover:shadow-[3px_3px_0_#333]"
-                  href={`/dashboard/manage-workshop/${workshop.id}/announcements`}
+                  href={
+                    workshop.host_here
+                      ? `/dashboard/manage-workshop/${workshop.id}/announcements`
+                      : workshop.ext_event_link!
+                  }
                   key={index}
                 >
                   <div className="flex flex-col justify-between space-y-12 h-full">
@@ -41,22 +45,33 @@ async function Organized() {
                           formatDateInDDMMYYYY(workshop.workshop_ending_date)}
                       </span>
                     </div>
-                    {workshop.approved ? workshop.is_paid ? workshop.participants.length > 0 ? (
-                      <span className="block text-secondary">
-                        {workshop.participants.length} User{workshop.participants.length > 1 ? "s" : ""} participated
-                      </span>
-                    ) : (
-                      <span className="block text-secondary-lighter">
-                        No participants
-                      </span>
-                    ) : workshop.requested_participants.length > 0 ? (
-                      <span className="block text-secondary ">
-                        {workshop.requested_participants.length} Pending request{workshop.requested_participants.length > 1 ? "s" : ""}.
-                      </span>
-                    ) : (
-                      <span className="block text-secondary-lighter ">
-                        No new participant
-                      </span>
+                    {workshop.approved ? (
+                      workshop.is_paid ? (
+                        workshop.participants.length > 0 ? (
+                          <span className="block text-secondary">
+                            {workshop.participants.length} User
+                            {workshop.participants.length > 1 ? "s" : ""}{" "}
+                            participated
+                          </span>
+                        ) : (
+                          <span className="block text-secondary-lighter">
+                            No participants
+                          </span>
+                        )
+                      ) : workshop.requested_participants.length > 0 ? (
+                        <span className="block text-secondary ">
+                          {workshop.requested_participants.length} Pending
+                          request
+                          {workshop.requested_participants.length > 1
+                            ? "s"
+                            : ""}
+                          .
+                        </span>
+                      ) : (
+                        <span className="block text-secondary-lighter ">
+                          No new participant
+                        </span>
+                      )
                     ) : (
                       <span className="block text-secondary">
                         Approve pending
@@ -64,9 +79,12 @@ async function Organized() {
                     )}
                   </div>
                 </Link>
-              )) : (
-                <h2 className="md:text-xl text-base">Your organized workshops will appear here.</h2>
-              )}
+              ))
+            ) : (
+              <h2 className="md:text-xl text-base">
+                Your organized workshops will appear here.
+              </h2>
+            )}
           </div>
         </div>
       </div>

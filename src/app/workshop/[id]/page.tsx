@@ -2,7 +2,7 @@ import { getWorkshop } from "@/app/_actions/workshop"
 import Navbar from "@/components/navbar/navbar"
 import PaymentButton from "@/components/client-buttons/payment-button"
 import ReverseTimer from "@/components/workshop/reverse-timer"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { formatDateInDDMMYYYY } from "@/lib/utils/format-date"
 import { Link as LinkIcon, Mail } from "lucide-react"
 import { Metadata } from "next"
@@ -94,36 +94,47 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
               )}
             </div>
             <div>
-              {session ? (
-                data.is_paid ? (
-                  <PaymentButton
-                    amount={Number(data.workshop_amount)}
-                    workshopName={data.name}
-                    workshopId={params.id}
-                    organizerEmail={data.contact_email}
-                    applicationDate={data.application_closing_date}
-                    participants={data.participants}
-                  >
-                    Join Rs.{data.workshop_amount}
-                  </PaymentButton>
+              {data.host_here ? (
+                session ? (
+                  data.is_paid ? (
+                    <PaymentButton
+                      amount={Number(data.workshop_amount)}
+                      workshopName={data.name}
+                      workshopId={params.id}
+                      organizerEmail={data.contact_email}
+                      applicationDate={data.application_closing_date}
+                      participants={data.participants}
+                    >
+                      Join Rs.{data.workshop_amount}
+                    </PaymentButton>
+                  ) : (
+                    <RequestButton
+                      id={params.id}
+                      requests={data.requested_participants}
+                      participants={data.participants}
+                      applicationDate={data.application_closing_date}
+                    />
+                  )
                 ) : (
-                  <RequestButton
-                    id={params.id}
-                    requests={data.requested_participants}
-                    participants={data.participants}
-                    applicationDate={data.application_closing_date}
-                  />
+                  <Link href={"/signin"}>
+                    <Button
+                      size={"xl"}
+                      className="w-full text-xs md:text-base"
+                      variant={"secondary"}
+                    >
+                      Join Now
+                    </Button>
+                  </Link>
                 )
               ) : (
-                <Link href={"/signin"}>
-                  <Button
-                    size={"xl"}
-                    className="w-full text-xs md:text-base"
-                    variant={"secondary"}
-                  >
-                    Join Now
-                  </Button>
-                </Link>
+                <a
+                  className={`w-full text-xs md:text-base ${buttonVariants({
+                    variant: "secondary",
+                  })} !h-12 !md:h-14 rounded-md px-6 md:px-10`}
+                  href={data.ext_event_link!}
+                >
+                  Join Now {data.is_paid ? "Rs." + data.workshop_amount : ""}
+                </a>
               )}
             </div>
           </div>
@@ -345,36 +356,47 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         applicationClosingDate={data.application_closing_date}
                       />
                       <div className="space-y-4">
-                        {session ? (
-                          data.is_paid ? (
-                            <PaymentButton
-                              amount={Number(data.workshop_amount)}
-                              workshopName={data.name}
-                              workshopId={params.id}
-                              organizerEmail={data.contact_email}
-                              applicationDate={data.application_closing_date}
-                              participants={data.participants}
-                            >
-                              Join Rs.{data.workshop_amount}
-                            </PaymentButton>
+                        {data.host_here ? (
+                          session ? (
+                            data.is_paid ? (
+                              <PaymentButton
+                                amount={Number(data.workshop_amount)}
+                                workshopName={data.name}
+                                workshopId={params.id}
+                                organizerEmail={data.contact_email}
+                                applicationDate={data.application_closing_date}
+                                participants={data.participants}
+                              >
+                                Join Rs.{data.workshop_amount}
+                              </PaymentButton>
+                            ) : (
+                              <RequestButton
+                                id={params.id}
+                                requests={data.requested_participants}
+                                participants={data.participants}
+                                applicationDate={data.application_closing_date}
+                              />
+                            )
                           ) : (
-                            <RequestButton
-                              id={params.id}
-                              requests={data.requested_participants}
-                              participants={data.participants}
-                              applicationDate={data.application_closing_date}
-                            />
+                            <Link href={"/signin"}>
+                              <Button
+                                size={"xl"}
+                                className={`w-full text-xs md:text-base`}
+                                variant={"secondary"}
+                              >
+                                Join Now
+                              </Button>
+                            </Link>
                           )
                         ) : (
-                          <Link href={"/signin"}>
-                            <Button
-                              size={"xl"}
-                              className="w-full text-xs md:text-base"
-                              variant={"secondary"}
-                            >
-                              Join Now
-                            </Button>
-                          </Link>
+                          <a
+                            className={`w-full text-xs md:text-base ${buttonVariants(
+                              { variant: "secondary" }
+                            )} md:h-14 rounded-md px-6 md:px-10`}
+                            href={data.ext_event_link!}
+                          >
+                            Join Now
+                          </a>
                         )}
                         {session && user && (
                           <WishlistButton
