@@ -14,7 +14,7 @@ async function EnrolledPage() {
       <div className="py-10 px-8 md:py-12 md:px-20">
         <div className="space-y-8">
           <h1 className="md:text-3xl text-xl font-archivo text-secondary">
-            Enrolled Workshops
+            Wishlisted Workshops
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-8 gap-y-6">
             {!!workshops.length ? (
@@ -40,7 +40,7 @@ async function EnrolledPage() {
               ))
             ) : (
               <h2 className="md:text-xl text-base">
-                Your participated workshops will appear here.
+                Your Wishlisted workshops will appear here.
               </h2>
             )}
           </div>
