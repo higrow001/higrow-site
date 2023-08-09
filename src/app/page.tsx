@@ -51,16 +51,13 @@ export default async function Home() {
               </p>
             </div>
             <div className="htop-center">
-              <h1 className="font-archivo">
+              <h1 className="font-archivo pb-8 md:pb-12">
                 {" "}
                 <span> HiGrow </span> - Say Hi👋 to your growth📈
               </h1>
-              <p>
-                Participate in exciting workshops, Learn skills and grow your
-                knowledge with us!
-              </p>
+             
               <Link href="/workshops" className="htopc-button">
-                <button>Explore Now</button>
+              <button className="h-12 md:h-16 text-sm md:text-lg px-8 md:px-14 bg-secondary md:hover:bg-secondary/90 text-primary-foreground md:hover:shadow-[6px_6px_0_#333] hover:shadow-[2px_2px_0_#333]">Explore Now</button>
               </Link>
             </div>
             <div className="htop-right">
@@ -100,7 +97,7 @@ export default async function Home() {
               <div className="he-top">
                 <h1 className="font-archivo">Explore Workshops</h1>
                 <Link href="workshops" className="explore-button">
-                  <Button variant={"outline"}>See all</Button>
+                  <Button className={`px-4 md:h-12 md:px-7 w-[100%] text-[10px]`} variant={"outline"}>See all</Button>
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 px-8 md:px-0 xl:grid-cols-3 gap-x-8 gap-y-16 xl:gap-16 w-full justify-items-center justify-between">
@@ -139,7 +136,7 @@ export default async function Home() {
             <Accordion
               type="single"
               collapsible
-              className="max-w-5xl border-t-2 border-black mb-32"
+              className="max-w-5xl border-t-2 border-black md:mb-32"
             >
               {faqData.map((data) => (
                 <AccordionItem

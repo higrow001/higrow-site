@@ -106,7 +106,7 @@ export default function WorkshopNavbar() {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
-                className="px-4 h-9 rounded-full md:h-12 md:px-6 shrink-0 text-xs sm:text-sm md:text-base"
+                className="px-4 h-9 bg-white rounded-full md:h-12 md:px-6 shrink-0 text-xs sm:text-sm md:text-base"
                 variant={"outline"}
                 role="combobox"
                 aria-expanded={open}

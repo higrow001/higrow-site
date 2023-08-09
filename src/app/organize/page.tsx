@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import CTA from "@/components/footer/footer"
 
 const faqData = [
   {
@@ -103,7 +104,7 @@ export default function Organize() {
           <p className="mb-20 sm:text-center text-left w-[80%] m-[auto]  faq-p text-lg sm:text-2xl">
             Don't see your question? <Link href="/contact"> Contact us </Link>
           </p>
-          <Accordion type="single" collapsible className="max-w-5xl border-t-2 border-black mb-32">
+          <Accordion type="single" collapsible className="max-w-5xl border-t-2 border-black md:mb-32">
             {faqData.map((data) => (
               <AccordionItem
                 className="border-black border-b-2"
@@ -121,6 +122,7 @@ export default function Organize() {
           </Accordion>
         </div>{" "}
       </center>
+      <CTA />
     </div>
     </>
   )

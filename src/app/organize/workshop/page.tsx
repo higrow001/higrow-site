@@ -1102,10 +1102,7 @@ export default function CreateWorkshop() {
                       {fileInputState.showError && (
                         <FormMessage>{fileInputState.errorMsg}</FormMessage>
                       )}
-                      <FormDescription className="text-xs pt-2">
-                        *We will provide a default thumbnail image acording to
-                        selected category if you don't provide one yourself.
-                      </FormDescription>
+                     
                       <FormDescription className="text-xs pt-1">
                         Keep image aspect ratio to 3/2 (for e.g. width 900px and
                         height 600px) to make sure image don't get cut out.

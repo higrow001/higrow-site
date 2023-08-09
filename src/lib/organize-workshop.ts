@@ -111,11 +111,13 @@ export const validationSchema = z
     name: z
       .string({ required_error: "Event title is required" })
       .nonempty({ message: "Event title is required" })
-      .min(10, { message: "Must be atleast 10 characters long." }),
+      .min(10, { message: "Must be atleast 10 characters long." })
+      .max(70,{message: "Title should not exist 70 characters"}),
     tagline: z
       .string({ required_error: "Event tagline is required" })
       .nonempty({ message: "Event tagline is required" })
-      .min(10, { message: "Must be atleast 10 characters long." }),
+      .min(10, { message: "Must be atleast 10 characters long." })
+      .max(50,{message: "Tagline should not exist 50 characters"}),
     mode: z.string(),
     eventLocation: z.optional(z.string()),
     category: z.string().nonempty({ message: "Category is required" }),
