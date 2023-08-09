@@ -45,7 +45,6 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import Image from "next/image"
 import * as Dialog from "@radix-ui/react-dialog"
-import Navbar from "@/components/navbar/navbar"
 
 type Link = string | undefined
 
@@ -55,6 +54,14 @@ const allLinks = (...links: Link[]) => {
     if (link && link.length > 0) finalLinks.push(link)
   })
   return finalLinks
+}
+
+const convertToStorageConvention = (str: string) => {
+  return str
+    .toLowerCase()
+    .replaceAll(" ", "_")
+    .replaceAll("/", ".")
+    .replaceAll("&", "*")
 }
 
 export default function CreateWorkshop() {
@@ -89,7 +96,7 @@ export default function CreateWorkshop() {
   const categoryValue = useWatch({
     control: form.control,
     name: "category",
-    defaultValue: "Coding",
+    defaultValue: "",
   })
   const isPaidValue = useWatch({
     control: form.control,
@@ -227,6 +234,16 @@ export default function CreateWorkshop() {
               .update({ thumbnail_url })
               .eq("id", data.data.id)
         }
+      } else {
+        setPostSubmit({ show: true, logMsg: "Setting thumbnail..." })
+        await supabase
+          .from("workshops")
+          .update({
+            thumbnail_url: `https://tctfkldntrezaglqmcqe.supabase.co/storage/v1/object/public/thumbnails/defaults/${convertToStorageConvention(
+              categoryValue
+            )}/1.webp`,
+          })
+          .eq("id", data.data.id)
       }
       const shops = userData.organized_workshops
       shops.push(data.data.id)
@@ -1096,7 +1113,7 @@ export default function CreateWorkshop() {
                     </FormItem>
                   )}
                 />
-                {fileInputState.file && (
+                {fileInputState.file ? (
                   <div>
                     <h1 className="text-md pb-2 md:text-xl">
                       Thumbnail Preview
@@ -1109,6 +1126,23 @@ export default function CreateWorkshop() {
                       height={280}
                     />
                   </div>
+                ) : (
+                  categoryValue !== "" && (
+                    <div>
+                      <h1 className="text-md pb-2 md:text-xl">
+                        Default thumbnail Preview
+                      </h1>
+                      <Image
+                        className="aspect-[3/2] border border-black w-96 object-cover"
+                        src={`https://tctfkldntrezaglqmcqe.supabase.co/storage/v1/object/public/thumbnails/defaults/${convertToStorageConvention(
+                          categoryValue
+                        )}/1.webp`}
+                        alt="Preview thumbnail"
+                        width={400}
+                        height={280}
+                      />
+                    </div>
+                  )
                 )}
               </div>
               <div
