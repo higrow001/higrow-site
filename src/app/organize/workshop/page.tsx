@@ -390,7 +390,7 @@ export default function CreateWorkshop() {
                 <div className="flex space-x-3 items-center">
                   <Button
                     variant={modeValue === "Online" ? "secondary" : "outline"}
-                    className={` font-base md:font-semibold border rounded-full md:h-11 md:px-8`}
+                    className={` font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                     onClick={() => form.setValue("mode", "Online")}
                     type="button"
                   >
@@ -398,7 +398,7 @@ export default function CreateWorkshop() {
                   </Button>
                   <Button
                     variant={modeValue === "Offline" ? "secondary" : "outline"}
-                    className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                    className={`font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                     onClick={() => form.setValue("mode", "Offline")}
                     type="button"
                   >
@@ -449,7 +449,7 @@ export default function CreateWorkshop() {
                                 ? "secondary"
                                 : "outline"
                             }
-                            className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                            className={` font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                             type="button"
                           >
                             {category}
@@ -698,7 +698,7 @@ export default function CreateWorkshop() {
                           <Button
                             onClick={() => form.setValue("hostHere", true)}
                             variant={hostHereValue ? "secondary" : "outline"}
-                            className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                            className={` font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                             type="button"
                           >
                             Yes
@@ -706,7 +706,7 @@ export default function CreateWorkshop() {
                           <Button
                             onClick={() => form.setValue("hostHere", false)}
                             variant={!hostHereValue ? "secondary" : "outline"}
-                            className={`border font-base md:font-semibold rounded-full md:h-11 md:px-8`}
+                            className={` font-base md:font-semibold rounded-full md:h-11 md:px-8`}
                             type="button"
                           >
                             No
@@ -884,9 +884,9 @@ export default function CreateWorkshop() {
                           <span>What you'll teach?</span>
                           <HoverCard>
                             <HoverCardTrigger>
-                              <Info className="h-5 w-5 text-secondary" />
+                              <Info className="md:block hidden  h-5 w-5 text-secondary" />
                             </HoverCardTrigger>
-                            <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-lg w-full text-sm">
+                            <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-xl w-full text-sm">
                               <h4 className="text-lg font-medium">
                                 For example
                               </h4>
@@ -1123,7 +1123,7 @@ export default function CreateWorkshop() {
                   <div className="flex space-x-4 items-center">
                     <Button
                       variant={isPaidValue ? "secondary" : "outline"}
-                      className={`border font-semibold rounded-full`}
+                      className={` font-semibold rounded-full`}
                       type="button"
                       size="lg"
                       onClick={() => form.setValue("isPaid", true)}
@@ -1132,7 +1132,7 @@ export default function CreateWorkshop() {
                     </Button>
                     <Button
                       variant={!isPaidValue ? "secondary" : "outline"}
-                      className={`border font-semibold rounded-full`}
+                      className={` font-semibold rounded-full`}
                       type="button"
                       size="lg"
                       onClick={() => form.setValue("isPaid", false)}
@@ -1255,9 +1255,9 @@ export default function CreateWorkshop() {
             {activeStep > 0 && (
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 onClick={handlePreviousStep}
-                className="border text-black hover:text-white bg-transparent border-secondary block w-full h-9 md:h-12 rounded-md md:px-8"
+                className="border text-black bg-transparent border-secondary block w-full h-9 md:h-12 rounded-md md:px-8"
               >
                 Previous
               </Button>

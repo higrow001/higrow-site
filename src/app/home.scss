@@ -312,30 +312,7 @@
         font-weight: 800;
       }
 
-      .explore-button {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        width: 88px;
-        height: 44px;
-        border: 1px solid #333333;
-        border-radius: 4px;
-        font-size: 14px;
-        line-height: 24px;
-        letter-spacing: 0.03em;
-        color: #333333;
-
-        button {
-          width: 100%;
-          height: 100%;
-        }
-        :hover {
-          background-color: #333333;
-          color: white;
-        }
-      }
+     
     }
   }
 

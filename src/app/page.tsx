@@ -10,6 +10,7 @@ import {
 import { getWorkshops } from "./_actions/workshop"
 import Card from "@/components/card/card"
 import Footer from "@/components/footer/footer"
+import { Button } from "@/components/ui/button"
 
 const faqData = [
   {
@@ -99,7 +100,7 @@ export default async function Home() {
               <div className="he-top">
                 <h1 className="font-archivo">Explore Workshops</h1>
                 <Link href="workshops" className="explore-button">
-                  <button className="px-0">See all</button>
+                  <Button variant={"outline"}>See all</Button>
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 px-8 md:px-0 xl:grid-cols-3 gap-x-8 gap-y-16 xl:gap-16 w-full justify-items-center justify-between">
