@@ -10,6 +10,8 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
 import { revalidatePath } from "next/cache"
 import { getUser } from "./user"
 import { createNotification } from "./notification"
+import resend from "@/lib/resend"
+import { AnnouncementTemplate } from "@/components/email-templates/new-announcements"
 
 const supabase = createServerActionClient({ cookies })
 
@@ -226,6 +228,21 @@ export async function createAnnouncement(
       part.email
     )
   })
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "New Announcement",
+      react: AnnouncementTemplate({
+        pageLink: `localhost:3000/dashboard/workshop/${workshop_id}/announcements`,
+        workshopName: workshop_title,
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/announcements`)
 }
 

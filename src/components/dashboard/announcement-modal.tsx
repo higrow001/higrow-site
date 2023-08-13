@@ -22,22 +22,27 @@ export default function MakeAnnoucement({
   workshop_id,
   announcements,
   participants,
-  workshop_title
+  workshop_title,
 }: {
   workshop_id: string
   announcements: Announcement[]
   participants: Participant[]
   workshop_title: string
 }) {
+  const [isOpen, setIsOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [value, setValue] = useState("")
   const [title, setTitle] = useState("")
   const [showPreview, setShowPreview] = useState(false)
   const { showAutoCloseAlert } = useAlert()
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="w-full">
-        <Button className="w-full rounded-none md:rounded-md" variant={"secondary"} size={"xl"}>
+        <Button
+          className="w-full rounded-none md:rounded-md"
+          variant={"secondary"}
+          size={"xl"}
+        >
           Make New Announcement
         </Button>
       </DialogTrigger>
@@ -47,11 +52,13 @@ export default function MakeAnnoucement({
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle className="md:pt-0 pt-10">Make an announcment</DialogTitle>
+              <DialogTitle className="md:pt-0 pt-10">
+                Make an announcment
+              </DialogTitle>
               <DialogDescription>
                 You can use announcements to convey a message to selected
-                participants. You can also use links in your message to make your
-                message more effective.
+                participants. You can also use links in your message to make
+                your message more effective.
               </DialogDescription>
             </DialogHeader>
             <form
@@ -68,15 +75,23 @@ export default function MakeAnnoucement({
                     type: "destructive",
                   })
                 startTransition(async () => {
-                  await createAnnouncement(announcements, workshop_id, title, value, participants, workshop_title)
+                  await createAnnouncement(
+                    announcements,
+                    workshop_id,
+                    title,
+                    value,
+                    participants,
+                    workshop_title
+                  )
                   showAutoCloseAlert({
                     title: "Success.",
-                    description: "You can close the modal now."
+                    description: "Announcement created.",
                   })
+                  setIsOpen(false)
+                  setShowPreview(false)
+                  setTitle("")
+                  setValue("")
                 })
-                setShowPreview(false)
-                setTitle("")
-                setValue("")
               }}
               className="space-y-10"
             >
@@ -107,10 +122,7 @@ export default function MakeAnnoucement({
                         "blockquote",
                         "link",
                       ],
-                      [
-                        { list: "ordered" },
-                        { list: "bullet" },
-                      ],
+                      [{ list: "ordered" }, { list: "bullet" }],
                     ],
                   }}
                   value={value}
@@ -121,12 +133,9 @@ export default function MakeAnnoucement({
                 />
               </div>
               <div className="flex space-x-4 items-center">
-
                 <Button type="submit">Submit</Button>
-             
               </div>
             </form>
-            
           </>
         )}
       </DialogContent>
