@@ -43,11 +43,10 @@ export default async function Home() {
         <div className="home-hero">
           <div className="hero-top">
             <div className="htop-left">
-            <h1 className="font-archivo">We're on a mission! </h1>
+              <h1 className="font-archivo">We're on a mission! </h1>
               <p>
-                Cultivating online
-                marketplace for learning,
-                creativity and connecting enthusiasts globally.
+                Cultivating online marketplace for learning, creativity and
+                connecting enthusiasts globally.
               </p>
             </div>
             <div className="htop-center">
@@ -55,15 +54,18 @@ export default async function Home() {
                 {" "}
                 <span> HiGrow </span> - Say Hi👋 to your growth📈
               </h1>
-             
-              <Link href="/workshops" className="htopc-button">
-              <button className="h-12 md:h-16 text-sm md:text-lg px-8 md:px-14 bg-secondary md:hover:bg-secondary/90 text-primary-foreground md:hover:shadow-[6px_6px_0_#333] hover:shadow-[2px_2px_0_#333]">Explore Now</button>
-              </Link>
+              <Button
+                asChild
+                className="h-12 md:h-16 text-sm md:text-lg px-8 md:px-14 bg-secondary md:hover:bg-secondary/90 text-primary-foreground md:hover:shadow-[6px_6px_0_#333] hover:shadow-[2px_2px_0_#333] rounded-none transition duration-100"
+              >
+                <Link href="/workshops">Explore Now</Link>
+              </Button>
             </div>
             <div className="htop-right">
               <h1 className="font-archivo"> What you can do? </h1>
               <p>
-              Become even greater in your field or upscale your skills by joining workshops. Even you can create one!
+                Become even greater in your field or upscale your skills by
+                joining workshops. Even you can create one!
               </p>
             </div>
           </div>
@@ -90,14 +92,19 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        
+
         {latestWorkshops.length > 0 && (
           <div className="he-container">
             <div className="workshop-card-container">
               <div className="he-top">
                 <h1 className="font-archivo">Explore Workshops</h1>
                 <Link href="workshops" className="explore-button">
-                  <Button className={`px-4 md:h-12 md:px-7 w-[100%] text-[10px]`} variant={"outline"}>See all</Button>
+                  <Button
+                    className={`px-4 md:h-12 md:px-7 w-[100%] text-[10px]`}
+                    variant={"outline"}
+                  >
+                    See all
+                  </Button>
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 px-8 md:px-0 xl:grid-cols-3 gap-x-8 gap-y-16 xl:gap-16 w-full justify-items-center justify-between">
