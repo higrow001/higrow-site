@@ -10,6 +10,12 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
 import { revalidatePath } from "next/cache"
 import { getUser } from "./user"
 import { createNotification } from "./notification"
+import resend from "@/lib/resend"
+import { AnnouncementTemplate } from "@/components/email-templates/new-announcements"
+import { NewReqTemplate } from "@/components/email-templates/new-req-user"
+import { NewUserTemplate } from "@/components/email-templates/new-user"
+import { UserAcceptTemplate } from "@/components/email-templates/user-accepted"
+import { UserRejectTemplate } from "@/components/email-templates/user-rejected"
 
 const supabase = createServerActionClient({ cookies })
 
@@ -102,6 +108,22 @@ export async function requestJoinWorkshop(workshop_id: string) {
       workshopData.created_by
     )
   }
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "New Participant requested to enroll",
+      react: NewReqTemplate({
+        pageLink: `https://higrow.xyz//dashboard/manage-workshop/${workshop_id}/participants`,
+        workshopName: `${workshopData?.name}`,
+        instructorName: `${workshopData?.instructor_name}`
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function joinWorkshop(
@@ -139,6 +161,22 @@ export async function joinWorkshop(
       undefined,
       workshopData.created_by
     )
+  }
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "New Announcement",
+      react: NewUserTemplate({
+        pageLink: `https://higrow.xyz//dashboard/manage-workshop/${workshop_id}/participants`,
+        workshopName: `${workshopData?.name}`,
+        instructorName: `${workshopData?.instructor_name}`
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -202,7 +240,8 @@ export async function createAnnouncement(
   title: string,
   message: string,
   participants: Participant[],
-  workshop_title: string
+  workshop_title: string,
+  currentUser: Participant,
 ) {
   const anns = announcements
   anns.push({
@@ -226,6 +265,23 @@ export async function createAnnouncement(
       part.email
     )
   })
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "New Announcement",
+      react: AnnouncementTemplate({
+        pageLink: `https://higrow.xyz/dashboard/workshop/${workshop_id}/announcements`,
+        workshopName: workshop_title,
+        participantName: "Hello",
+        userName: "Puneet"
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/announcements`)
 }
 
@@ -249,6 +305,22 @@ export async function declineParticipantRequest(
     },
     currentUser.email
   )
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "We're sorry! You got rejected",
+      react: UserRejectTemplate({
+        pageLink: `https://higrow.xyz/dashboard/workshops`,
+        workshopName: workshop_title,
+        userName: `${currentUser.name}`
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/participants`)
 }
 
@@ -296,6 +368,22 @@ export async function acceptParticipantRequest(
     },
     currentUser.email
   )
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "Congratulations! You're accepted",
+      react: UserAcceptTemplate({
+        pageLink: `https://higrow.xyz/dashboard/workshop/${workshop_id}/announcements`,
+        workshopName: workshop_title,
+        userName: `${currentUser.name}`
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/participants`)
 }
 

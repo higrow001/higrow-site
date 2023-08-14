@@ -4,6 +4,8 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
 import { revalidatePath } from "next/cache"
 import { createNotification } from "./notification"
 import { getUser } from "./user"
+import { WorkshopRejectTemplate } from "@/components/email-templates/workshop-reject"
+import { WorkshopAcceptTemplate } from "@/components/email-templates/workshop-accept"
 const supabase = createServerActionClient({ cookies })
 
 export async function declineWorkshopProposal(
@@ -28,6 +30,22 @@ export async function declineWorkshopProposal(
     undefined,
     created_user_id
   )
+  
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "We're sorry! Your workshop got rejected.",
+      react: WorkshopRejectTemplate({
+        pageLink: `https://higrow.xyz/organize/workshop`,
+        workshopName: workshop_title,
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath("/admin/manage")
 }
 
@@ -49,5 +67,20 @@ export async function acceptWorkshopProposal(
     undefined,
     created_user_id
   )
+  try {
+    /* @ts-ignore */
+    const data = await resend.emails.send({
+      from: "HiGrow <onboarding@resend.dev>",
+      to: ["higrow25@gmail.com"],
+      subject: "Congratulations! Your workshop is accepted!",
+      react: WorkshopAcceptTemplate({
+        pageLink: `https://higrow.xyz/dashboard/manage-workshop/${workshop_id}`,
+        workshopName: workshop_title,
+      }),
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath("/admin/manage")
 }
