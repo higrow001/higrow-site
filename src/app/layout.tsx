@@ -3,6 +3,7 @@ import { Public_Sans, Archivo } from "next/font/google"
 import { Metadata } from "next"
 import AppAlert from "@/components/custom-alert"
 import { Analytics } from '@vercel/analytics/react';
+import Footer from "@/components/footer/footer";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -18,8 +19,10 @@ const archivoBlack = Archivo({
 export const metadata: Metadata = {
   title: "HiGrow",
   description:
-    "A platform where you join or create workshops and online contests.",
+    "Become even greater in your field or upscale your skills by joining workshops. Even you can create one!",
 }
+
+
 
 export default function RootLayout({
   children,
@@ -34,6 +37,7 @@ export default function RootLayout({
       <body className="font-sans">
         <AppAlert />
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>
