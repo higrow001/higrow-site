@@ -241,7 +241,6 @@ export async function createAnnouncement(
   message: string,
   participants: Participant[],
   workshop_title: string,
-  currentUser: Participant,
 ) {
   const anns = announcements
   anns.push({

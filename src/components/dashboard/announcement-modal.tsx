@@ -81,7 +81,7 @@ export default function MakeAnnoucement({
                     title,
                     value,
                     participants,
-                    workshop_title
+                    workshop_title,
                   )
                   showAutoCloseAlert({
                     title: "Success.",
