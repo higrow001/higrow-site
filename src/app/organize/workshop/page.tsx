@@ -707,9 +707,21 @@ export default function CreateWorkshop() {
                   name="hostHere"
                   render={() => (
                     <FormItem className="w-full">
-                      <FormLabel className="text-md md:text-xl">
-                        Plan host your event on this platform?
-                      </FormLabel>
+                      <FormLabel className="text-md space-x-2 md:text-xl flex items-center">
+                    <span>   Do you want to organize it on HiGrow? </span>  
+
+                          <HoverCard>
+                            <HoverCardTrigger>
+                              <Info className="md:block hidden  h-5 w-5 text-secondary" />
+                            </HoverCardTrigger>
+                            <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-xl w-full text-sm">
+                              <p>
+                              If you're looking for an all-inclusive event organizing platform, consider HiGrow. It offers a plethora of features like announcements, participant management, and much more. Alternatively, if you wish to link an external website or community, opt for "NO" and add the desired link for user access.
+                              </p>
+                            
+                            </HoverCardContent>
+                          </HoverCard>
+                        </FormLabel>
                       <FormControl>
                         <div className="flex w-full flex-wrap gap-3">
                           <Button
@@ -731,15 +743,7 @@ export default function CreateWorkshop() {
                         </div>
                       </FormControl>
                       <FormMessage />
-                      {!hostHereValue && (
-                        <FormDescription>
-                          We recommend you to host your event on Higrow for
-                          better customer experience. Though ofcourse you can
-                          redirect user to your already created workshop on
-                          other platform. You'll still have to fill all
-                          necessary fields.
-                        </FormDescription>
-                      )}
+                     
                     </FormItem>
                   )}
                 />
@@ -753,7 +757,7 @@ export default function CreateWorkshop() {
                           Link redirecting to your event site.
                         </FormLabel>
                         <FormControl>
-                          <Input className="px-4" {...field} />
+                          <Input className="px-4" placeholder="e.g. https://yourwebsite.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -904,51 +908,10 @@ export default function CreateWorkshop() {
                               <Info className="md:block hidden  h-5 w-5 text-secondary" />
                             </HoverCardTrigger>
                             <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-xl w-full text-sm">
-                              <h4 className="text-lg font-medium">
-                                For example
-                              </h4>
                               <p>
-                                This workshop is designed to provide a
-                                comprehensive introduction to coding and web
-                                development, enabling participants to create
-                                their own basic web applications by the end of
-                                the program.
+                              Share a thorough breakdown of your workshop content, so participants know exactly what's in store! Feel free to go into detail – the more they know, the more excited they'll be about what the workshop holds for them.
                               </p>
-                              <ul>
-                                <li>
-                                  <strong>Day 1:</strong> Introduction to Coding
-                                  Fundamentals
-                                </li>
-                                <p>
-                                  On the first day, you'll teach the
-                                  participants the foundational concepts of
-                                  coding, including variables, data types, and
-                                  basic control structures. Students will get
-                                  hands-on experience writing their first lines
-                                  of code.
-                                </p>
-                                <li>
-                                  <strong>Day 2:</strong> Web Development Basics
-                                </li>
-                                <p>
-                                  Day two will focus on web development
-                                  essentials. You'll cover HTML structure, CSS
-                                  styling, and how to create simple web pages.
-                                  Students will work on a mini-project to build
-                                  and style their own web page.
-                                </p>
-                                <li>
-                                  <strong>Day 3:</strong> JavaScript and
-                                  Interactivity
-                                </li>
-                                <p>
-                                  Introduce participants to JavaScript and its
-                                  role in creating interactive web content.
-                                  Teach them about functions, events, and basic
-                                  DOM manipulation. Students will create dynamic
-                                  elements on their web pages.
-                                </p>
-                              </ul>
+                            
                             </HoverCardContent>
                           </HoverCard>
                         </FormLabel>
@@ -1003,8 +966,20 @@ export default function CreateWorkshop() {
                     name="instructorInfo"
                     render={() => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-md md:text-xl">
-                          Tell us more about Instructor
+                        <FormLabel className="text-md space-x-2 md:text-xl flex items-center">
+                    <span>   Tell us more about Instructor </span>  
+
+                          <HoverCard>
+                            <HoverCardTrigger>
+                              <Info className="md:block hidden  h-5 w-5 text-secondary" />
+                            </HoverCardTrigger>
+                            <HoverCardContent className="max-w-[90%] space-y-2 md:max-w-xl w-full text-sm">
+                              <p>
+                              Share a detailed self-introduction as the instructor, highlighting your experience and achievements in the skill. This insight will provide participants with a clear picture of their mentor, fostering a sense of connection and excitement for the learning journey.
+                              </p>
+                            
+                            </HoverCardContent>
+                          </HoverCard>
                         </FormLabel>
                         <FormControl>
                           <ReactQuill

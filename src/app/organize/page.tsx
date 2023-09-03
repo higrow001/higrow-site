@@ -9,13 +9,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import CTA from "@/components/footer/footer"
+import CTA from "@/components/cta/footer"
 
 const faqData = [
-  {
-    question: "What is HiGrow?",
-    answer: "HiGrow is platform where our aim is to help empowering minds worldwide to Learn, compete, and grow together by workshops and contests!",
-  },
   {
     question: " Is it free to host a workshop here?",
     answer: "Absolutely! Hosting a workshop on HiGrow is completely free of charge.",
@@ -102,7 +98,7 @@ export default function Organize() {
             Frequently asked questions
           </h1>
           <p className="mb-20 sm:text-center text-left w-[80%] m-[auto]  faq-p text-lg sm:text-2xl">
-            Don't see your question? <Link href="/contact"> Contact us </Link>
+            Don't see your question? <Link href="mailto:higrow25@gmail.com"> Contact us </Link>
           </p>
           <Accordion type="single" collapsible className="max-w-5xl border-t-2 border-black md:mb-32">
             {faqData.map((data) => (
