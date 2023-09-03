@@ -117,7 +117,7 @@ export async function requestJoinWorkshop(workshop_id: string) {
       react: NewReqTemplate({
         pageLink: `https://higrow.xyz//dashboard/manage-workshop/${workshop_id}/participants`,
         workshopName: `${workshopData?.name}`,
-        instructorName: `${workshopData?.instructor_name}`
+        instructorName: `${workshopData?.instructor_name}`,
       }),
     })
     console.log(data)
@@ -171,7 +171,7 @@ export async function joinWorkshop(
       react: NewUserTemplate({
         pageLink: `https://higrow.xyz//dashboard/manage-workshop/${workshop_id}/participants`,
         workshopName: `${workshopData?.name}`,
-        instructorName: `${workshopData?.instructor_name}`
+        instructorName: `${workshopData?.instructor_name}`,
       }),
     })
     console.log(data)
@@ -240,7 +240,7 @@ export async function createAnnouncement(
   title: string,
   message: string,
   participants: Participant[],
-  workshop_title: string,
+  workshop_title: string
 ) {
   const anns = announcements
   anns.push({
@@ -263,24 +263,23 @@ export async function createAnnouncement(
       },
       part.email
     )
+    try {
+      /* @ts-ignore */
+      const data = await resend.emails.send({
+        from: "HiGrow <onboarding@resend.dev>",
+        to: [part.email],
+        subject: "New Announcement",
+        react: AnnouncementTemplate({
+          pageLink: `https://higrow.xyz/dashboard/workshop/${workshop_id}/announcements`,
+          workshopName: workshop_title,
+          userName: part.name,
+        }),
+      })
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
   })
-  try {
-    /* @ts-ignore */
-    const data = await resend.emails.send({
-      from: "HiGrow <onboarding@resend.dev>",
-      to: ["higrow25@gmail.com"],
-      subject: "New Announcement",
-      react: AnnouncementTemplate({
-        pageLink: `https://higrow.xyz/dashboard/workshop/${workshop_id}/announcements`,
-        workshopName: workshop_title,
-        participantName: "Hello",
-        userName: "Puneet"
-      }),
-    })
-    console.log(data)
-  } catch (error) {
-    console.log(error)
-  }
   revalidatePath(`/dashboard/manage-workshop/${workshop_id}/announcements`)
 }
 
@@ -313,7 +312,7 @@ export async function declineParticipantRequest(
       react: UserRejectTemplate({
         pageLink: `https://higrow.xyz/dashboard/workshops`,
         workshopName: workshop_title,
-        userName: `${currentUser.name}`
+        userName: `${currentUser.name}`,
       }),
     })
     console.log(data)
@@ -376,7 +375,7 @@ export async function acceptParticipantRequest(
       react: UserAcceptTemplate({
         pageLink: `https://higrow.xyz/dashboard/workshop/${workshop_id}/announcements`,
         workshopName: workshop_title,
-        userName: `${currentUser.name}`
+        userName: `${currentUser.name}`,
       }),
     })
     console.log(data)

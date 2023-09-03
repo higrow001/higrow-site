@@ -6,6 +6,7 @@ import { createNotification } from "./notification"
 import { getUser } from "./user"
 import { WorkshopRejectTemplate } from "@/components/email-templates/workshop-reject"
 import { WorkshopAcceptTemplate } from "@/components/email-templates/workshop-accept"
+
 const supabase = createServerActionClient({ cookies })
 
 export async function declineWorkshopProposal(
@@ -30,7 +31,7 @@ export async function declineWorkshopProposal(
     undefined,
     created_user_id
   )
-  
+
   try {
     /* @ts-ignore */
     const data = await resend.emails.send({

@@ -11,8 +11,7 @@ import { getWorkshops } from "./_actions/workshop"
 import Card from "@/components/card/card"
 import Footer from "@/components/cta/footer"
 import { Button } from "@/components/ui/button"
-import HomeHero from "./components/home/home-hero"
-
+import HomeHero from "@/components/home/home-hero"
 
 const faqData = [
   {
@@ -42,7 +41,7 @@ export default async function Home() {
     <>
       <Navbar />
       <div className="home-container">
-       <HomeHero />
+        <HomeHero />
 
         {latestWorkshops.length > 0 && (
           <div className="he-container">
@@ -89,7 +88,8 @@ export default async function Home() {
               Frequently asked questions
             </h1>
             <p className="mb-20 sm:text-center text-left w-[80%] m-[auto]  faq-p text-lg sm:text-2xl">
-              Don't see your question? <Link href="mailto:higrow25@gmail.com"> Contact us </Link>
+              Don't see your question?{" "}
+              <Link href="mailto:higrow25@gmail.com"> Contact us </Link>
             </p>
             <Accordion
               type="single"
