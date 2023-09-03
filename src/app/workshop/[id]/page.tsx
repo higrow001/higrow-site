@@ -21,6 +21,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import WishlistButton from "@/components/client-buttons/wishlist-button"
 import { getUser } from "@/app/_actions/user"
+import { format } from "date-fns"
 
 type Props = {
   params: { id: string }
@@ -71,12 +72,14 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
   } = await supabase.auth.getSession()
   const user = await getUser()
   const commonDate = new Date("1970-01-01")
-  const startTime = new Date(
-    commonDate.toDateString() + " " + data.session_start_time
-  ).toLocaleTimeString()
-  const endTime = new Date(
-    commonDate.toDateString() + " " + data.session_end_time
-  ).toLocaleTimeString()
+  const startTime = format(
+    new Date(commonDate.toDateString() + " " + data.session_start_time),
+    "h:mm a"
+  )
+  const endTime = format(
+    new Date(commonDate.toDateString() + " " + data.session_end_time),
+    "h:mm a"
+  )
 
   return (
     <>
