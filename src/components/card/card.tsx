@@ -12,7 +12,7 @@ const Card = (
     | "workshop_starting_date"
     | "is_paid"
     | "workshop_amount"
-    | "thumbnail_url"
+    | "thumbnail_url" 
   >
 ) => {
   return (
@@ -52,8 +52,8 @@ const Card = (
         <div className="price">
           <p>{props.is_paid ? `${props.workshop_amount}₹` : "FREE"}</p>
         </div>
-      </div>
-    </div>
+        </div>
+        </div>
   )
 }
 
