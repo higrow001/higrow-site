@@ -3,22 +3,40 @@ import React from "react"
 
 export default function Footer() {
   return (
-    <div className="footer-container relative bottom-0 pt-20 pb-20 w-full bg-secondary flex justify-between text-white">
-      <div className="f-left m-auto text-center">
-        <h1 className="text-[48px] text-left font-archivo font-semibold">HiGrow.</h1>
-        <p className="text-[16px] pt-2 w-[80%] text-left font-light"> Empowering minds worldwide to Learn, compete, and grow together</p>
+    <footer className="bg-[#333] text-white py-24">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
+          {/* Brand section */}
+          <div className="md:col-span-1">
+            <h2 className="text-3xl md:text-5xl font-archivo font-bold mb-4">HiGrow.</h2>
+            <p className="text-sm text-gray-200 md:text-lg font-light tracking-wider md:w-[120%]">
+              Empowering minds worldwide to Learn, Compete and grow together
+            </p>
+          </div>
+
+
+          <div className="md:col-span-1 grid justify-start md:justify-center">
+            <h3 className="text-2xl font-semibold mb-4">Pages</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Home</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Dashboard</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Workshops</a></li>
+            </ul>
+          </div>
+
+          {/* Links section 2 */}
+          <div className="md:col-span-1 grid md:justify-center">
+            <h3 className="text-2xl font-semibold mb-4">Legal</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Privacy Policy</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Terms of Service</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Refund Policy</a></li>
+            </ul>
+          </div>
+
+          
+        </div>
       </div>
-      <div className="f-middle   m-auto text-[18px] gap-y-4 font-light  flex flex-col">
-        <Link href="/workshops">Workshops</Link>
-        <Link href="/dashboard">Dashboard</Link>
-        <Link href="/organize">Organize</Link>
-      </div>
-      <div className="f-bottom m-auto text-[18px] gap-y-4 font-light  flex flex-col">
-        <Link href="/privacy-policy">Privacy Policy</Link>
-        <Link href="/terms-of-service">Terms & Conditions</Link>
-        <Link href="/refund-policy">Refund Policy</Link>
-        
-      </div>
-    </div>
+    </footer>
   )
 }

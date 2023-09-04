@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/accordion"
 import { getWorkshops } from "./_actions/workshop"
 import Card from "@/components/card/card"
-import Footer from "@/components/cta/footer"
 import { Button } from "@/components/ui/button"
 import HomeHero from "@/components/home/home-hero"
+import CTA from "@/components/cta/footer"
+import Footer from "@/components/footer/footer"
 
 const faqData = [
   {
@@ -114,6 +115,7 @@ export default async function Home() {
           </div>{" "}
         </center>
       </div>
+      <CTA />
       <Footer />
     </>
   )

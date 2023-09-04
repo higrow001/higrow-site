@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="font-sans">
         <AppAlert />
         {children}
-        <Footer />
+       
         <Analytics />
       </body>
     </html>
