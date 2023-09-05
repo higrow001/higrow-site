@@ -18,9 +18,9 @@ export default function Footer() {
           <div className="md:col-span-1 grid justify-start md:justify-center">
             <h3 className="text-2xl font-semibold mb-4">Pages</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Home</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Dashboard</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Workshops</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition duration-300">Home</a></li>
+              <li><a href="/dashboard/enrolled" className="text-gray-300 hover:text-white transition duration-300">Dashboard</a></li>
+              <li><a href="/workshops" className="text-gray-300 hover:text-white transition duration-300">Workshops</a></li>
             </ul>
           </div>
 
@@ -28,9 +28,9 @@ export default function Footer() {
           <div className="md:col-span-1 grid md:justify-center">
             <h3 className="text-2xl font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Privacy Policy</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Terms of Service</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition duration-300">Refund Policy</a></li>
+              <li><a href="/privacy-policy" className="text-gray-300 hover:text-white transition duration-300">Privacy Policy</a></li>
+              <li><a href="/terms-of-service" className="text-gray-300 hover:text-white transition duration-300">Terms of Service</a></li>
+              <li><a href="/refund-policy" className="text-gray-300 hover:text-white transition duration-300">Refund Policy</a></li>
             </ul>
           </div>
 

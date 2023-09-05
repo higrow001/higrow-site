@@ -182,25 +182,23 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                         <h3 className="text-2xl md:text-3xl text-secondary font-medium">
                           Contact organizer :-
                         </h3>
-                        <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-12 justify-items-center">
+                        <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-12 justify-items-center ">
                           <a
-                            className="p-4  w-full border border-secondary rounded-md color-[#fff]"
+                            className="p-4  w-full border border-secondary hover:shadow-[4px_4px_0_#333] rounded-md color-[#fff]"
                             href={`mailto:${data.contact_email}`}
                             target="_blank"
                           >
-                            <div className="w-full p-[5px] pt-2 pb-2 flex">
+                            <div className="w-full p-[5px] pt-2 pb-2 flex items-center">
                               {" "}
-                              <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
-                                <Mail className="w-7 h-7" />
+                              <div className="m-[0px] p-[19px] flex items-center h-[100%] pt-[20px] pb-[20x] rounded-md bg-[#333]   text-[#fff]">
+                                <Mail className="w-7 h-7 " />
                               </div>
                               <div className="w-[75%] flex flex-col ml-4 justify-center gap-y-1">
                                 {" "}
                                 <div className="font-medium tracking-wide">
                                   {data.instructor_name}'s Mail
                                 </div>
-                                <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                  {data.contact_email}
-                                </div>{" "}
+                              
                               </div>
                             </div>
                           </a>
@@ -209,12 +207,12 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                               link.length > 0 && (
                                 <a
                                   key={link}
-                                  className="p-4  w-full border border-secondary rounded-md color-[#fff]"
+                                  className="p-4 hover:shadow-[4px_4px_0_#333]  w-full border border-secondary rounded-md color-[#fff]"
                                   href={link}
                                   target="_blank"
                                 >
-                                  <div className="w-full p-[5px] pt-2 pb-2 flex">
-                                    <div className="m-[0px] p-[19px] pt-[20px] pb-[20x] rounded-md bg-[#333] text-[#fff]">
+                                  <div className="w-full p-[5px] pt-2 pb-2 flex items-center">
+                                    <div className="m-[0px] p-[19px] pt-[20px] flex items-center h-[100%] pb-[20x] rounded-md bg-[#333] text-[#fff]">
                                       {(() => {
                                         if (
                                           link.includes("youtube.com") ||
@@ -296,9 +294,7 @@ async function WorkshopPage({ params }: { params: { id: string } }) {
                                           return "Website"
                                         })()}
                                       </div>
-                                      <div className="p-[5px] pt-[8px] pb-[8px] font-archivo font-bold text-[#0D46D5] border border-black rounded-md text-[9px] text-center">
-                                        {link}
-                                      </div>
+                                     
                                     </div>
                                   </div>
                                 </a>
