@@ -69,99 +69,106 @@ const SignIn = () => {
 
   return (
     <div>
-       {/* <Link className="nav-logo" href="/">HiGrow.</Link>{" "} */}
-    <main className="flex justify-center min-h-full items-center bg-accent w-full py-10">
-      <div className="md:px-20 px-8 py-16 md:py-20 md:mx-4 max-w-xl md:border border-t border-b border-black flex flex-col items-center space-y-20 md:rounded-md w-full bg-background">
-        <h1 className="text-2xl md:text-4xl font-archivo font-bold text-[#333333]">
-          Sign in for HiGrow
-        </h1>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(signInUser)}
-            className="space-y-10 md:space-y-20 w-full"
-          >
-            <div className="flex flex-col space-y-8 items-center w-full">
-              <Button
-                type="button"
-                variant="outline"
-                size="xl"
-                className="space-x-3 w-full text-base md:text-lg rounded-lg"
-                onClick={async () => loginWithGoogle()}
-              >
-                <FcGoogle className="md:text-3xl text-2xl shrink-0" />
-                <span className="shrink-0">Continue with Google</span>
-              </Button>
-              <div className="relative w-full">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-muted-foreground">
-                    Or
-                  </span>
-                </div>
-              </div>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        className="px-4 text-lg outline-0"
-                        type="email"
-                        placeholder="Email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        className="px-4"
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col space-y-8 items-center w-full">
-              <Button
-                className="text-base md:text-lg bg-[#333] w-full px-6 md:rounded-lg border border-black"
-                type="submit"
-                size="xl"
-              >
-                Sign in
-              </Button>
-              <p className="md:text-lg font-medium text-[#757575]">
-                Don't have an account?{" "}
-                <Link
-                  className="text-primary-lighter font-semibold"
-                  href={`/signup${
-                    redirectPath !== "" && redirectPath !== null
-                      ? `?redirect=${redirectPath}`
-                      : ""
-                  }`}
+      {/* <Link className="nav-logo" href="/">HiGrow.</Link>{" "} */}
+      <main className="flex justify-center min-h-full items-center bg-accent w-full py-10">
+        <div className="md:px-20 px-8 py-16 md:py-20 md:mx-4 max-w-xl md:border border-t border-b border-black flex flex-col items-center space-y-20 md:rounded-md w-full bg-background">
+          <h1 className="text-2xl md:text-4xl font-archivo font-bold text-[#333333]">
+            Sign in for HiGrow
+          </h1>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(signInUser)}
+              className="space-y-10 md:space-y-20 w-full"
+            >
+              <div className="flex flex-col space-y-8 items-center w-full">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xl"
+                  className="space-x-3 w-full text-base md:text-lg rounded-lg"
+                  onClick={async () => loginWithGoogle()}
                 >
-                  Sign up
-                </Link>
-              </p>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </main>
+                  <FcGoogle className="md:text-3xl text-2xl shrink-0" />
+                  <span className="shrink-0">Continue with Google</span>
+                </Button>
+                <div className="relative w-full">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-muted-foreground">
+                      Or
+                    </span>
+                  </div>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input
+                          className="px-4 text-lg outline-0"
+                          type="email"
+                          placeholder="Email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input
+                          className="px-4"
+                          type="password"
+                          placeholder="Password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <Button
+                        className="float-right pr-0"
+                        variant={"link"}
+                        asChild
+                      >
+                        <Link href={"/password_reset"}>Forgot Password?</Link>
+                      </Button>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col space-y-8 items-center w-full">
+                <Button
+                  className="text-base md:text-lg bg-[#333] w-full px-6 md:rounded-lg border border-black"
+                  type="submit"
+                  size="xl"
+                >
+                  Sign in
+                </Button>
+                <p className="md:text-lg font-medium text-[#757575]">
+                  Don't have an account?{" "}
+                  <Link
+                    className="text-primary-lighter font-semibold"
+                    href={`/signup${
+                      redirectPath !== "" && redirectPath !== null
+                        ? `?redirect=${redirectPath}`
+                        : ""
+                    }`}
+                  >
+                    Sign up
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </Form>
+        </div>
+      </main>
     </div>
   )
 }
